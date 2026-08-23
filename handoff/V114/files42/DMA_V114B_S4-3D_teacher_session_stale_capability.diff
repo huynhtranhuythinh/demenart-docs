@@ -1,0 +1,225 @@
+diff --git a/src/routes/_authenticated/teacher.session.$id.tsx b/src/routes/_authenticated/teacher.session.$id.tsx
+index c3a3869..65b268d 100644
+--- a/src/routes/_authenticated/teacher.session.$id.tsx
++++ b/src/routes/_authenticated/teacher.session.$id.tsx
+@@ -124,15 +124,40 @@ function SessionFlow() {
+     setStep(3);
+   }
+ 
+-  async function loadDetail(setStepFromState = false) {
+-    const { data, error } = await supabase.rpc("get_session_detail" as never, { p_session_id: id } as never);
+-    if (error || !(data as any)?.ok) {
+-      setErr(((data as any)?.reason as string) || "load_error");
+-      return;
+-    }
+-    const d = data as unknown as Detail;
+-    setDetail(d);
+-    if (setStepFromState) setStep(stepForState(d.session.state));
++  // Điều phối nạp detail (S4-3C): seq đơn điệu + promise "mới nhất" (detailInflightRef) để caller
++  // bị thay thế vẫn NHẬN kết quả của lần nạp có thẩm quyền mới nhất (applied/failed/cancelled),
++  // thay vì bị bỏ rơi. Không polling, không retry, không đệ quy vô hạn.
++  const detailSeqRef = useRef(0);
++  const detailAliveRef = useRef(true);
++  const detailInflightRef = useRef<Promise<"applied" | "failed" | "cancelled"> | null>(null);
++  useEffect(() => {
++    detailAliveRef.current = true;
++    return () => {
++      detailAliveRef.current = false;
++    };
++  }, []);
++  async function loadDetail(setStepFromState = false): Promise<"applied" | "failed" | "cancelled"> {
++    const seq = ++detailSeqRef.current;
++    const p: Promise<"applied" | "failed" | "cancelled"> = (async () => {
++      const { data, error } = await supabase.rpc("get_session_detail" as never, { p_session_id: id } as never);
++      if (!detailAliveRef.current) return "cancelled";
++      if (seq !== detailSeqRef.current) {
++        // Bị thay bởi lần nạp mới hơn → nhận kết quả có thẩm quyền mới nhất (không tự báo thành công).
++        const latest = detailInflightRef.current;
++        return latest ? await latest : "cancelled";
++      }
++      if (error || !(data as any)?.ok) {
++        setErr(((data as any)?.reason as string) || "load_error");
++        return "failed";
++      }
++      setErr(null);
++      const d = data as unknown as Detail;
++      setDetail(d);
++      if (setStepFromState) setStep(stepForState(d.session.state));
++      return "applied";
++    })();
++    detailInflightRef.current = p;
++    return p;
+   }
+ 
+   useEffect(() => {
+@@ -211,7 +236,18 @@ function SessionFlow() {
+ 
+       {/* nội dung bước */}
+       {step === 1 && (
+-        <StepPrep detail={detail} profileId={profile?.id ?? null} onChanged={loadDetail} onStart={() => setStep(2)} />
++        <StepPrep
++          detail={detail}
++          profileId={profile?.id ?? null}
++          onChanged={loadDetail}
++          onStart={async () => {
++            // Chỉ tiến bước khi lần nạp có thẩm quyền mới nhất ĐÃ áp ("applied").
++            // "failed" → loadDetail đã set err → route hiện trạng thái lỗi (StepPrep unmount, fail-closed).
++            // "cancelled" → route đã unmount. Không còn spinner treo.
++            const r = await loadDetail();
++            if (r === "applied") setStep(2);
++          }}
++        />
+       )}
+       {step === 2 && (
+         <StepTeach
+@@ -234,6 +270,7 @@ function SessionFlow() {
+           onBack={() => goToRecord()}
+           onEditPhotos={() => goToRecord("photo")}
+           onSent={() => loadDetail()}
++          onReloadDetail={loadDetail}
+         />
+       )}
+     </div>
+@@ -302,13 +339,21 @@ function StepPrep({
+   detail: Detail;
+   profileId: string | null;
+   onChanged: () => void;
+-  onStart: () => void;
++  onStart: () => void | Promise<void>;
+ }) {
+   const items = detail.prep_items;
+   const ready = items.filter((i) => i.is_ready).length;
+   const total = items.length;
+   const [busyId, setBusyId] = useState<string | null>(null);
+   const [starting, setStarting] = useState(false);
++  const startLockRef = useRef(false);
++  const spAliveRef = useRef(true);
++  useEffect(() => {
++    spAliveRef.current = true;
++    return () => {
++      spAliveRef.current = false;
++    };
++  }, []);
+   const [reporting, setReporting] = useState(false);
+   const [reported, setReported] = useState(false);
+   const sid = detail.session.id;
+@@ -322,12 +367,20 @@ function StepPrep({
+   }
+ 
+   async function start() {
++    if (startLockRef.current) return; // khoá re-entry đồng bộ (ref) — chống double-tap
++    startLockRef.current = true;
+     setStarting(true);
+     const { data, error } = await supabase.rpc("start_session" as never, { p_session_id: sid } as never);
+-    setStarting(false);
+-    if (!error && (data as any)?.ok) {
+-      onStart();
++    if (!spAliveRef.current) return; // unmount trong lúc gọi start_session → không setState
++    if (error || !(data as any)?.ok) {
++      startLockRef.current = false; // start lỗi → cho phép thử lại
++      setStarting(false);
++      return;
+     }
++    // start THÀNH CÔNG: KHÔNG gọi start_session lần nữa. Chờ lần nạp detail có thẩm quyền mới nhất.
++    // onStart chắc chắn kết thúc ("applied"→sang bước; "failed"→route lỗi; "cancelled"→unmount)
++    // nên không còn spinner treo. Giữ starting=true & khoá tới khi unmount.
++    await onStart();
+   }
+ 
+   async function reportMissing() {
+@@ -2284,6 +2337,7 @@ function StepReview({
+   onBack,
+   onEditPhotos,
+   onSent,
++  onReloadDetail,
+ }: {
+   session: SessionInfo;
+   canSubmitJournal: boolean | undefined;
+@@ -2292,6 +2346,7 @@ function StepReview({
+   onBack: () => void;
+   onEditPhotos: () => void;
+   onSent: () => void;
++  onReloadDetail: () => Promise<"applied" | "failed" | "cancelled">;
+ }) {
+   const [roster, setRoster] = useState<RosterChild[] | null>(null);
+   const [moments, setMoments] = useState<MomentItem[] | null>(null);
+@@ -2300,6 +2355,16 @@ function StepReview({
+   const [submitting, setSubmitting] = useState(false);
+   const [result, setResult] = useState<SubmitResult | null>(null);
+   const [err, setErr] = useState<string | null>(null);
++  // recovering: sau khi LỆNH gửi bị từ chối → khoá CTA (render) ngay và nạp lại capability đúng một lần.
++  const [recovering, setRecovering] = useState(false);
++  const submitLockRef = useRef(false); // khoá re-entry đồng bộ cho submit (ref, không phải state)
++  const aliveRef = useRef(true);
++  useEffect(() => {
++    aliveRef.current = true;
++    return () => {
++      aliveRef.current = false;
++    };
++  }, []);
+   const sentBefore = SENT_STATES.includes(session.state);
+ 
+   async function load() {
+@@ -2358,7 +2423,9 @@ function StepReview({
+   }, [roster, moments]);
+ 
+   async function submit() {
+-    if (canSubmitJournal !== true) return;
++    if (submitLockRef.current) return; // khoá re-entry đồng bộ — chống submit trùng
++    if (canSubmitJournal !== true) return; // chỉ server-capability mới mở
++    submitLockRef.current = true;
+     setSubmitting(true);
+     setErr(null);
+     const { data, error } = await supabase.rpc(
+@@ -2369,7 +2436,10 @@ function StepReview({
+         p_follow_up: followUp.trim() || null,
+       } as never,
+     );
+-    setSubmitting(false);
++    if (!aliveRef.current) {
++      submitLockRef.current = false; // unmount trong lúc gửi → không setState
++      return;
++    }
+     if (error || !(data as any)?.ok) {
+       const reason = ((data as any)?.reason as string) || "submit_error";
+       setErr(
+@@ -2383,8 +2453,23 @@ function StepReview({
+                 ? "Buổi học này không còn khả dụng. Cô tải lại danh sách buổi nhé."
+                 : "Không gửi được nhật ký lúc này. Cô thử lại nhé.",
+       );
++      // Khoá CTA (recovering) TRƯỚC khi bỏ submitting → không có khe CTA bật lại (fail-closed).
++      setRecovering(true);
++      setSubmitting(false);
++      // Nạp lại canonical detail đúng MỘT lần; NHẬN kết quả có thẩm quyền mới nhất.
++      const r = await onReloadDetail();
++      if (r === "applied") {
++        // Chỉ khi refresh có thẩm quyền ĐÃ áp mới nhả khoá & bỏ recovering; CTA theo capability mới.
++        submitLockRef.current = false;
++        if (aliveRef.current) setRecovering(false);
++      }
++      // "failed" → route hiện trạng thái lỗi (StepReview unmount, fail-closed);
++      // "cancelled" → đã unmount. Cả hai: GIỮ recovering & khoá — KHÔNG nhả vào CTA cũ còn bấm được,
++      // KHÔNG tự thử lại lệnh gửi.
+       return;
+     }
++    setSubmitting(false);
++    submitLockRef.current = false;
+     setResult({
+       moments_approved: (data as any).moments_approved ?? 0,
+       journey_created: (data as any).journey_created ?? 0,
+@@ -2576,7 +2661,14 @@ function StepReview({
+         >
+           <ChevronLeft className="h-4 w-4" /> Quay lại
+         </button>
+-        {canSubmitJournal === true ? (
++        {recovering ? (
++          <span
++            className="flex-1 inline-flex items-center justify-center gap-2 rounded-xl py-3.5 text-sm font-medium"
++            style={{ backgroundColor: "#F4F1EA", color: FAINT }}
++          >
++            <Loader2 className="h-4 w-4 animate-spin" /> Đang kiểm tra lại quyền gửi…
++          </span>
++        ) : canSubmitJournal === true ? (
+           <button
+             type="button"
+             onClick={submit}

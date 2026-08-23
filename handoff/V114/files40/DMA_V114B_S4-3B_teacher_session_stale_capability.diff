@@ -1,0 +1,189 @@
+diff --git a/src/routes/_authenticated/teacher.session.$id.tsx b/src/routes/_authenticated/teacher.session.$id.tsx
+index c3a3869..3b822f3 100644
+--- a/src/routes/_authenticated/teacher.session.$id.tsx
++++ b/src/routes/_authenticated/teacher.session.$id.tsx
+@@ -124,15 +124,30 @@ function SessionFlow() {
+     setStep(3);
+   }
+ 
+-  async function loadDetail(setStepFromState = false) {
++  // Seq guard + aliveRef: chỉ kết quả get_session_detail mới nhất được áp; không setState sau unmount.
++  const detailSeqRef = useRef(0);
++  const detailAliveRef = useRef(true);
++  useEffect(
++    () => () => {
++      detailAliveRef.current = false;
++    },
++    [],
++  );
++  // "applied" = đã cập nhật detail; "superseded" = có lần nạp mới hơn / đã unmount (KHÔNG coi là thành công);
++  // "failed" = nạp lỗi (fail-closed). Caller chỉ được tiến bước khi nhận "applied".
++  async function loadDetail(setStepFromState = false): Promise<"applied" | "superseded" | "failed"> {
++    const seq = ++detailSeqRef.current;
+     const { data, error } = await supabase.rpc("get_session_detail" as never, { p_session_id: id } as never);
++    if (!detailAliveRef.current || seq !== detailSeqRef.current) return "superseded";
+     if (error || !(data as any)?.ok) {
+       setErr(((data as any)?.reason as string) || "load_error");
+-      return;
++      return "failed";
+     }
++    setErr(null);
+     const d = data as unknown as Detail;
+     setDetail(d);
+     if (setStepFromState) setStep(stepForState(d.session.state));
++    return "applied";
+   }
+ 
+   useEffect(() => {
+@@ -211,7 +226,17 @@ function SessionFlow() {
+ 
+       {/* nội dung bước */}
+       {step === 1 && (
+-        <StepPrep detail={detail} profileId={profile?.id ?? null} onChanged={loadDetail} onStart={() => setStep(2)} />
++        <StepPrep
++          detail={detail}
++          profileId={profile?.id ?? null}
++          onChanged={loadDetail}
++          onStart={async () => {
++            // Chỉ tiến bước khi capability của lần nạp MỚI NHẤT đã thực sự được áp ("applied").
++            // "superseded"/"failed" → fail-closed, không tiến bước từ kết quả đã bị thay/lỗi.
++            const r = await loadDetail();
++            if (r === "applied") setStep(2);
++          }}
++        />
+       )}
+       {step === 2 && (
+         <StepTeach
+@@ -234,6 +259,7 @@ function SessionFlow() {
+           onBack={() => goToRecord()}
+           onEditPhotos={() => goToRecord("photo")}
+           onSent={() => loadDetail()}
++          onReloadDetail={loadDetail}
+         />
+       )}
+     </div>
+@@ -302,13 +328,14 @@ function StepPrep({
+   detail: Detail;
+   profileId: string | null;
+   onChanged: () => void;
+-  onStart: () => void;
++  onStart: () => void | Promise<void>;
+ }) {
+   const items = detail.prep_items;
+   const ready = items.filter((i) => i.is_ready).length;
+   const total = items.length;
+   const [busyId, setBusyId] = useState<string | null>(null);
+   const [starting, setStarting] = useState(false);
++  const startLockRef = useRef(false);
+   const [reporting, setReporting] = useState(false);
+   const [reported, setReported] = useState(false);
+   const sid = detail.session.id;
+@@ -322,12 +349,18 @@ function StepPrep({
+   }
+ 
+   async function start() {
++    if (startLockRef.current) return; // khoá re-entry đồng bộ (ref) — chống double-tap
++    startLockRef.current = true;
+     setStarting(true);
+     const { data, error } = await supabase.rpc("start_session" as never, { p_session_id: sid } as never);
+-    setStarting(false);
+-    if (!error && (data as any)?.ok) {
+-      onStart();
++    if (error || !(data as any)?.ok) {
++      startLockRef.current = false; // start lỗi → cho phép thử lại
++      setStarting(false);
++      return;
+     }
++    // start THÀNH CÔNG: KHÔNG nhả khoá, KHÔNG gọi start_session lần nữa dù refresh lỗi.
++    // Giữ starting=true; component unmount khi sang bước (applied) hoặc khi route hiện lỗi.
++    await onStart();
+   }
+ 
+   async function reportMissing() {
+@@ -2284,6 +2317,7 @@ function StepReview({
+   onBack,
+   onEditPhotos,
+   onSent,
++  onReloadDetail,
+ }: {
+   session: SessionInfo;
+   canSubmitJournal: boolean | undefined;
+@@ -2292,6 +2326,7 @@ function StepReview({
+   onBack: () => void;
+   onEditPhotos: () => void;
+   onSent: () => void;
++  onReloadDetail: () => Promise<"applied" | "superseded" | "failed">;
+ }) {
+   const [roster, setRoster] = useState<RosterChild[] | null>(null);
+   const [moments, setMoments] = useState<MomentItem[] | null>(null);
+@@ -2300,6 +2335,16 @@ function StepReview({
+   const [submitting, setSubmitting] = useState(false);
+   const [result, setResult] = useState<SubmitResult | null>(null);
+   const [err, setErr] = useState<string | null>(null);
++  // recovering: sau khi LỆNH gửi bị từ chối → khoá CTA (render) ngay và nạp lại capability đúng một lần.
++  const [recovering, setRecovering] = useState(false);
++  const submitLockRef = useRef(false); // khoá re-entry đồng bộ cho submit (ref, không phải state)
++  const aliveRef = useRef(true);
++  useEffect(
++    () => () => {
++      aliveRef.current = false;
++    },
++    [],
++  );
+   const sentBefore = SENT_STATES.includes(session.state);
+ 
+   async function load() {
+@@ -2358,7 +2403,9 @@ function StepReview({
+   }, [roster, moments]);
+ 
+   async function submit() {
+-    if (canSubmitJournal !== true) return;
++    if (submitLockRef.current) return; // khoá re-entry đồng bộ — chống submit trùng
++    if (canSubmitJournal !== true) return; // chỉ server-capability mới mở
++    submitLockRef.current = true;
+     setSubmitting(true);
+     setErr(null);
+     const { data, error } = await supabase.rpc(
+@@ -2369,7 +2416,6 @@ function StepReview({
+         p_follow_up: followUp.trim() || null,
+       } as never,
+     );
+-    setSubmitting(false);
+     if (error || !(data as any)?.ok) {
+       const reason = ((data as any)?.reason as string) || "submit_error";
+       setErr(
+@@ -2383,8 +2429,18 @@ function StepReview({
+                 ? "Buổi học này không còn khả dụng. Cô tải lại danh sách buổi nhé."
+                 : "Không gửi được nhật ký lúc này. Cô thử lại nhé.",
+       );
++      // Từ chối: khoá CTA (recovering=true) TRƯỚC khi bỏ submitting → không có khe CTA bật lại (fail-closed).
++      setRecovering(true);
++      setSubmitting(false);
++      // Nạp lại canonical detail đúng MỘT lần (không tự thử lại lệnh gửi).
++      await onReloadDetail();
++      // Nhả khoá submit sau recovery; lần gửi sau vẫn cần canSubmitJournal===true đã refresh.
++      submitLockRef.current = false;
++      if (aliveRef.current) setRecovering(false);
+       return;
+     }
++    setSubmitting(false);
++    submitLockRef.current = false;
+     setResult({
+       moments_approved: (data as any).moments_approved ?? 0,
+       journey_created: (data as any).journey_created ?? 0,
+@@ -2576,7 +2632,14 @@ function StepReview({
+         >
+           <ChevronLeft className="h-4 w-4" /> Quay lại
+         </button>
+-        {canSubmitJournal === true ? (
++        {recovering ? (
++          <span
++            className="flex-1 inline-flex items-center justify-center gap-2 rounded-xl py-3.5 text-sm font-medium"
++            style={{ backgroundColor: "#F4F1EA", color: FAINT }}
++          >
++            <Loader2 className="h-4 w-4 animate-spin" /> Đang kiểm tra lại quyền gửi…
++          </span>
++        ) : canSubmitJournal === true ? (
+           <button
+             type="button"
+             onClick={submit}

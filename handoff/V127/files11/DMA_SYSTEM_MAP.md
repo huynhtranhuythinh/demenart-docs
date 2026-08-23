@@ -1,0 +1,2414 @@
+# 🗺️ DMA_SYSTEM_MAP.md — BẢN ĐỒ KIẾN TRÚC (skeleton V1 · v1.32)
+
+> **Cách dùng:** Toàn cảnh hệ thống + bản đồ tái dùng DMWS. Nuôi dần "tới đâu ghi tới đó".
+> **Nguồn:** Tài liệu A–G (UPDATED) + tầm nhìn founder + kinh nghiệm DMWS v170.
+> **Naming:** DMA = nền tảng; CTAN = sản phẩm đầu. Không "DMMA".
+
+---
+
+## ⭐ CURRENT CANONICAL ENDPOINT — D344 / SYSTEM_MAP v1.32 / HANDOFF V126-M1 (Parent Memory Journey — Meaning Bridge + IA Alignment CLOSED, 2026-08-09)
+
+> **Đây là khối authority DUY NHẤT về hiện trạng.** Mọi section bên dưới khối này là bản đồ + nhật ký tích luỹ: các câu "Kế/Bước kế/CHƯA làm/Việc treo/deploy Vercel" và inventory cũ trong đó là **HISTORICAL SNAPSHOT**, không phải chỉ thị hay số liệu hiện hành.
+> **Lineage E3 — RESOLVED:** D310–D323 + D-A2-1 **ĐÃ canonicalize** tại E3 milestone closeout 25/07/2026 (khối "V114B-E3 — MILESTONE CLOSEOUT" trong RULES). D314–D322 canonicalize từ **recovered conversational source** (`DMA_V114B_E3_WP2_S1_S2_SOURCE_RECOVERY.md`, SHA `dc1494b0…aa49`) với provenance qualifier: exact theo conversation_search excerpt, byte-exact whitespace không chứng nhận độc lập.
+
+- **Production:** GitHub `main` → **Cloudflare Pages CI** → `demenart.com` (mọi commit main = production-affecting; Lovable hosting KHÔNG phải production source).
+- **⭐ Build/deploy governance (V120-M0 · D338 · supersede D326):** **Bun là package-manager authority DUY NHẤT · `bun.lock` là lockfile authoritative DUY NHẤT · KHÔNG dual-lock** (lockfile thứ hai tái xuất = STOP). Cloudflare Pages: project `demenart` · repo `huynhtranhuythinh/demenart` · branch `main` · build system Version 3 · root = repo root · build cache Disabled · output `dist`. **Install authority tường minh (KHÔNG auto-detect):** `SKIP_DEPENDENCY_INSTALL=1` · `BUN_VERSION=1.2.15` · build command **`bun install --frozen-lockfile && bun run build`**. Correction là **dashboard-only, repository delta = 0**. Tooling `@lovable.dev/vite-tanstack-config` exact `2.8.5` (manifest == `bun.lock`); KHÔNG `packageManager` field; giữ 4 `minimumReleaseAgeExcludes`. Lockfile verify bằng direct `read_file`/hash tại GitHub SHA (**`get_diff` ẩn lockfile — KHÔNG phải authority**). Lineage authority: **GitHub `main` commit object** > Lovable `list_edits` > agent sandbox/narrative (SUPPORTING). *(Tip `9a49e415` = merge commit: mainline `b93639af`, second parent `d2759bc`.)* Final deploy: `6c5eeef4-7dcb-4c34-97f6-9014f8f9df0b` từ `9a49e415`, frozen-install PASS + Owner production smoke PASS (pre-correction deploy `2d69ce9e…` từng chạy npm — CF-C mismatch, đã sửa). **⭐ V125-M0/D343 tooling-governance guard:** `scripts/assert-tooling-governance.mjs` (fail-closed G1–G5, zero-dep, assertion-only) chạy TRƯỚC Vite qua `bun run build` (build-gate trong package.json), chặn mọi non-canonical tooling (pin≠2.8.5 / resolved set≠{2.8.5} / competing lockfile) TRƯỚC production build. Guard = detection/containment, KHÔNG sửa initializer Lovable — prevention vẫn là **safe-writer** (`manual_update`; agent re-float NOT fixed). **New-file creation phải verify writer-type** (`list_edits`) vì có thể route qua `ai_update` và re-float (D343.5). `minimumReleaseAgeExcludes` causal role **NOT PROVEN**; **D342.5 vẫn FOUR-times-proven**.
+- **Frontend HEAD (accepted tip):** `6b860338` (V126-M1 · Parent Memory Journey — Meaning Bridge (C1, frontend-only, 0 DB) + IA Alignment (C3) + C0 capsule validation · **DMA chuyển school-record → child artistic memory journey** bằng kích hoạt tầng meaning ĐÃ TỒN TẠI (evidence `derive_child_evidence_internal` → readiness `compute_child_evidence_readiness` v2 → `discovery_capsules`/`generate_discovery_capsule` manual+eligibility-gated+idempotent, KHÔNG AI wording) — KHÔNG engine mới · **MeaningBridge** trong `parent.index.tsx` 3-state (has_capsule / eligible_without_capsule / accumulating_insufficient; list-first→readiness-lazy; **no auto-generate / no scoring / no comparison / no inline capsule item**; Memory>Metric · Meaning>Quantity; child-scoped Correction-A) · **IA:** nav `parentNav.ts` "Hành trình"→"Nhật ký" (records) + thêm "Nhìn lại" (`/parent/discovery`, Telescope) primary **railOnly** (rail+tablet only) → `ParentBottomNav` filter `!railOnly` giữ **mobile frozen-4** (grid-cols-4 bất biến); bridge title→"Nhìn lại"; journal h1→"Nhật ký"; vocabulary "Hành trình"=product-concept GIỮ · "Nhật ký"=records · "Nhìn lại"=meaning · **⭐ D344.5 GENERATED-FILE AUTHORITY BOUNDARY:** `routeTree.gen.ts` bị Lovable regen khi save quét mất `declare module '@tanstack/react-start'` Register (empty-commit `28325e5b` proof) = gốc build-fail V121-M1 tái diễn → **permanent fix dời Register sang `src/router.tsx`** (hand-authored, regen không đụng); CẤM chèn tay vào `*.gen.ts` · C0 zero-mutation validate (build_discovery_candidates_internal + shipped discoveryModel; capsule THẬT An `384042c1` byte-identical 4-item; LINH HỒN không đánh giá/scoring/ranking/over-claim; get_discovery_capsule re-validate→suppress khi mất bằng chứng; session ref_id-NULL key theo child_journey.id) · **ZERO backend/DB delta** (89/215/204/166 · 16 Edge · migration tail `20260807130914` bất biến; capsule An = data hợp lệ qua UI real-login, KHÔNG SQL) · tất cả `manual_update` paste-mode, pin **2.8.5** giữ, bun.lock byte-unchanged, zero tooling re-float · lineage `b3372e1c`→`742db062`(C1)→`af4b37cc`(C1.6)→`d498bf75`(C3+routeTree regression)→`f8723cc4`(journal+revert)→`28325e5b`(regen-strip proof)→`6b860338` · verify `read_file`@SHA + `list_edits` (get_diff ẩn lockfile — D339.5) · chi tiết khối "V126-M1" cuối file. **Lịch sử tip trước:** `b3372e1c` (V125-M0 · "Code edited in Lovable Code Editor" · Tooling Governance Guard — fail-closed build assertion `scripts/assert-tooling-governance.mjs` (G1 pin==2.8.5 · G2 lock-required · G3 resolved set = {2.8.5} · G4 no competing lockfile · G5 fail-closed, zero-dep) + package.json build gate `node scripts/assert-tooling-governance.mjs && vite build` (guard trước Vite qua `bun run build`, CF frozen-install authority KHÔNG đổi) · safe-writer doctrine (paste-mode `manual_update` = prevention; agent re-float NOT fixed, chỉ sidestep) · Phase C guard-create qua `ai_update` `383ad563` TÁI HIỆN float 2.8.5→2.9.1 (tip `2f9af126`) → Phase C-R1 manual recovery (`cce6c13b`→`b3372e1c`) restore `bun.lock` byte-identical baseline `5c5491e9` (sha256 33cdc3cd…, 2.9.1 count=0, resolved {2.8.5}) · dependency authority 0 (2.8.5 giữ) · signer/DB/Edge/Bunny/routes/product ZERO delta · `minimumReleaseAgeExcludes` causal role NOT PROVEN · D342.5 vẫn FOUR-times-proven · lineage `5c5491e9`→`383ad563`(ai_update float)→`f6f69cef`→`2f9af126`→`cce6c13b`→`b3372e1c` · verify `read_file`@SHA + `list_edits` (get_diff ẩn lockfile — D339.5) · chi tiết khối "V125-M0" cuối file. **Lịch sử tip trước:** `5c5491e9` (V124-M1 · "Reverted tanstack-config to 2.8.5" · School Drive + Family variant wiring, frontend-only Candidate 1 · lineage `06975654`→`a3adc133`(Family memoryRoomShared)→`44e51fa8`(School DriveExplorer)→`5c5491e9`(tooling revert) · School tile→thumb/preview→stage, Family cover→card/glimpse→thumb/detail→card via implicit MediaTile role dispatch · Δ signer calls=0 · variant→one-shot original fallback · signer/DB/Edge/Bunny/routes ZERO delta · tooling re-float 2.9.1 caught+reverted về **2.8.5** (D342, four-times-proven, package.json + bun.lock L66/L242, 2.9.1 count=0) · verify `read_file`@SHA + `list_edits` (get_diff ẩn lockfile — D339.5) · chi tiết khối "V124-M1" cuối file. **Lịch sử tip trước:** `2d33018b` (V122-M1 · "Reverted sandbox to v2.8.5" · Parent Journey session-bundle regroup — DB additive two-sided `session_id` (migration `20260807130914`) + frontend regroup · lineage `ed9ca9e5`→[mig `20260807130914`]→`6ef509af`(S1)→`9f7d1926`→`4bec89f2`(S2/S3)→`0994b079`→`c884ebbe`(S4)→`2d33018b` · một buổi = 1 unit (moments absorb, fan-out collapse §8), "Buổi học" label, badges/skills vẫn ẩn, deep-link `moment:<id>`→bundle + focus-move a11y · tooling re-float 2.9.1 mỗi agent-install (×3) mỗi lần revert về canonical **2.8.5** (verified `read_file` L65/L241, no residue) · verify authoritative `read_file`@SHA + `list_edits` (get_diff ẩn lockfile; sandbox git ≠ lineage — D339.5) · chi tiết khối "V122-M1" cuối file. **Lịch sử tip trước:** `ed9ca9e5` (V121-M1 · "Reverted vite-tanstack-config" · Parent Home-Centric Continuity, frontend-only · lineage `9a49e415`→`677f13ce`→`67280d72`→`085d4439`→`ed9ca9e5` · tooling về canonical **2.8.5** (package.json==bun.lock, verified read_file L65+L241 sha512) · routeTree Register block canonical + **204 RouteImport / 52 route bất biến** · root-cause build-fail = commit tay gỡ Register block (tsc fail), fix = build regen-restore; tooling float 2.9.1 tại `085d4439` đã revert (D339.4) · verify authoritative bằng `read_file` theo SHA + `list_edits` (get_diff ẩn lockfile; sandbox git ≠ lineage) · chi tiết khối "V121-M1" cuối file. **Lịch sử tip trước:** `9a49e415` (V119-M1 · "Deleted package-lock.json" — lineage `78b75e59` V118-M2 tip → `b93639af` V119-M1 implementation ("Added parent outcome history": 3 file feature + 1 prop-bridge trong `src/features/parent/session-outcome/`) → `9a49e415` tooling correction (xóa `package-lock.json`, Bun authoritative). Verify **authoritative bằng `read_file` theo SHA thật**, KHÔNG tin `get_diff` cho lockfile (get_diff ẩn lockfile — D337.5) và KHÔNG tin narrative agent (git sandbox ảo ≠ lineage — dùng `list_edits`). Route inventory **52 bất biến** (routeTree Register block = type-only regen, verify bằng so `id` union). **Tooling `@lovable.dev/vite-tanstack-config` 2.7.7→2.8.5** = platform auto-float (bunfig exclude 24h-guard), CTO chấp nhận như platform-managed delta; `package.json`==`bun.lock`==2.8.5, npm-lock đã xóa. **P2 follow-up: tooling-governance.**)
+- **Migration:** registry **119** · mới nhất **`v122_m1_child_journal_session_id` (`20260807130914`, 07/08/2026 — additive two-sided `session_id` vào `get_child_journal` CREATE OR REPLACE; D92 3-block + D15 re-REVOKE/GRANT + verify aclexplode no-anon leak; signature bất biến `uuid→jsonb` → PostgREST reload không bắt buộc; D340.1)**. Tiền nhiệm: `v118_m2_appreciation_acknowledgement` (`20260727115750`, 27/07/2026, 3-block D92 + VERIFY ~23 assertion gồm impersonation D333 ba persona, PASS atomic, rollback guard; cột additive `session_appreciations.acknowledged_at timestamptz NULL` + RPC `acknowledge_session_appreciation` + additive replace 2 projection; `notify pgrst` D289 đã gửi).
+- **Inventory sống (08/08/2026 · sau V122-M1 · re-verified read-only tại closeout):** **89 tables · 215 functions · 204 SECURITY DEFINER · 166 policies · 33 triggers · 1 cron · registry 119 · routes 52 · 16 Edge Functions — bất biến** (V122 `get_child_journal` = CREATE OR REPLACE function-body, KHÔNG thêm function/table/policy; `session_id` sống trong jsonb return). Migration mới nhất **`v122_m1_child_journal_session_id` (`20260807130914`)**.
+- **⭐ Authority surface (LIVE, D324 + D325):** quyền hành động session-scoped đi theo **session responsibility hiện hành** (STA dimension `responsible`), KHÔNG theo class lead; frontend CHỈ tiêu thụ `can_submit_journal`/`submit_block_reason`/`responsible_teacher` từ `get_session_detail`. `is_session_lead` byte-nguyên. **owner_attested ≠ db_proven.**
+- **⭐ Write-path containment:** `lesson_sessions` relacl `{anon=rxtm, authenticated=rxtm}` (WP3) · `session_reports` relacl `{anon=rxtm, authenticated=rxtm}` (RM1) — **`CONTAINED FOR USER-JWT MUTATION PATHS`**; 2 write policy dead-door trên `session_reports` = **P3 documentation debt**. **Trusted tier (object-specific):** `learning_moments`/`child_observations` — trusted writes chịu INVOKER trigger guards; `session_reports` — `service_role`/`postgres` là operational trusted capability ngoài user-JWT closure, KHÔNG claim trigger-contained.
+- **Gates:** **E3-SG-01 `CLOSED BY CTO DECISION`** (criteria WP1 §5; canonical record trong RULES E3-MC) · **E3-SG-02 `CONTAINED — NOT CLOSED`** · **R21 `OPEN RESIDUAL MONITORING — NON-BLOCKING; VERIFY AT FIRST RELEVANT OWNER/ORGANIC MUTATION`** (organic mutation 0; zero traffic ≠ risk eliminated).
+- **STA:** 14 total · 9 planned · 5 responsible (dòng 5 = mutation QA S4-4 documented, KHÔNG phải drift) · evidence db_proven 3 / owner_attested 1 (+1 runtime).
+- **🔒 Skew window S3→S4: ĐÓNG tại S4-5** (governance disposition).
+- **Parent shell:** mobile **≤479** · tablet **480–1023** · desktop **≥1024**.
+- **⭐ Teacher Session Experience (V116, 26/07/2026 — D326–D328):** route `teacher.session.$id` 4 bước nhãn mới (Chuẩn bị · Trong giờ học · Ghi nhận · Hoàn tất) trên teacherTokens; file mới `features/teacher/sessionPrep.tsx` (SessionInfoCard · ResponsibleTeacherCard · ReadinessSummary · LessonPreview read-only) + `features/teacher/sessionPlayer.tsx` (SessionMediaPlayer — ký URL qua Edge `get_signed_media_url`, không autoplay, ảnh/audio/video native, HLS DEFER); projection grammar GỠ khỏi session surface (`classroom`/`remote` + `useSessionChannel.ts` nguyên, chờ SEC1); start-fail hiển thị (forbidden→copy responsibility); CI build bằng npm + `package-lock.json` (D326 — mọi đổi dependency phải cập nhật CẢ 2 lockfile). **Zero backend change toàn track; D324/D325 diff = 0.**
+- **⭐ Teacher Session S4 (V116, 26/07/2026 — D329–D331):** Bước 3 (Điểm danh avatar+counts+unmarked aria-live · Ghi nhận header ngữ cảnh bé + skill chip on/off phân biệt + "Ghi chú nhanh" · Ảnh với P1-2 tag-fail + P1-3 caption-fail visible-retry tại moment) + Bước 4 (checklist actionable → `onGoTab` nhảy đúng tab · nháp summary/followUp SỐNG ở SessionFlow P1-1 · card GV phụ trách chỉ initials+tên · submit fail-closed nguyên D324/D325 · recovery-fail card "Chưa thể xác nhận kết quả gửi" + "Tải lại trạng thái" ĐÓNG P2 D325 · success "Nhật ký đã được gửi" không emoji) — tất cả trong 1 file `teacher.session.$id.tsx` qua giao thức D329 block-replacement (`a1016721`, byte-compare khớp artifact). Route-error copy trung tính "Tài khoản này…" (D330, `b77697b0`). Micro-fix mặc định = Jean tự tìm-thay trong editor, agent chỉ khi phức tạp (D331). `blockReasonCopy` D327-exception: "Cô không phải giáo viên phụ trách buổi học này. Nhật ký chỉ có thể được gửi bởi giáo viên phụ trách buổi…". Sticky CTA ≤479 pattern bottom-72px cho RecordNav + StepReview. **Zero backend change; re-pin zero drift.**
+- **⭐ Parent Outcome Loop — "Sau buổi học" (V117-M1, 27/07/2026 — D332–D333):** vòng Teacher → Parent KHÉP KÍN. RPC curated `get_parent_session_outcomes` (Parent-only `is_child_parent`, denial generic kể cả child không tồn tại, clamp 1–20, INNER JOIN `lesson_sessions` qua `ref_id` — seed ref_id NULL loại, payload whitelist D332). Module Home `/parent` `src/features/parent/session-outcome/` (model · hook seq-guard 1-RPC/child · Card · Section) chèn sau hero — không route/nav mới; signing tái dùng `useJourneySigning`, `consent_missing` → CTA `/parent/consent`; CTA "Xem trọn buổi học" → `?focus=journey:<id>`. QA: SQL actor 6/6 · browser production 14/14 (console 0 lỗi, không N+1, deep-link đúng item, đổi con không stale) · Owner QA iPhone PASS. Zero diff protected surfaces (teacher.session.$id byte-nguyên).
+- **⭐ Parent–Teacher Appreciation — "Lời cảm ơn" (V118-M1, 27/07/2026 — D335):** vòng Teacher → Parent → Teacher KHÉP KÍN, appreciation ≠ chat/rating/notification. DB: `session_appreciations` (grain UNIQUE sender×child×session, snapshot recipient/assignment/school/relation, immutable, deny-all RLS) · `create_session_appreciation` (server-resolve toàn bộ, generic denial, idempotent, recipient_unavailable fail-closed không fallback, audit không body) · `get_teacher_appreciations` (recipient-only, không PII Parent) · `get_parent_session_outcomes` +node `appreciation` (available|sent|unavailable, vẫn 1 RPC/child). FE: `src/features/parent/appreciation/` (presets shared + icon map · model · hook · Sheet rose với success-hold 1400ms + toast 6s) · CTA tim hồng secondary trên `ParentSessionOutcomeCard` (sent → dòng tĩnh, unavailable → ẩn D290) · `TeacherAppreciationSection` "Bức Tường Yêu Thương" (thiệp pastel 5 màu, ghim, rotate, grid auto-fill minmax 300px) mount 2 nhánh loại trừ trong `teacher.index.tsx`. M1 KHÔNG: reply/reaction/mark-read/withdraw/notification/route mới/polling mới (`parent_replies=0` nguyên). QA: migration VERIFY 10 groups + SQL actor T1–T18 rollback-only + Owner QA 2 vòng PASS. Candidate M2 chờ CTO: "Teacher acknowledgement" (Owner đề xuất thả tim/preset phản hồi — bị contract M1 cấm tường minh, đã defer đúng quy trình).
+- **⭐ Teacher Acknowledgement — "Cô đã đọc" (V118-M2, 27/07/2026 — D336):** khép loop M1 bằng **một hành động cố định một chạm**, KHÔNG chat/reply/preset/reaction/unread/notification. DB: **+1 cột additive** `session_appreciations.acknowledged_at timestamptz NULL` (không bảng/policy/trigger mới) + writer `acknowledge_session_appreciation(p_appreciation_id uuid)` (VOLATILE secdef `search_path=''`, ACL postgres/authenticated/service_role, conditional atomic NULL→now() bind **snapshot recipient**, idempotent `already_acknowledged`, denial generic `not_authorized` không existence oracle, audit metadata-only) + additive replace `get_teacher_appreciations` / `get_parent_session_outcomes` (**đúng 1 boolean `acknowledged`** mỗi phía; Parent KHÔNG nhận `acknowledged_at` hay internal ID). **Authority = `recipient_teacher_profile_id` snapshot M1, KHÔNG fallback current responsible/class lead/taught_by/same-school/admin** — writer có **0 reference tới `session_teacher_assignments`** (proof cấu trúc). UX: Teacher `Gửi xác nhận đã đọc 💚` → tĩnh `Đã đọc 💚`; Parent `{teacher_name} đã đọc lời cảm ơn 💚.` **P1 Owner-QA UX affordance đã sửa** (`78b75e59`): nhãn nút phải là động từ gửi, CTA nền đặc forest — xem bài học khóa D336. **P2-E1** evidence gap non-blocking (không chụp được CTA chưa-ack vì 2/2 row đã acknowledged; KHÔNG reset dữ liệu bất biến).
+- **⭐ Parent Outcome History — "Những buổi gần đây" (V119-M1, 04/08/2026 — D337):** mở rộng Parent Outcome (V117-M1) sang featured + lịch sử compact, **frontend-only, 0 backend delta**. RPC `get_parent_session_outcomes` NGUYÊN (fetch `limit+1`, `has_more`, order deterministic `occurred_at DESC/journey_id DESC`, clamp 1–20, whitelist D332) — load-more = **grow-and-replace** `p_limit+=3` clamp 20 (KHÔNG offset/cursor; deterministic → không duplicate/missing, chứng minh read-only D333). Trong `src/features/parent/session-outcome/`: featured `outcomes[0]` (Card **byte-nguyên**, KHÔNG nhận prop mới) + compact expandable `slice(1)` **single-open accordion** + nút explicit "Xem thêm những buổi trước" (`has_more && limit<20`, KHÔNG scroll-fetch); mount `parent.index.tsx` KHÔNG đụng; **không route/nav/Edge/migration mới**. **Media-on-expand:** collapsed 0 `MomentTile` → 0 signed URL; expand mới ký (reuse `useJourneySigning` cache mediaId TTL 8′). **Guard:** stale-guard + **in-flight dedupe theo `childId|limit`** (chặn Strict Mode double-call, không chỉ stale-guard); đổi con reset `limit→3` đồng bộ + `expandedId` + override map. **C2 continuity:** override map keyed `journey_id` + prop bridge tối thiểu `externalSent?`/`onSent?` optional trên Card (featured KHÔNG truyền → byte-nguyên). a11y `aria-expanded`/`aria-controls`, panel chỉ render khi mở, phân biệt trạng thái không-chỉ-màu. **Tooling (D337.5):** `@lovable.dev/vite-tanstack-config` platform auto-float 2.7.7→2.8.5 (accepted platform-managed); `package-lock.json` **XÓA** (Bun authoritative); `get_diff` ẩn lockfile → verify lockfile bằng `read_file`; routeTree Register block type-only, route bất biến 52. **Owner Gate PASS** production iPhone (media-on-expand chứng minh bằng ảnh: collapsed 0 ảnh → expand 3 ảnh). Live gap non-blocking: ≤2 outcome/bé → nút "Xem thêm" chưa hiện Owner QA (load-more chứng bằng RPC read-only, KHÔNG seed dữ liệu giả).
+- **Trạng thái:** **V125-M0 CLOSED (08/08/2026 — Tooling Governance Guard: fail-closed build assertion `scripts/assert-tooling-governance.mjs` + package.json build-gate + safe-writer doctrine; 1 governance file, dependency/DB/backend/media/routes 0; agent re-float NOT fixed, `minimumReleaseAgeExcludes` causal role NOT PROVEN, D342.5 FOUR-times-proven)** — **V120-M0 CLOSED (05/08/2026 — Platform Tooling Governance, dashboard-only, repo/DB/product delta 0)** — V119-M1 CLOSED (04/08/2026) — V118-M2 CLOSED (27/07) — V118-M1 CLOSED (27/07) — V117-M2/M1 CLOSED (27/07) · V116 S0–S4 CLOSED (26/07) · **live data:** 2/2 appreciation rows acknowledged (Bình · An, actor GV Đặng Mỹ Linh) + Parent Outcome History serve production `demenart.com` (Owner Gate PASS iPhone, 9 ảnh) · sprint kế (candidates, chưa mở): ~~**P2 tooling-governance** (floating dev-dep)~~ **→ ĐÓNG bởi V120-M0/D338** (Bun sole authority + Cloudflare frozen-install) · **V117-M3 Parent outcome mở rộng** · **G.4+ restyle (consent/settings/kid)** · **V114-SEC1** · **FMN E2E fixture session** · **Day-state semantics v2** · **Secondary-parent fixture** · **P3: placeholder ảnh xám `/parent/journal` (Khang) — Parent Journey protected, rà riêng**.
+
+---
+
+## 1. ⭐ TRUNG TÂM HỆ THỐNG = TRẺ + NHẬT KÝ (không phải trường)
+
+```
+                    ┌─────────────────────────┐
+                    │   CHILD (đứa trẻ)        │  ← gốc của mọi thứ
+                    │   + child_journey        │  ← nhật ký nghệ thuật, treo vào child_id
+                    │   + source (THÉP CHỜ #1) │  ← V1='demen', sau thêm nguồn ngoài
+                    └────────────┬────────────┘
+                                 │ đóng góp vào
+        ┌────────────────────────┼────────────────────────┐
+        │                        │                         │
+   [Dế Mèn/Trường]          [PH tự thêm]              [Nơi ngoài]
+   qua buổi học V1          (THÉP CHỜ — V2)          (THÉP CHỜ — V2)
+   programs = danh mục TOÀN CỤC (Piano ở đâu cũng là "Piano")
+```
+
+**Đọc bản đồ này:** Trường/Lớp/Giáo án/License là **tầng vận hành B2B** sinh ra nội dung đổ vào nhật ký — nhưng KHÔNG sở hữu nhật ký. Trẻ chuyển trường / trường hết license → nhật ký nguyên vẹn (D42).
+
+> ✅ **Đã chứng minh bằng login thật (v3 + v5):** parent thấy **0 trường/lớp nhưng 1 trẻ** (con mình) và **ĐỌC trọn nhật ký con** (2 entry + kỹ năng + huy hiệu); admin Dế Mèn thấy **0 trẻ** và **0 journey/skills/badges** (D48). Linh hồn sống trong RLS, không chỉ trong tài liệu.
+
+---
+
+## 2. BỐN PORTAL (V1) + scope quyền
+
+| Portal | Vai | Scope quyền |
+|---|---|---|
+| **Admin (Dế Mèn)** | nền tảng + kho giáo trình + license + data ẩn danh | toàn hệ; KHÔNG xem PII trẻ (D48) |
+| **School (Trường)** | chủ trường quản lý Lớp + GV toàn trường | trong trường mình (`same_school`) |
+| **Teacher (GV)** | tiết dạy / giáo án / nhận xét / moment | THẤY toàn trường, THAO TÁC môn-lớp mình lead / tiết mình assistant (D45) |
+| **Parent (PH)** | giữ nhật ký con: xem/comment/consent | con mình liên kết (`is_child_parent`) |
+
+**THÉP CHỜ — Cổng Kid (V2):** trẻ PIN, ba mẹ duyệt PIN+giờ. Clone Kid Portal DMWS, khử cạnh tranh.
+**School ↔ Teacher:** 2 portal thông nhau (Lớp DMA ↔ Đợt DMWS); pattern scope = `/b2b` DMWS.
+
+> **App thật V1 (route — v26):** ⭐ **4/5 cổng đã tách** — `/parent`(amber·PH) · `/teacher`(sky·GV) · `/school`(emerald·master/sub) · `/admin`(slate·admin nền tảng); `/kid` reserved V2. `/portal` còn lại = **shell hạ-tầng TRUNG TÍNH** chỉ ôm `notifications`+`support` (mọi cổng LINK tới, KHÔNG nhân đôi — D95). Routing 1-nguồn `lib/home-path.ts` `homePathForRole`: PH→`/parent/journal` · master/sub→`/school` · lead/assistant→`/teacher/curriculum` · else(admin nền tảng+chưa-kích-hoạt)→`/admin`. RLS scope 4 vai trò đúng ở tầng DB (nghiệm thu §7).
+
+---
+
+## 3. BẢN ĐỒ BẢNG (theo Tài liệu C v2 — 48 bảng [+`prep_items` mig 046 · +`skill_catalog` mig 051] · ✅ ĐÃ THI CÔNG mig 001–053 · RLS bật · chi tiết §6)
+
+| Cụm | Bảng chính | Trạng thái RLS |
+|---|---|---|
+| **Identity/Org** | `profiles`(user_id nullable, permissions[]) · `schools`(master_profile_id, settings) · `classes`(**HOMEROOM**) | ✅ **READ+WRITE XONG** (mig 011/013/015) |
+| **Children/Parents** | `children`(global_child_id, `identity_user_id` ngỏ — D41) · `child_parents`(≤2) · **`enrollments`**(trẻ×homeroom) · `child_transfers` · `child_duplicates` | ✅ XONG (mig 012/013/014) — ⏳ `child_duplicates` hoãn (admin-ops) · ⭐ **MASTER PROVISION PH (v20):** RPC `provision_parent_and_link` (mig 040, vá D29 RETURNING-câm PH school_id=NULL + max-2-parent atomic. D91) · ⭐ **DEFAULT CONSENT (v33, mig 054):** `provision_parent_and_link` đổi THÂN — cấp `group_moment_in_class` granted `source='onboarding_default'` lúc tạo link (ảnh nhóm mặc-định-BẬT opt-out. D104 A) |
+| **Curriculum** | `programs`(**TOÀN CỤC** — D40) · `age_groups` · `levels` · `themes` · `lessons` · `lesson_versions`(immutable) · **`program_distributions`** · **`program_distribution_items`** | ✅ **RLS XONG** (mig 017 — member-read/admin-write; lesson_versions no-UPDATE. D52) |
+| **Idea** | `ideas` | ✅ **RLS XONG** (mig 017 — scoped theo trường+proposer. D52) |
+| **Sessions** | **`class_distributions`**(✅ READ mig 011) · `lesson_sessions` · **`session_teachers`** · **`session_media`** · `session_reports` · `child_observations` · **`prep_items`**(mig 046 — checklist dụng cụ mỗi buổi, grain `lesson_sessions`) | ✅ **RLS XONG** (mig 018 — scope lead/assistant; admin-no-PII; school-admin step-in report. D53) · ⭐ **MASTER RÓT MÔN (v20):** RPC `assign_class_distribution` (mig 040, secdef, LICENSE-GATE `has_subject_entitlement` + chống trùng. D91) — `class_distributions` chỉ có SELECT policy, ghi qua RPC · ⭐ **TEACHER HOME (v30, mig 046/046b, D99):** `prep_items` RLS gương `session_media` (4 policy: read admin\|same-school, write lead\|assistant) + RPC `get_session_readiness` (status state→4-cạnh) + `get_teacher_home` (1-call Home gói readiness) — nghiệm thu login thật GV Mỹ Linh · ⭐ **TEACHER V1 LUỒNG 4 BƯỚC (v31–v32):** cụm RPC session `get_session_detail`/`start_session`/`get_session_curriculum` (mig 048–049, D101) + **GHI NHẬN (v32, mig 051–053, D102/D103):** UNIQUE(session_id,child_id) `child_observations` [client upsert thẳng] + RPC `get_session_roster`/`get_session_moments` (secdef same-school) + `submit_session_journal` (GV-gửi-thẳng→PH: duyệt moment + journey/skills present\|late + state→taught_report_pending. D103) · ⭐ **TAB "LỚP" (v33, mig 055, D105):** RPC `get_teacher_classes()` 1-call classes[] nested sessions[] (mirror get_teacher_home, union lead/assist D45, grain class_distribution, nối class_distribution_id) → tab Lớp `teacher.classes.tsx` liệt kê lớp + lịch sử buổi → tap buổi→stepForState→**đóng gap buổi-quá-khứ** (vào lại buổi taught_report_pending bổ sung ảnh) |
+| **`skill_catalog`** | **`skill_catalog`**(mig 051 — danh mục kỹ năng chạm-chọn Tab Ghi nhận; program_id nullable · code · label_vi · sort_order · enabled; seed 4 CTAN: Cảm nhịp/Hát theo/Vận động theo nhạc/Lắng nghe) | ✅ RLS (mig 051 — select all-auth · write admin. D102). KHÁC `child_skills` (= bảng tích lũy/đếm tín hiệu) |
+| **Journey/Badge** | `child_journey`(**gốc child + source** — D40) · `child_skills` · `badges` · `child_badges` · `home_activities` | ✅ **RLS XONG** (mig 019 — nhóm A gắn-trẻ PH/trường read; nhóm B catalog. D54) · ⭐ **SUBMIT JOURNAL ghi (v32):** `submit_session_journal` (mig 053, D103) tạo `child_journey` 'session' + `child_skills`++ cho bé present\|late; PH đọc qua `get_child_journal` (D73) |
+| **Moments** | `learning_moments` · `moment_children` · `albums` | ✅ **RLS XONG** (mig 024–025 — cụm #8; admin-no-PII; PH-không-tạo-content; gate `approved` 2 tầng moment+tag. D58) |
+| **Privacy** | `consents`(8 loại) · `privacy_requests` · `share_links` | ✅ **RLS XONG** (mig 020 — Fork 1A/2A/3A; engine min ở Edge. D55) · ⭐ **SHARE LINK SỐNG (v17):** RPC `create_private_share_link` (mig 036, gate consent 'share' D87) + Edge public `resolve_share_link` (re-check consent → tự chết). ⭐ **REVOKE SỐNG (v23):** RPC `revoke_share_link` (mig 044, creator-only thu hồi tay → đóng vòng đời share link; UI đọc-thẳng share_links creator-only + cầu UX consent↔share. D94). ⭐ **SENSITIVE-ACCESS SỐNG (v17):** RPC `request_sensitive_access` (mig 035, D86 — admin xem PII có audit, ghi `audit_logs` trước khi trả) |
+| **Media** | `media_assets`(Bunny-aware) · `media_variants` | 🔒 deny-by-default (Edge-only) · ⭐ **MEDIA SERVING 2 NHÁNH SỐNG:** học liệu (gate `check_curriculum_media_access` mig 029, D75 + RPC list `list_curriculum_media` mig 031) + ảnh trẻ (`media_consent_check` mig 026, D71) qua Edge `get_signed_media_url` route-theo-cột-link · ⭐ **UPLOAD SỐNG (ảnh trẻ, v13):** gate `check_media_upload_access` (mig 032, D77) + Edge `upload_media` PUT Bunny Storage. **Topology 3-zone** + storage-key≠token-key per-zone (D74/D77) |
+| **Business** | `school_subscriptions` · `school_subject_entitlements` · `pricing_config` | ✅ **RLS XONG** (mig 021 — subscription chủ-trường-read che tiền · entitlement+pricing member-read · WRITE admin-only. D56) |
+| **Vận hành/Ops** | `notifications` · `support_requests` · `audit_logs` | ✅ **RLS XONG** (mig 023 — noti self-scope · support self/admin · audit admin-read+append-only. D57) |
+| **Config (móng)** | `notification_types`(registry template) · `app_settings`(key-value) | ✅ **MỚI mig 022 + RLS 023** — notification_types READ mọi-vai/WRITE admin · app_settings READ is_public-or-admin/WRITE admin. D59 |
+| **Registry** | `admin_module_groups` · `admin_modules` | ✅ READ (mig 009) |
+
+**Edge Functions (server-side, giữ secret):** ✅ **`get_signed_media_url`** (2 nhánh SỐNG v11+v12 — học liệu D75 + ảnh trẻ D71, route-theo-cột-link) · ✅ **`upload_media`** (ảnh trẻ + học liệu SỐNG v13–v14 — D77; PUT Bunny Storage, Verify JWT OFF) · ✅ **`resolve_share_link`** (⭐ v17 — PUBLIC, Verify JWT **OFF**, re-check consent → ký Bunny `dma-private` 5'; D87) · ✅ **`invite_master`** (⭐ v18 — Verify JWT OFF, tạo auth.users auto-confirm + password tạm dùng-một-lần + link user_id qua `link_master_user`; D89) · ✅ **`invite_staff`** (⭐ v22 — Verify JWT OFF, master mời GV login; link `link_school_user`; gate same_school qua `school_id` thẳng; D93) · ✅ **`invite_parent`** (⭐ v22 — Verify JWT OFF, master mời PH login; link `link_parent_user`; gate same-school PH `school_id=NULL` đi vòng `child_parents→enrollments→classes.school_id`; D93). **RPC secdef (Postgres, KHÔNG Edge):** ✅ `request_sensitive_access` (v17, D86) · ✅ `create_private_share_link` (v17, D87) · ✅ **`onboard_school`** (v18 — tạo trọn tenant, gate super/operation/sales, total từ pricing_config; D88) · ✅ **`list_masters_without_login`** (v18) · ✅ **`link_master_user`** (v18 — grant service_role, gắn user_id qua guard bằng replica; D89). **Đã xóa:** `bunny-sign-test` (throwaway, dọn v15).
+
+---
+
+## 4. ⭐ BẢN ĐỒ TÁI DÙNG DMWS (3 nhóm)
+
+**🟢 CLONE ĐẬM (DMWS đã cày, bê blueprint):**
+Admin shell (modules/groups/permissions registry) + Trung Tâm Tra Cứu · permission **scoped** (← /b2b: thấy hết, thao tác theo phân công) · Xưởng/giáo án + **override per lớp** · versioning bất biến · buổi học+điểm danh+nhận xét · learning moments+tag+approve · share token · org/contract · engine sao/badge (**khử cạnh tranh**) · Trash registry · FAQ gating · **Kid Portal** (V2).
+
+**🟡 CLONE + SỬA:**
+`schools`←organizations · `children`+claim←children+claim · curriculum hierarchy←catalog · Child Art Profile←/toi · privacy_requests←claim/inquiry · Idea Library←override→Xưởng.
+
+**🔴 LÀM MỚI (DMA đặc thù):**
+**Consent engine 2 tầng** · **Media security Bunny signed-URL + watermark động + audit per-view** (Tài liệu G) · sensitive access gating · `child_journey` xuyên-tổ-chức · `child_observations` tap-first · duplicate/merge wizard · `classes`/`enrollments` · School Portal · Parent Portal cảm xúc · **license seat×môn** · **trigger guard chống leo thang cột** (D28 — v3).
+
+**⛔ KHÔNG BÊ (DMA chặn cứng):** ví/economy/ledger · shop/rewards/affiliate · gamification cạnh tranh · social feed/community · Zalo ZNS · B2C booking · online payment.
+
+---
+
+## 5. ĐÃ ĐỒNG BỘ TẦM NHÌN (chốt qua phiên hỏi-đáp)
+
+- `child_journey` có cột `source` (V1='demen'); `programs` **TOÀN CỤC** (không `school_id`); `children` để ngỏ `identity_user_id` (Kid V2).
+- **Lớp = HOMEROOM đa môn (Cách Y)**: môn rót vào lớp qua `class_distributions`, mỗi môn có **GV chính riêng**. `enrollments` = trẻ × homeroom.
+- **Phân phối chương trình**: mẫu `program_distributions` (roadmap/piece); GV chỉnh **instance của lớp**, không đụng mẫu gốc (D44).
+- **License (CHỐT):** `Tổng = (số Môn × giá) + (số tk GV × giá) + storage`. Môn ⟂ seat (subject-agnostic). Master bundled (không seat). Gate dạy = seat active AND entitlement môn active; license-gate **tách** journey (D42).
+- **profile_role (12 giá trị — audit thật v3):** Admin Dế Mèn (6): `super_admin · content_admin · senior_content_admin · operation_admin · sales_admin · support_admin`. Nhà trường&GV (4): `master_admin · sub_admin · lead_teacher · assistant_teacher`. PH (2): `primary_parent · secondary_parent`. → `is_admin()` = phe 6 admin; `is_school_admin()` = master/sub.
+
+---
+
+## 6. ⭐ SỔ MIGRATION + TRẠNG THÁI THI CÔNG DB
+
+> **DB tầng cấu trúc = XONG** (46 bảng mig 001–007 + 022 móng config). **RLS helpers XONG** (008). **RLS cụm Org/People** (011–016) **+ Curriculum** (017) **+ Sessions** (018) **+ Journey** (019) **+ Privacy/Consent** (020) **+ Business/License** (021) **+ Ops/Config** (023) **+ Moments** (024–025), đều nghiệm thu login thật §7. **✅ 8/8 cụm RLS XONG.** ⭐ **Media serving BẮT ĐẦU (v11): slice học liệu sống** (engine gate mig 029 D75 + Edge `get_signed_media_url` + topology 3-zone D74); nhánh ảnh trẻ (consent) chờ slice sau.
+
+**Sổ migration (boot phiên sau dựa vào đây, đừng audit mò):**
+
+| # | File | Sinh ra |
+|---|---|---|
+| 001 | `001_foundation` | 14 enums · `set_updated_at()` · programs · age_groups · levels · schools · profiles · classes |
+| 002 | `002_children_enrollment` | children · child_parents · enrollments · child_transfers · child_duplicates · trigger `enforce_max_two_parents` |
+| **044** | `044_revoke_share_link` | **THU HỒI SHARE LINK — đóng vòng đời D87 (D94)** — secdef `revoke_share_link(p_token) → jsonb`. Gate **creator-only** (`created_by_profile_id = current_profile()`, gương Fork 3A D55); **idempotent** (`revoked_at` đã set → `already_revoked` no-op); set `revoked_at=now()`; audit `share_link_revoked`/`share_link_revoke_denied` actor=profile-id (D88, qua `write_audit_log`). **KHÔNG trigger trên share_links → secdef bypass RLS đủ, KHÔNG replica.** Trả verdict KHÔNG raise → an toàn rollback nhưng vẫn chạy 3 khối tách (D92). Grant `authenticated`, verify D15 `leaky=[]`. Edge `resolve_share_link` ĐÃ kiểm `revoked_at` → KHÔNG đụng Edge. **share_links đủ cột từ mig 006 → KHÔNG schema mới.** UI: nút Thu hồi + đọc-thẳng share_links creator-only (KHÔNG cần RPC list) + cầu consent↔share. **(v23 ĐẠT login thật:** tạo→thu hồi→tab ẩn danh 403 \"đã bị thu hồi\"; cầu consent_missing→`/portal/consent`→bật→ok.) |
+| 003 | `003_curriculum` | themes · lessons · lesson_versions · program_distributions · program_distribution_items · ideas · trigger `lesson_version_autoincrement` |
+| **022** | `022_config_foundation` | **CẤU TRÚC (móng config — D59):** tạo `notification_types`(registry template: slug+title+body_template+audience+icon+sound+position+enabled) + `app_settings`(key-value, is_public) + FK `notifications.type→notification_types(slug)` NOT NULL. RLS bật, chưa policy. KHÔNG helper/guard mới |
+| **023** | `023_rls_ops_config` | **RLS cụm Ops/Config (12 policy)**: notifications {select/update self} · support_requests {select self+admin · insert self · update admin} · audit_logs {**select admin only** — carve-out, append-only no-insert} · notification_types {select mọi-vai · insert/update admin} · app_settings {select is_public-or-admin · insert/update admin}. KHÔNG helper mới. D57 |
+| **024** | `024_rls_moments` | **RLS cụm Moments (9 policy + 2 helper)**: learning_moments {select nhân-sự-trường OR PH-approved · insert/update school} · moment_children {select PH OR school · write school} · albums {select 2-nhánh · write school}. + helper `moment_school_id`/`is_moment_parent` (secdef, re-verify D15). Media giữ Edge-only. D58 |
+| **025** | `025_fix_moment_children_approved_gate` | **VÁ (login thật bắt):** siết moment_children SELECT thêm gate `approved` (PH không suy ra được bản nháp con qua đếm tag). + helper `moment_is_approved` (secdef). Policy count KHÔNG đổi (drop+create 1 policy). D58 |
+| **026** | `026_fn_media_consent_check` | **CONSENT ENGINE (D71)** — secdef `media_consent_check(moment_id, viewer_profile, action)` → jsonb verdict. MIN-multi-child · school-staff bypass · gate approved · cổng khung-trường min(trường,PH). KHÔNG schema mới (audit A1: `media_assets` đã đủ field từ mig 005). Grant `authenticated`. Test thẳng SQL Editor (nhận tham số). 6 verdict ĐẠT |
+| **027** | `027_fn_operational_rpc` | **RPC VẬN HÀNH (D72)** — secdef `create_notification(slug,profile_id,payload)` (validate slug+enabled, không render template) + `write_audit_log(action,fields jsonb)` (append-only). **"system-only writer": REVOKE public/anon/`authenticated`, grant CHỈ `service_role`** (chống spam noti + forge audit). KHÔNG schema mới. Verify grantee = postgres+service_role |
+| **028** | `028_fn_get_child_journal` | **RPC ĐỌC CURATED (D73)** — secdef `get_child_journal(child_id)` → jsonb `{journey[],skills[],badges[]}`. Gate `is_child_parent OR child_in_my_school` (gương D54) rồi JOIN `programs`/`lesson_sessions`/`badges` (bypass RLS cố ý) trả **CHỈ nhãn an toàn** (program_name + session_title + badge title/desc), KHÔNG lộ giáo trình. Lọc badge `confirmed` (D46). Grant `authenticated`. KHÔNG schema mới. Verify D15 grant `[]`; nhãn resolve đẹp. Gate test login thật |
+| **030** | `030_child_media_branch` | **NHÁNH ẢNH TRẺ (D75 mở rộng/D76)** — cột `media_assets.linked_moment_id` (FK→learning_moments) + `get_child_journal` (CREATE OR REPLACE) trả thêm `moments[]` (chỉ approved, kèm media_id). + seed inline 1 ảnh trẻ (`/jenny_buoi1.jpg`, `private_child_media`, zone `dma-private`) móc moment approved Jenny. KHÔNG hàm definer mới (chỉ +cột + replace RPC). Verify D71 nhận-tham-số: approved→ok, draft→moment_not_approved, D15 `[]` |
+| **031** | `031_list_curriculum_media` | **RPC CURATED đọc track học liệu (D73 reapply/D75)** — secdef `list_curriculum_media()` trả track entitled của trường caller (media_id+title+flags); gate `current_school_id() IS NOT NULL` (PH/admin→`[]`); JOIN media→lesson_version→lesson + EXISTS entitlement active. Grant `authenticated`, verify D15 `[]`. KHÔNG schema mới. Vì `media_assets` Edge-only nên client không query trực tiếp → cần RPC này cho player liệt kê |
+| **032** | `032_check_media_upload_access` | **GATE UPLOAD ảnh moment (D77)** — secdef `check_media_upload_access(moment_id, viewer_profile)` → verdict: nhân-sự-ĐÚNG-trường-moment (gương D58 same_school); PH/admin school NULL → `not_school_member`. Trả target_zone/access_level/class_id. Grant `authenticated`+`service_role`, verify D15 `[]`. Ráp Edge `upload_media`. KHÔNG schema mới. test_staff allowed / test_parent blocked ĐẠT |
+| **033** | `033_check_curriculum_upload_access` | **GATE UPLOAD học liệu (D77 mở rộng — chiều GHI zone `dma-learning`)** — secdef `check_curriculum_upload_access(lesson_version_id, viewer_profile)` → verdict: chỉ **admin nội dung Dế Mèn** (`role IN super_admin/content_admin/senior_content_admin`); GV/master/PH → `not_curriculum_admin`. Resolve lesson_version→lesson→program_id. Trả target_zone=`dma-learning`/access_level=`private_curriculum`/program_id. Grant `authenticated`+`service_role`, verify D15 `[]`. Ráp Edge `upload_media` nhánh học liệu. KHÔNG schema mới. **(v14 ĐẠT verify SQL:** super_admin→ok / master+teacher+parent→not_curriculum_admin / bad→not_found.) |
+| **035** | `035_request_sensitive_access` | **CỬA-CÓ-KIỂM-SOÁT admin xem PII trẻ (D86, D48 carve-out)** — secdef `request_sensitive_access(child_id, reason, purpose, scope default 'identity')` → jsonb verdict. Gate `is_admin()` only (else `not_platform_admin`); reason+purpose bắt buộc; **ghi `audit_logs` qua `write_audit_log` TRƯỚC khi trả** (`sensitive_access_granted`/`_denied`, mọi đường kèm actor — cả chưa-login NULL lẫn sai-vai); scope `identity`(tên/dob/giới tính/global_id) / `full`(+phụ huynh+ghi danh) data-minimization; bypass children RLS secdef (gương D73); resolve school qua enrollment (D40). Grant `authenticated`, verify D15 `[]`. KHÔNG schema mới (audit_logs có sẵn cột reason/purpose). Màn `/portal/sensitive-access`. **(v17 ĐẠT login admin thật:** granted identity+full / PH chặn; granted_total=2 actor≠NULL, denied_with_actor=1.) |
+| **046** | `046_prep_items_and_readiness` | **TEACHER V1 — bảng `prep_items`(session_id FK→lesson_sessions CASCADE · label · is_ready · sort_order · created_by) + 4 RLS gương session_media (READ admin|same-school · INSERT/UPDATE/DELETE lead|assistant) + RPC `get_session_readiness(session_id)`** (1 field `status`: precedence tiến-trình-state TRƯỚC→readiness-4-cạnh SAU; +prep{ready,total}). D99. 3 khối D92 + 2b gỡ anon. Nghiệm thu REST login thật. |
+| **046b** | `046b_get_teacher_home` | **RPC `get_teacher_home()`** 1-call Home (today_count + today_session gói `readiness` + next_session; đếm bé=enrollments active; tiết của GV=lead distribution OR session_teachers). D99. Nghiệm thu REST login thật. |
+| **047** | `047_get_teacher_todo_counts` | **DASHBOARD-LITE đếm "Việc cần làm" (D99/D101)** — secdef `get_teacher_todo_counts()` → `{counts:{attendance_pending,journal_pending,photos_untagged,parent_replies},total}`. attendance_pending=buổi hôm nay in_progress/taught_report_pending roster chưa đủ điểm danh (so enrollments active vs child_observations attendance NOT NULL) · journal_pending=state taught_report_pending · photos_untagged=moment của tôi draft/needs_revision có media active chưa moment_children · parent_replies=0 (hook — chưa bảng reaction). Scope GV gương get_teacher_home. Grant authenticated+service_role, leaky=[]. Wire `TodoSection`. KHÔNG schema mới. |
+| **048** | `048_session_detail_and_start` | **CỤM RPC SESSION (D101)** — `get_session_detail(session_id)` 1-call màn session (gói `get_session_readiness` + prep_items[] + class_name/program_name/child_count, gate same-school|admin) + `start_session(session_id)` (state scheduled/prep_ready/makeup→in_progress + taught_by, gate người-trong-phòng `is_session_lead OR is_session_teacher`, in_progress→idempotent, audit session_started bọc EXCEPTION-NULL). 4 khối D92, leaky=[]. KHÔNG schema mới. |
+| **049** | `049_get_session_curriculum` | **PLAYER BƯỚC 2 (D101/D75)** — secdef `get_session_curriculum(session_id)` lọc track của buổi (`media_assets.linked_lesson_version_id = lesson_sessions.lesson_version_id`, access_level private_curriculum, state active) + gate same-school|admin + EXISTS entitlement môn active (gương list_curriculum_media D73). Trả `{ok,tracks[]}`. Player mượn pattern v13 (get_signed_media_url qua invoke + watermark trôi). leaky=[]. KHÔNG schema mới. |
+| **050** | `050_get_teacher_home_tiebreak` | **VÁ TIE-BREAK HOME (D101)** — `get_teacher_home` CREATE OR REPLACE thêm `order by case state when 'in_progress' then 0 ... end, scheduled_at, id` → khi nhiều buổi CÙNG GIỜ ưu tiên buổi đang dạy (cô đang dạy dở → Home dẫn về đúng buổi + CTA "Tiếp tục buổi học"). ⚠️ CREATE OR REPLACE reset grants → BẮT BUỘC re-HARDEN (D15). leaky=[]. KHÔNG schema mới. |
+| **036** | `036_create_private_share_link` (+`036b` fix qualify) | **TẠO SHARE LINK ảnh PH ngoài app (D87)** — secdef `create_private_share_link(moment_id, ttl_minutes default 1440)` → jsonb. Gate = `media_consent_check(moment, current_profile(), 'share')` (D71 nhánh share — min trường-PH + MIN-multi-child); denied → trả verdict + audit `share_link_denied`. allowed → token `encode(`**`extensions.`**`gen_random_bytes(24),'hex')` (**036b vá: qualify schema vì secdef `search_path=''` không thấy pgcrypto — D20**), insert `share_links` (scope_type='moment') + audit `share_link_created`, TTL clamp 5'..30d. Grant `authenticated`, verify D15 `[]`. **share_links ĐỦ CỘT từ mig 006 → KHÔNG schema mới.** Cặp với Edge public `resolve_share_link` (re-check consent → ký dma-private 5'; tự chết khi rút consent). **(v17 ĐẠT:** KHM no_external→school_blocks_share→mở→ok; tab ẩn danh ảnh hiện không PII; rút consent→403.) |
+| seed | `seed_012_activity_s2_ballet` | **DATA HOẠT ĐỘNG (v17, ngã A).** MNDM Hà/Phúc: 4 child_journey (CTAN) + 2 learning_moment approved (uploaded_by lead GV: Hân/Hằng) + 2 tag — giống An/Khang. KHM An: +1 child_journey **Ballet** + 1 moment Ballet approved (uploaded_by Vũ Hoàng Nam) + 1 tag → An có **CTAN+Ballet trong CÙNG nhật ký** (thép chờ #1 đa-môn). Activity tables KHÔNG guard → KHÔNG replica. Idempotent UUID prefix-tenant. Verify: mndm_journey=4, an_programs=[CTAN,Ballet], moment resolve đúng tenant qua class_id. **KHÔNG seed media** (ảnh để GV upload thật). |
+| seed | `seed_009_group_moment` | **MIN-multi-child LIVE.** +Bé Jimmy (`children`, dùng `session_replication_role=replica` — D30 vì children có guard) + enroll lớp Mầm A (HS-002) + link PH chung `parent.demo` + 1 moment NHÓM approved tag Jenny&Jimmy + consent Jimmy CỐ Ý chỉ `privacy_ack` (thiếu `group_moment_in_class`). Verify engine D71 nhận-tham-số: child=2→required `group_moment_in_class`, Jimmy thiếu→`blocking=[Jimmy]`; staff bypass. +1 dòng positive cấp Jimmy `group_moment_in_class` → `ok`. Idempotent id cố định |
+| seed | `seed_007_ops_config` | catalog 10 `notification_types` (moment_new/child_lesson_done/consent_request/...) + 12 `app_settings` (footer/contact/social/pwa/i18n + 1 internal is_public=false) + demo: 4 noti (parent 2/teacher 1/master 1) · 2 support_request · 2 audit_log (admin). Idempotent ON CONFLICT/NOT EXISTS, không replica. **⚠️ v9: sửa `body_template` bỏ "Bé " thừa (`'Bé {child}...'`→`'{child}...'`) — đã UPDATE live; PHẢI sửa file seed_007 trong repo để re-seed không tái lặp "Bé Bé Jenny"** |
+| seed | `seed_008_moments` | bé Jenny: 2 learning_moments (1 approved + 1 draft, lớp Mầm A, uploaded_by teacher) + 2 moment_children (tag bé cả 2) + 1 album. Idempotent guard caption/title, không replica |
+| 004 | `004_sessions` | class_distributions · lesson_sessions · session_teachers · session_reports · child_observations |
+| 005 | `005_media_moments` | media_assets · media_variants · session_media · albums · learning_moments · moment_children |
+| 006 | `006_journey_privacy_license` | child_journey · child_skills · badges · child_badges · home_activities · consents · privacy_requests · share_links · pricing_config · school_subscriptions · school_subject_entitlements |
+| 007 | `007_ops_registry` | notifications · support_requests · audit_logs · admin_module_groups · admin_modules |
+| 008 | `008_rls_helpers` | 12 helper RLS (current_profile · current_profile_role · is_admin · has_permission · user_school_ids · same_school · is_distribution_lead · is_session_teacher · user_class_ids · is_child_parent · has_subject_entitlement · has_active_seat) — SECURITY DEFINER |
+| 009 | `009_rls_batch1_test_login` | POLICY batch 1: profiles(select self+admin) · admin_modules/groups(select auth) + seed super_admin `info@demenart.com` |
+| 010 | `010_harden_function_grants` | Gỡ EXECUTE public/anon khỏi 12 helper |
+| 011 | `011_rls_org_backbone_read` | **READ**: schools(2) · classes(2) · profiles(+same_school) · class_distributions(2) + helper `class_school_id(uuid)` |
+| 012 | `012_rls_children_people_read` | **READ**: children(parent+school, KHÔNG admin — D48) · enrollments(2) · child_parents(2) · child_transfers(2) + helper `child_in_my_school(uuid)` |
+| 013 | `013_rls_org_write` | **WRITE**: classes(insert+update) · enrollments(insert+update) — master/sub-admin scoped + `is_school_admin()` (**non-definer**) |
+| 014 | `014_rls_roster_write` | RPC `create_child_and_enroll(...)` (atomic, né RETURNING-câm — D29) · children UPDATE · `guard_children_protected_cols` trigger (D28) · child_parents insert/delete |
+| 015 | `015_rls_escalation_safe_write` | profiles(update+insert provision) · schools(insert admin + update) · `guard_profiles_protected_cols` + `guard_schools_protected_cols` (D28) |
+| 016 | `016_harden_guard_function_grants` | revoke public/anon EXECUTE khỏi 3 guard function (D15) |
+| 017 | `017_rls_curriculum` | **RLS Curriculum (26 policy)**: 7 catalog × {select member · insert/update admin} · `lesson_versions` {select · insert admin — KHÔNG update = immutable} · `ideas` {select scoped · insert member · update admin} + helper `current_school_id()`. D52 |
+| **018** | `018_rls_sessions` | **RLS cụm Sessions (15 policy)**: 5 bảng (`lesson_sessions`/`session_teachers`/`session_media`/`session_reports`/`child_observations`) — READ `same_school(session_school_id)` (admin+PH loại); WRITE lead/assistant/school-admin theo bảng (D45/D48; report có school-admin step-in). + 3 helper `cd_school_id`/`session_school_id`/`is_session_lead` (secdef, re-verify D15). D53 |
+| **019** | `019_rls_journey` | **RLS cụm Journey (15 policy)**: nhóm A gắn-trẻ (`child_journey`/`child_skills`/`child_badges`) READ `is_child_parent OR child_in_my_school` (admin loại — D48), WRITE `child_in_my_school`; nhóm B catalog (`badges`/`home_activities`) READ mọi vai, WRITE admin. D46 (PH không tự trao badge) + D54 |
+| **020** | `020_privacy_consent_rls` | **RLS cụm Privacy/Consent (9 policy)**: `consents` READ `is_child_parent OR child_in_my_school` / WRITE **chỉ PH** (Fork 1A); `privacy_requests` READ admin(**carve-out D48**)+self+school-admin / triage admin+school-admin (Fork 2A); `share_links` creator-only (Fork 3A). Engine min(trường,PH) = Edge (D47), KHÔNG ở RLS. KHÔNG helper mới. D55 |
+| **021** | `021_rls_business_license` | **RLS cụm Business/License (9 policy)**: `pricing_config` {select member · insert/update admin} · `school_subscriptions` {select **chủ-trường** (`is_school_admin AND same_school`) — che cột tiền · insert/update admin} · `school_subject_entitlements` {select **mọi thành viên** (`same_school`) · insert/update admin}. WRITE admin-only cả 3 (trường không tự cấp license). KHÔNG DELETE, KHÔNG helper mới. D56 |
+| seed | `seed_006_business_license` | trường demo: `pricing_config` 4 key (subject 5tr/seat 500k/storage) + 1 `school_subscriptions`(active, 4 seat, total 12tr, paid) + 2 `school_subject_entitlements`(CTAN+Ballet). Công thức D51 (2 môn×5tr)+(4 seat×500k)=12tr verify khớp. Idempotent, không guard → không replica |
+| seed | `seed_005_privacy_consent` | bé Jenny: 4 consent (3 grant + `demen_marketing` false) + 1 `privacy_request`(data_access, có child, status new). Tự-khám-phá id qua `child_parents`. Idempotent, không cần replica (cụm không guard) |
+| seed | `seed_001_org_people_fixture` | 1 trường DEMO-001 + lớp Mầm A + master/teacher/parent + bé Jenny + enrollment + link PH (dùng `session_replication_role=replica` — D30) |
+| seed | `seed_002_curriculum_fixture` | 2 program (CTAN+Ballet) + age_groups/levels/themes/lessons + 2 lesson_versions + 2 program_distributions + 2 items + 1 idea. Idempotent NOT EXISTS |
+| seed | `seed_003_sessions_fixture` | 1 chuỗi: class_distribution(CTAN, lead=Cô Thúy Ngân) → lesson_session(completed) → session_teacher → child_observation(bé Jenny) → session_report. Idempotent, không cần replica (cụm không guard) |
+| seed | `seed_004_journey_fixture` | bé Jenny: 1 badge def + 2 child_journey(source 'demen') + 1 child_skills + 1 child_badges(confirmed) + 1 home_activities. Idempotent |
+
+**Hàm SECURITY DEFINER = 50:** 16 cũ (3 trigger nền + 12 helper + `rls_auto_enable` benign) + 6 v3 (`class_school_id`, `child_in_my_school`, `create_child_and_enroll`, 3 guard) + 1 v4 (`current_school_id`) + 3 v5 (`cd_school_id`, `session_school_id`, `is_session_lead`) + 3 v8 (`moment_school_id`, `is_moment_parent`, `moment_is_approved`) + 3 v9 (`media_consent_check` — grant authenticated; `create_notification`, `write_audit_log` — grant CHỈ service_role) + 1 v10 (`get_child_journal` — grant authenticated; D73) + 1 v11 (`check_curriculum_media_access` — grant authenticated+service_role; D75) + 2 v13 (`list_curriculum_media` — grant authenticated, RPC đọc track entitled D75; `check_media_upload_access` — grant authenticated+service_role, gate upload D77) + 2 v14 (`check_curriculum_upload_access` — grant authenticated+service_role, gate upload học liệu D77; `list_lesson_versions_for_admin` — grant authenticated, RPC chọn bài né embed PGRST201) + 2 v17 (`request_sensitive_access` — grant authenticated, cửa-có-kiểm-soát PII trẻ D86; `create_private_share_link` — grant authenticated, tạo share link gate consent D87) + 3 v18 (`onboard_school` — grant authenticated, tạo trọn tenant school+sub+entitlements+master, gate super/operation/sales, total từ pricing_config D6, audit actor=profile-id D88; `list_masters_without_login` — grant authenticated, liệt master chờ mời; `link_master_user` — grant CHỈ service_role, gắn profiles.user_id qua guard bằng `set local session_replication_role=replica` D89) + 2 v20 (`assign_class_distribution` — grant authenticated, master rót môn vào lớp LICENSE-GATED qua `has_subject_entitlement` + chống trùng `distribution_exists`, KHÔNG audit; `provision_parent_and_link` — grant authenticated, master tạo PH school_id=NULL + link trẻ atomic vá D29, max-2-parent, KHÔNG audit. D91) + 1 v21 (`get_child_parents` — grant authenticated, RPC curated đọc PH cho master vá D29 chiều-đọc, gương D73; D92) + **3 v22 (`list_school_invitees` — grant authenticated, master/sub liệt GV chưa login same_school curated; `link_school_user` — grant CHỈ service_role, gắn GV user_id qua guard bằng replica D89; `link_parent_user` — grant CHỈ service_role, gắn PH user_id qua replica. D93)** + **1 v23 (`revoke_share_link` — grant authenticated, creator-only thu hồi share link đóng vòng đời D87, idempotent, audit actor-profile-id, KHÔNG trigger→KHÔNG replica. D94)**. *(mig 030 KHÔNG thêm hàm — chỉ +cột `linked_moment_id` + CREATE OR REPLACE `get_child_journal`. mig 035/036 KHÔNG schema mới. mig 040/041 KHÔNG thêm bảng/cột. mig 042/043 KHÔNG thêm bảng/cột — chỉ 3 RPC. mig 044 KHÔNG thêm bảng/cột — chỉ 1 RPC.)* **Non-definer:** `is_school_admin()`. **Edge Functions (KHÔNG phải hàm Postgres):** `get_signed_media_url` (2 nhánh: học liệu + ảnh trẻ) · `upload_media` (2 nhánh: ảnh trẻ → `dma-private` · học liệu → `dma-learning`) · **`resolve_share_link` (v17 — PUBLIC, Verify JWT OFF, re-check consent → ký dma-private)** · **`invite_master` (v18 — tự gác, createUser auto-confirm + password tạm + link_master_user)** · **`invite_staff` (v22 — master mời GV, gate same_school thẳng, D93)** · **`invite_parent` (v22 — master mời PH, gate same-school đi vòng child_parents, D93)**.
+**RLS policy = 125** (4 mig 009 + 26 mig 011–015 + 26 mig 017 + 15 mig 018 + 15 mig 019 + 9 mig 020 + 9 mig 021 + 12 mig 023 + 9 mig 024). *(mig 025 thay nội dung 1 policy, không đổi count.)*
+
+**Chốt thi công (cụ thể hơn móng C, ĐỪNG "sửa lại"):**
+- RLS bật ngay lúc tạo bảng, **deny-by-default**; chưa policy = đọc rỗng.
+- `children` KHÔNG có `school_id` → "trẻ thuộc trường nào" đi vòng `enrollments→classes.school_id`, **gói trong helper definer** (`child_in_my_school`) tránh đệ quy.
+- **D48 sống trong policy:** `children`/`enrollments`/`child_parents`/`child_transfers` + `child_observations`/`session_reports` + `child_journey`/`child_skills`/`child_badges` KHÔNG mở cho `is_admin()`. Admin xem định danh → `request_sensitive_access` (Edge, sau).
+- **Escalation guard (D28):** RLS gác ROW; trigger `BEFORE UPDATE` ghim CỘT leo thang.
+- **RETURNING-câm (D29):** raw INSERT không lấy được id khi SELECT policy hẹp → RPC atomic.
+- **Helper định tuyến Sessions (v5):** `cd_school_id`/`session_school_id`/`is_session_lead` — secdef bypass RLS, đường đi `session→class_distribution→class→school`.
+- **`current_role()`** → đã đổi tên **`current_profile_role()`** (keyword).
+- **`has_active_seat(profile_id)` V1** = trường có subscription active + seat_count>0.
+- **Seed cụm không-guard** (Sessions/Journey) KHÔNG cần `session_replication_role` — chỉ cụm có guard trigger (Org/People) mới cần (D30).
+
+> **⚠️ HISTORICAL SNAPSHOT — KHÔNG PHẢI CURRENT SYSTEM TRUTH / NEXT ACTION.** (Consistency patch 2026-07-18: giữ nguyên evidence lịch sử bên dưới; mọi "Kế/Bước kế/CHƯA làm/Việc treo/inventory" trong đó KHÔNG còn hiệu lực. Current truth duy nhất = khối CURRENT CANONICAL ENDPOINT đầu tài liệu / D309.)
+
+**Bước kế (DB-first, §14 C):** ✅ **8/8 CỤM RLS XONG**. ✅ Consent engine (mig 026, D71) + RPC vận hành (mig 027, D72) + RPC đọc curated (mig 028, D73). ✅ **UI Chặng 2 ĐÓNG 4/4** (notifications · consent · support · journal). ⭐ **MEDIA ĐỐI XỨNG XONG (v11–v13):** ĐỌC — học liệu (mig 029 D75 + player Portal GV mig 031) + ảnh trẻ (mig 030 D71, journal có ảnh thật) qua `get_signed_media_url`; GHI — ảnh trẻ upload (mig 032 D77 + Edge `upload_media`). Cả 2 zone, cả 2 chiều, nghiệm thu login thật. **Kế tiếp:** B2 upload học liệu zone `dma-learning` (người upload = admin, cùng Edge) → group-moment ≥2 trẻ (MIN-multi-child LIVE) → tách 4 portal → deploy demenart.com. **Hoãn có theo dõi:** anti-fraud device/GPS (D70) · DRM (V2/V3) · parent community (V2). **Dọn:** xóa `bunny-sign-test` · lưu mig 026–032 repo · ảnh test DMWS móc nhầm moment Jenny.
+
+---
+
+## 7. ⭐ TẦNG APP (Lovable + TanStack Start)
+
+> **Stack thật (chốt):** **TanStack Start** (file-routing `src/routes/`, SSR; KHÔNG Vite SPA + React Router; KHÔNG cần `vercel.json`). SSR loader **không có JWT** → fetch auth-gated **client-side** sau hydrate (D13/D82). Deploy: chốt Chặng 8.
+
+- **Lovable project** nối **native Supabase integration** vào `dma` (đúng org "Dế Mèn Art"). Client `VITE_*` (URL + anon); types auto-gen (không sửa tay). Domain preview hiện: `demenart.lovable.app`.
+- **Routes chạy thật:** `/` landing · `/auth` (signInWithPassword, no self-signup) · `_authenticated` gate · **`/portal`** · **`/portal/modules`** Trung Tâm Tra Cứu · **`/portal/rls-test`** panel test internal · **`/portal/notifications`** (màn thật ĐẦU TIÊN Chặng 2, v9) · **`/portal/consent`** ⭐ v10 (Quyền riêng tư của con — 4 nhóm toggle, consents R/W) · **`/portal/support`** ⭐ v10 (Trợ giúp — category select + message, self-scope) · **`/portal/journal`** ⭐ v10 (Nhật ký của con — TRÁI TIM DMA, gọi RPC `get_child_journal`; ⭐ v23 nút \"Chia sẻ\" có vòng đời đầy đủ: đọc-thẳng share_links creator-only → Copy/Thu hồi (`revoke_share_link` D94) → cầu Link `/portal/consent` khi `consent_missing`) · **`/portal/curriculum`** ⭐ v13 (Học liệu CTAN — player nhạc + watermark động, RPC `list_curriculum_media` + Edge `get_signed_media_url`) · **`/portal/moments`** ⭐ v13 (Khoảnh khắc của lớp — upload ảnh qua Edge `upload_media` + preview ngay) · **`/portal/school`** ⭐ v20 (Quản lý Trường — master tự thêm lớp/môn/GV/trẻ/PH; 3 tab; RPC `assign_class_distribution`+`provision_parent_and_link`+`create_child_and_enroll` + raw INSERT classes/profiles; nav 4-vai, GV read-only D45/D91).
+- **⭐ 4 MÀN CHẶNG 2 (Bunny-độc-lập) — cùng khuôn pattern:** auth → fetch/RPC **client-side** sau hydrate (D13) → render Vietnamese ấm (album, không dashboard lạnh) → ghi ngược (consent/support). Nav header: chuông (noti) · ShieldCheck (consent) · LifeBuoy (support) · BookHeart (journal). Media trong journal = **placeholder "Hình ảnh sẽ sớm có"** (hook chờ Edge Ngã A).
+- **⭐ `/portal/rls-test` (panel nghiệm thu RLS) — 10 mục:** user hiện tại · count Org/People · nút escalation · count Curriculum + write-block · count Sessions + write-block observation · count Journey + write-block entry · count Privacy + write-block consent · count License + write-block subscription · **count Vận hành (noti/support/audit/app_settings/internal-flag) + nút forge audit** · **count Moments (khoảnh khắc/tag/album) + nút tạo khoảnh khắc**. Fetch client-side `useEffect`. **Dùng để chấm ma trận scope bằng login thật.**
+- **✅ NGHIỆM THU v3 (4 login thật):** ma trận Org/People + 3 banner escalation xanh. D48 admin-0-trẻ, D40 parent-0-trường-1-trẻ ĐẠT.
+- **✅ NGHIỆM THU v4 (Curriculum):** parent 0 program; teacher/master/admin 2/2/2; `ideas` scoped; teacher ghi program → DB chặn.
+- **✅ NGHIỆM THU v5 (Sessions):** READ — parent 0 toàn bộ, super_admin 0 (lesson_sessions/observations/reports), thành viên trường 1/1/0/1/1. WRITE — master ĐỌC observation nhưng GHI bị chặn (`violates RLS policy for child_observations`); teacher-lead ghi observation THÀNH CÔNG. (D45 "thấy mà không thao tác" + D48.)
+- **✅ NGHIỆM THU v5 (Journey — trái tim DMA):** parent ĐỌC trọn nhật ký con (2 entry + 1 kỹ năng + 1 huy hiệu); super_admin 0 ở journey/skills/badges nhưng đọc được catalog (badges/home_activities 1/1); parent bấm thêm entry → DB chặn (`violates RLS policy for child_journey`). 3 phép thử linh hồn ĐẠT.
+- **✅ NGHIỆM THU v6 (Privacy/Consent):** consents READ — admin 0 (D48), master/teacher/parent 5/5/4; privacy_requests READ — **teacher 0 vs master 1** (nhánh `is_school_admin()`) + admin 1 (carve-out 2A); WRITE — parent ghi consent THÀNH CÔNG, master & teacher ghi → DB chặn (`violates RLS policy for consents`, Fork 1A); admin nút → "không child_id khả kiến" (D48). 2 bằng chứng vàng ĐẠT.
+- **✅ NGHIỆM THU v7 (Business/License):** pricing_config — admin/master/teacher 4/4/4, **parent 0** (no school_id); school_subscriptions READ — admin/master 1/1, **teacher 0** (che tiền), parent 0; school_subject_entitlements — admin/master/teacher 2/2/2, parent 0. WRITE — **master bấm thêm subscription → DB chặn** (`violates RLS policy for school_subscriptions`, admin-only). 3 bằng chứng vàng ĐẠT (teacher-0-vs-master-1 che tiền · parent-0-cả-3 · master-write-block).
+- **✅ NGHIỆM THU v8 (Ops/Config — 4 vai):** notifications — info@ 0/master 1/teacher 1/parent 2; support_requests — **master 0 vs parent/teacher 1 vs admin 2** (tách người gửi); audit_logs — **non-admin 0 vs admin 2** (carve-out D48 append-only); app_settings — admin 12+CÓ vs non-admin 11+KHÔNG (cổng is_public); **forge audit chặn KỂ CẢ admin** (`violates RLS policy for audit_logs`). 4 bằng chứng vàng ĐẠT.
+- **✅ NGHIỆM THU v8 (Moments — cụm #8, đóng 8/8):** admin 0/0/0 (D48); trường (master/teacher) 2/2/1; **parent 1/1/1** (gate approved 2 tầng — chỉ moment+tag đã duyệt); WRITE — parent & admin tạo moment → DB chặn (`violates RLS policy for learning_moments`, D64), teacher/master ghi được. *(Login thật bắt lỗi tag=2 ban đầu → vá mig 025 `moment_is_approved` → tag về 1.)* 3 bằng chứng vàng ĐẠT.
+- **✅ NGHIỆM THU v9 (UI Chặng 2 — màn thật đầu tiên):** login `Ba/Mẹ Bé Jenny Demo` (parent) → `/portal/notifications` thấy **2 noti của chính mình** (RLS self-scope D57); render **config-driven** (icon từ `notification_types.icon` map lucide · title · body ghép `body_template`↔payload · thời gian VN); phân biệt đọc/chưa-đọc (card kem + chấm cam, không badge đỏ chói — đúng tone ấm); nav chuông + badge "1" + nút "Đánh dấu tất cả đã đọc". **Khuôn pattern** (auth→fetch client-side→render qua catalog→ghi ngược) đã đứng cho các màn sau. *(Lovable tự thêm poll-30s vô hại; KHÔNG bấm "Try to fix all" với 9 scanner issue.)*
+- **✅ NGHIỆM THU v10 (3 màn Chặng 2 còn lại — đóng 4/4 Bunny-độc-lập):** **Consent** — PH thấy baseline đúng (display_in_app+group ON, share/marketing OFF, privacy_ack ✓); rút `group_moment_in_class` → toggle OFF sau re-fetch (ghi DB thấm). **Support** — PH thấy **đúng 1 ticket seed của mình**, KHÔNG thấy ticket profile khác (self-scope D57); gửi yêu cầu mới (category+message) → list refresh, status default 'new'→"Mới tiếp nhận" (INSERT self qua). **Journal (trái tim)** — timeline 2 entry ("Buổi 1 — Làm quen âm thanh" gắn "Cảm Thụ Âm Nhạc Dế Mèn" + "Nhận huy hiệu mới 🎖️"), kỹ năng "Cảm thụ nhịp điệu" (chấm mềm, **không điểm/xếp hạng** D46), huy hiệu "Lần đầu giữ nhịp"; mỗi entry placeholder "Hình ảnh sẽ sớm có"; gọi RPC `get_child_journal` client-side. *(Bản nháp Support chạy nhầm tên cột → dòng NOTE "REPLACE entire screen" ở prompt khóa quét sạch, KHÔNG double route.)*
+- **✅ NGHIỆM THU v11 (Media — slice học liệu, Edge):** Bunny vào lại → ký URL THẬT. **Smoke-test:** signed URL phát được `Chu_Vit_Con.mp3` (1:11), file trần `dma-learning.b-cdn.net/...` = **403** (token auth chặn đúng) → thuật toán Standard SHA256 (D74) khớp. **Gate (verify029 SQL):** member→`entitled` allowed · parent→`not_school_member` denied · D15 grant `[]` · seed media gắn lesson_version đúng. **Edge:** `get_signed_media_url` deploy chạy, tester anon → **401 `not_authenticated`** (auth gác đúng — placeholder media_id vô hại vì auth check trước). 3/3 lớp bằng chứng qua (gate logic · ký token · Edge+auth). Lớp 4 (GV login thật nghe nhạc / PH không) + watermark = slice player Portal GV sau. **`bunny-sign-test` chờ xóa** (ký không gate).
+- **Security scanner Lovable:** 6–13 issue → nhiễu đúng thiết kế (no-policy=deny-by-default; signed-in execute definer=expected — D14) + Leaked Password toggle. **KHÔNG "Try to fix all".**
+- **✅ NGHIỆM THU v13 (Media ĐỐI XỨNG — player học liệu + upload ảnh trẻ):** **(A — player Portal GV)** mig 031 `list_curriculum_media` verify: grant `[]`, preview-demo 1 track; login thật GV Cô Thúy Ngân `/portal/curriculum` → card "Chú Vịt Con" + badge AUDIO/MPEG → **phát nhạc thật** (0:03/1:11) + **watermark trôi** "DMA·CTAN·Trường Demo Dế Mèn·teacher.demo@…"; PH Bé Jenny → **rỗng** ("Chưa có học liệu… kích hoạt") vì school NULL. **(B1 — upload ảnh trẻ)** mig 032 verify: `test_staff_uploader`→`ok` (zone dma-private), `test_parent_blocked`→`not_school_member`, D15 `[]`; login thật GV → `/portal/moments` thấy 2 moment (approved+draft) → chọn file → **"✓ Đã tải" + ảnh hiện ngay** (upload→Bunny Storage→media_assets→ký URL→render, vòng GHI↔ĐỌC khép một màn); PH → thử tải → **"Chỉ giáo viên của trường mới tải được ảnh"** (gate chặn). Gate 2 tầng D58 vẫn sống (PH 1 moment / GV 2). **⭐ Bài học hạ tầng (D77):** Bunny Storage "Password" (read-write AccessKey, PUT) ≠ CDN token-key (ký URL) → secret riêng per-zone; endpoint region `sg.storage.bunnycdn.com`.
+- **✅ NGHIỆM THU v12 (Media — nhánh ẢNH TRẺ, journal có ảnh thật — trái tim DMA):** login thật PH `parent.demo` → `/portal/journal` section **"Khoảnh khắc"**. (1) Provision zone `dma-private` (token bật) + secret `BUNNY_PRIVATE_*` + ảnh `jenny_buoi1.jpg`; file trần `dma-private.b-cdn.net/jenny_buoi1.jpg`=**403**. (2) **mig 030:** cột `media_assets.linked_moment_id` (FK→learning_moments) + `get_child_journal` trả `moments[]` (chỉ approved, kèm media_id) + seed ảnh móc moment approved của Jenny; verify pre-login (D71 nhận-tham-số): approved→`allowed:ok,display_in_app`, draft→`moment_not_approved`, D15 `[]`. (3) **Edge `get_signed_media_url` route theo cột link** — `linked_moment_id`→`media_consent_check` (D71)→ký zone `dma-private`. (4) **Bằng chứng vàng:** consent `display_in_app` ON → **ảnh thật hiện** qua signed URL; tắt consent → Edge **403 `consent_missing`**, card vẫn hiện nhưng ảnh đổi **"Đang chờ ba mẹ đồng ý cho xem ảnh này"** (negative MIN-consent LIVE — *PH thấy có khoảnh khắc của con nhưng tự cầm quyền tắt/bật*); draft không hiện. (5) **Sửa dọc đường:** **D76** CORS `x-client-info` (preflight chặn invoke — lệch SQL-pass↔live-fail) + đọc `error.context.json()` lấy reason cho UX mềm. Watermark off (ảnh con-mình, ấm như album) · download off.
+> **⚠️ HISTORICAL SNAPSHOT — KHÔNG PHẢI CURRENT SYSTEM TRUTH / NEXT ACTION.** (Consistency patch 2026-07-18: giữ nguyên evidence lịch sử bên dưới; mọi "Kế/Bước kế/CHƯA làm/Việc treo/inventory" trong đó KHÔNG còn hiệu lực. Current truth duy nhất = khối CURRENT CANONICAL ENDPOINT đầu tài liệu / D309.)
+
+- **CHƯA làm:** tách 4 portal · publish URL công khai (deploy `dma.vercel.app`→`demenart.com`) · `request_sensitive_access` (admin xem PII có audit — D48 carve) · share link ảnh cho PH ngoài (D55/D66); **dọn:** **xóa Edge `bunny-sign-test`** (smoke-test ký không gate) · **ảnh test DMWS "Gia đình Vịt Con" móc nhầm moment "vẽ tranh mùa xuân" Jenny** (xóa media_assets row + object Bunny — GV upload screenshot test) · caption "[seed]" còn ở moment thật trong DB (UI đã strip client) · row test treo (`child_observations.note`/`child_journey.entry_type`='WRITE-BLOCK TEST (panel)' + License nếu admin từng bấm + `learning_moments.caption='[panel] write-block test'`; xác nhận `drop function public._neg_test()`) · sửa file seed_007 repo (body_template bỏ "Bé " thừa — đã UPDATE live) · **lưu mig 026–034 vào repo** cùng 001–025.
+- **✅ ĐÃ làm (v14):** **B2 upload học liệu** zone `dma-learning` (admin nội dung, Edge `upload_media` nhánh học liệu + mig 033 gate + mig 034 RPC chọn bài + route `/portal/curriculum-admin`) → **ma trận media FULL 2 zone × 2 chiều**. **group-moment ≥2 trẻ MIN-multi-child LIVE** (seed_009: +Bé Jimmy + moment nhóm; PH negative "đang chờ"→cấp Jimmy→ảnh hiện).
+- **✅ NGHIỆM THU v18 (NGÃ D — ADMIN ONBOARDING UI 2 LỚP, D88/D89):** **(Lớp 1 — mig 037/037b + UI)** super_admin `info@demenart.com` `/portal/school-onboarding`: form (tên/mã/môn checkbox/seat/addon/loại hợp đồng/master) + **bảng tính tiền realtime** (môn×5tr+GV×500k+addon×50k từ pricing_config D6) → onboard "Trung Tâm Nghệ Thuật Sao Mai" SAO-MAI-HN/CTAN/3seat → **card xanh "✓ Đã tạo trường" total 6.500.000**. Verify server-side: school(master gắn)+sub(trial·seat3·total đúng·10GB nền)+1 entitlement(CTAN trial)+master(role master_admin·school khớp·**user_id NULL**)+audit `school_onboarded` **actor_is_profile=true**; tenant_count=4. **(Lớp 2 — mig 038/039 + Edge `invite_master` + UI)** section "Mời chủ trường" (gọi `list_masters_without_login`) → bấm "Mời đăng nhập" → Edge tạo auth.users auto-confirm + **password tạm `Dma#...` hiện một lần + nút copy** → **tab ẩn danh** login master email+password → ban đầu **"chưa kích hoạt"** (bắt D89: guard nuốt user_id) → mig 039 `link_master_user`(secdef+replica) + vá Sao Mai → refresh → **"Xin chào, Cô Nguyệt Minh · master_admin · School ID …"** vào portal thật. **⭐ 4 LỖI LOGIN-THẬT BẮT (D2/D3):** ① preview-sandbox Lovable lỗi ≠ deploy LIVE chạy · ② banner "lỗi kỹ thuật" 409 → Network Response lộ **23503** · ③ **D88** `audit_logs.actor_id` FK→profiles.id KHÔNG auth.uid() (truyền uid→rollback cả giao dịch→DB rỗng đánh lừa) · ④ **D89** service_role bypass RLS KHÔNG bypass trigger (Edge `.update(user_id)` bị guard NUỐT câm). **⭐ BÀI HỌC VÀNG: onboarding đụng auth.admin+guard = 4 tầng lỗi login-thật; engine v3–v14 + RLS 8 cụm KHÔNG sửa gì — tenant tạo qua app tự được mọi engine phục vụ.** Sau nghiệm thu **xoá Sao Mai sạch GỒM auth.users** → về **3 tenant / 3 master**. DB cấu trúc KHÔNG đổi seed; +3 hàm definer +1 Edge. **Pattern: trial=active-có-hạn** (`has_subject_entitlement` nhận `('trial','active')`, `end_date>=today` tự khóa).
+> **⚠️ HISTORICAL SNAPSHOT — KHÔNG PHẢI CURRENT SYSTEM TRUTH / NEXT ACTION.** (Consistency patch 2026-07-18: giữ nguyên evidence lịch sử bên dưới; mọi "Kế/Bước kế/CHƯA làm/Việc treo/inventory" trong đó KHÔNG còn hiệu lực. Current truth duy nhất = khối CURRENT CANONICAL ENDPOINT đầu tài liệu / D309.)
+
+- **✅ NGHIỆM THU v21 (ĐÓNG NGÃ A + PHÁT SINH — dọn repo/data · D29 chiều đọc · IA polish):** **(1) Dọn + repo)** dọn data test KHM (4 `*_remain`=0 → 3 tenant sạch: DEMO-001 1lớp/2trẻ · KHM 2/8 · MNDM 2/6 = 5 lớp/16 trẻ) · `040_master_self_manage.sql` dump trung thực live (D90) · `school.tsx` xác nhận auto-synced GitHub. **(2) IA)** hợp nhất 3 màn admin (`sensitive-access`·`curriculum-admin`·`school-onboarding`) từ `portal/` → `_authenticated/portal.*` (pathless `_` → **URL GIỮ NGUYÊN**; nghiệm thu login thật: đăng nhập 3 URL mở đúng + **đăng xuất → cả 3 đá về `/auth`** = guard redirect ăn) · xóa dev panel `portal.rls-test.tsx` (404; audit row-test-rác 8/8=**0** → nợ "caption/row test rác" XÁC NHẬN KHÔNG tồn tại). **(3) D92 — vá D29 chiều ĐỌC)** master `/portal/school` tab Trẻ&PH thấy PH **"—"** vì embed `profiles!parent_profile_id` chặn bởi RLS (PH `school_id=NULL` trượt cả 3 SELECT policy) → mig 041 RPC curated `get_child_parents` (secdef, gương D73, KHÔNG nới policy) → login master KHM thật: PH An hiện **"Nguyễn Văn Hùng"+email** (hết "—"); + UI lưu `link_role` CODE `mother`/`father`/`guardian`. **⭐ Bài học:** REVOKE/GRANT hàm secdef **TÁCH BLOCK** (verify-gọi-hàm raise→rollback CREATE fn_exists=0 đánh lừa; REVOKE cùng-block không phủ default PUBLIC→leaky anon→harden khối riêng). **DB: 46 bảng · 46 hàm definer (+`get_child_parents`) · 125 policy · mig 001→041 · seed 001→012.** Route: 3 màn admin về `_authenticated`, bỏ `rls-test`. **3 tenant / 3 master sạch.**
+- **✅ NGHIỆM THU v23 (REVOKE SHARE LINK — ĐÓNG VÒNG ĐỜI D87, mig 044, D94):** **(DB)** mig 044 `revoke_share_link` secdef creator-only + idempotent + audit actor-profile-id; chạy 3 khối tách (D92) → verify `fn_exists=true · grantees=[authenticated,postgres,service_role] · leaky=[]`. KHÔNG trigger share_links → KHÔNG replica; trả verdict KHÔNG raise → an toàn rollback. Edge `resolve_share_link` ĐÃ kiểm `revoked_at` → KHÔNG đụng Edge. **(UI `journal.tsx`)** `ShareMomentButton` viết lại: mở popover → **đọc thẳng `share_links`** (SELECT creator-only D55, KHÔNG cần RPC list) lấy link active (chưa revoke+chưa hết hạn) → mỗi link Copy+**Thu hồi** → revoke→refetch; **vá bug v17 đẻ-row-mỗi-lần-bấm** (fetch-first, create-on-demand). + **cầu UX consent↔share:** chặn `consent_missing` → `<Link to=\"/portal/consent\">` \"Quản lý quyền đồng ý →\"; `school_blocks_share` → KHÔNG hiện link. **(Nghiệm thu login thật PH Hùng)** ① tạo link → Copy+Thu hồi hiện · ② tab ẩn danh `/share/{token}` → ảnh hiện KHÔNG tên/caption/trường · ③ **Thu hồi → reload tab ẩn danh → `403 \"Link chia sẻ đã bị thu hồi\"`** (link tự chết dù chưa hết hạn — PH cầm quyền) · ④ cầu consent: tắt consent → \"Quản lý quyền đồng ý →\" → `/portal/consent` **nav client-side** → bật \"Cho phép tạo liên kết chia sẻ riêng tư\" toast \"Đã cập nhật\" → quay lại tạo link `ok`. **Engine v3–v14 + 8 cụm RLS KHÔNG sửa 1 dòng; share_links KHÔNG mig cột.** DB cấu trúc: **46 bảng · 50 hàm definer (+`revoke_share_link`) · 125 policy · mig 001→044 · seed 001→012.** 6 Edge KHÔNG đổi. `journal.tsx` auto-synced Lovable→GitHub. **Data state:** consent An `d1…e1` đổi WITHDRAWN→**GRANTED** (test) + download consent An bật.\n- **✅ NGHIỆM THU v22 (ĐÓNG NGÃ A TRỌN — ONBOARD STAFF/PH QUA APP, D93):** **(A1 — GV)** mig 042 (`list_school_invitees` curated + `link_school_user` service_role+replica) + Edge `invite_staff` + nút "Mời đăng nhập" tab Giáo viên + badge "Đã đăng nhập". Gate caller master/sub + target **same_school** (GV có `school_id` → so thẳng). Nghiệm thu login thật 4+bonus: master KHM mời GV Lê Thảo My → dialog password tạm `Dma#xRbTflkLnEmpyM` + copy → GV login KHÔNG kẹt "chưa kích hoạt" (**D89 sống**) → GV read-only cả 3 tab KHÔNG nút Mời (Quyết B) → isolation 4 GV KHM → bonus `get_child_parents` chặn GV (D92 master-only). **(A2 — PH)** mig 043 (`link_parent_user` service_role+replica) + Edge `invite_parent` + nút Mời `ParentsPanel`. Gate caller master/sub + **PH `school_id=NULL` đi vòng `child_parents→enrollments→classes.school_id`** (PH có ≥1 con trong trường caller). Nghiệm thu 3+cứng: master KHM mời PH Trần Quốc Toản → PH login → `/portal/journal` "Nhật ký của con thuộc về con và gia đình" (**linh hồn DMA giao diện thật**) · **⭐ same-school CỨNG:** master KHM `fetch` thẳng Edge `invite_parent` với PH MNDM (JWT thật, né UI) → **`403 {ok:false,error:"different_school"}`** gate đường-vòng đứng vững. **⭐ Vòng "trường tự vận hành KHÔNG cần Jean" KHÉP KÍN:** D91 (master tự-thêm) + D93 (master mời-login) — engine v3–v14 + 8 cụm RLS KHÔNG sửa 1 dòng. **DB: 46 bảng · 49 hàm definer (+3) · 125 policy · mig 001→043 · seed 001→012. 6 Edge (+invite_staff/invite_parent).** 2 login mới giữ DB (GV Lê Thảo My + PH Trần Quốc Toản). **⭐ Test gate cứng cho hàm-gọi-từ-Edge:** app KHÔNG expose client → `fetch` thẳng Edge với token localStorage (`sb-<ref>-auth-token`), JWT thật (khác SQL Editor uid=NULL D2). **3 tenant / 3 master.**
+- **✅ NGHIỆM THU v24 (NGÃ A SLICE 1 — TÁCH CỔNG PHỤ HUYNH `/parent` + ROUTING THEO VAI, D95):** Phiên thuần UI/IA — **KHÔNG mig, KHÔNG Edge, schema KHÔNG đổi.** DMA xác nhận **5 cổng** (`/admin·/school·/teacher·/parent·/kid`; `/kid`=V2 reserved). Carve cổng PH ra **shell ấm riêng** `_authenticated/parent.tsx` (nền amber, `max-w-4xl`, header "Nhật ký của con", BỎ icon Music/Camera/School của staff) + `parent.index` redirect→`/parent/journal` + dời 2 page PH-thuần `portal.journal`→`parent.journal` & `portal.consent`→`parent.consent` (đổi route-id + sửa cầu consent D94 `/portal/consent`→`/parent/consent`). **Routing theo vai một-nguồn** `lib/home-path.ts` `homePathForRole`: PH `primary_parent`/`secondary_parent`→`/parent/journal`, else→`/portal`; wire `index.tsx`+`auth.tsx` (thay 2 `navigate({to:"/portal"})`). **⭐ Phân loại page-thuộc-vai vs hạ-tầng-toàn-App (Jean bắt sai):** `journal`/`consent`=PH-thuần→rename; `notifications`/`support`=hạ-tầng-toàn-App→GIỮ `/portal`, cổng chỉ LINK KHÔNG nhân đôi. **⭐⭐ D5/D6 sống lại:** sửa nhiều-chỗ = FULL paste-over, KHÔNG prose vị-trí-tương-đối (prose làm Lovable dán import vào giữa JSX → build vỡ; Jean: "TÌM và THAY phải độc lập"). **Nghiệm thu login thật:** PH Hùng `ph.hung.kidshouse@demo.demenart.com` → `/parent/journal` shell amber không Music/Camera/School + hành trình đa-môn CTAN+Ballet; master Nguyệt Thi `hieutruong.kidshouse@demo.demenart.com` → vẫn `/portal` staff không vỡ. **Engine v3–v14 + 8 cụm RLS + 50 hàm definer KHÔNG sửa 1 dòng.** DB: **46 bảng · 50 hàm definer · 125 policy · mig 001→044 · seed 001→012 · 6 Edge** KHÔNG đổi. **Routes mới:** `_authenticated/{parent.tsx, parent.index.tsx, parent.journal.tsx, parent.consent.tsx}` + `lib/home-path.ts`. **⭐ Bảng TK test (Jean yêu cầu vào thư viện — mỗi lần nhờ test PHẢI ghi email):** `@demo.demenart.com` password `Test@123` — Master KHM=`hieutruong.kidshouse` (Nguyệt Thi) · GV KHM=`gv.linh.kidshouse` (Mỹ Linh) · PH KHM 2-con=`ph.hung.kidshouse` (Văn Hùng, An+Khang) · Master MNDM=`hieutruong.demen` (Phương Dung) · GV MNDM=`gv.han.demen` (Ngọc Hân) · PH MNDM 2-con=`ph.thanh.demen` (Văn Thành, Hà+Phúc); login giữ-v22 password-tạm: GV `gv.my.kidshouse` (Thảo My) · PH `ph.toan.kidshouse` (Quốc Toản). **Việc treo:** gỡ nút "Bảng Test RLS" tàn dư `portal.index.tsx` (route xóa v21→Not Found); lưu repo Edge invite_staff/invite_parent+044 (nợ v22/v23).
+- **✅ NGHIỆM THU v20 (NGÃ A — MASTER TỰ QUẢN TRƯỜNG, mig 040, D91):** Audit Org/People (D1) lộ **`master_admin`∈`is_school_admin`** → phần lớn self-manage RLS sẵn (tạo lớp raw INSERT · provision GV raw INSERT · tạo+ghi danh trẻ RPC `create_child_and_enroll` v3); chỉ **2 lỗ → mig 040 2 RPC:** `assign_class_distribution` (rót môn — `class_distributions` chỉ SELECT policy; gate master same_school + **LICENSE-GATE `has_subject_entitlement`** + lead đúng trường + chống trùng) + `provision_parent_and_link` (tạo PH + link — vá **D29** PH school_id=NULL→RETURNING câm; max-2-parent atomic). Verify: `leaky_grants=[]`, 2 hàm grant chỉ authenticated, `gate_pass=true` mọi entitlement (MNDM `d2…` chỉ 1 dòng CTAN — KHÔNG Ballet). **UI `/portal/school` 3 tab** (Lớp&Môn · Giáo viên · Trẻ&Phụ huynh). **Nghiệm thu login thật 6 phép thử:** ① master KHM thêm lớp "Lớp Test Sáng" · ② rót CTAN+GV Đặng Mỹ Linh → "GV chính" hiện · ③ rót CTAN lần 2 → **`distribution_exists` toast đỏ "Môn này đã có trong lớp."** · ④ thêm GV "Cô Test" (user_id NULL, "cấp login sau") + thêm "Bé Test" + 2 PH (Mẹ/Bố) · ⑤ PH thứ 3 → **`max_parents_reached` "Bé đã có đủ 2 phụ huynh."** · ⑥ **⭐ PHÉP THỬ LINH HỒN LICENSE: master MNDM dropdown môn CHỈ "Cảm Thụ Âm Nhạc", KHÔNG Ballet** (MNDM không mua → license-gate lọc tại UI); KHM có cả 2 môn. **Quyết B — GV read-only (D45):** GV Cô Linh `/portal/school` → vào được, thấy danh sách, **ẩn mọi form ghi** ("chế độ chỉ đọc"); PH → "Không có quyền". **Isolation:** KHM (Hoa Hồng/Hướng Dương) vs MNDM (Búp Măng/Tuổi Thơ) không lẫn. **⭐ BÀI HỌC: master quản trường chạy trọn vòng KHÔNG sửa 1 dòng engine v3–v14 + 8 cụm RLS — chỉ thêm 2 RPC cho 2 lỗ ghi.** **⭐ Bẫy deploy-lag (D84):** toast câm 3 lần dù code đúng — Cloudflare Pages chưa rebuild (commit→build vài phút), test bản cũ; sau lag toast xanh/đỏ chạy chuẩn. DB cấu trúc: **46 bảng · 45 hàm definer (+2) · 125 policy · mig 001→040 · seed 001→012** KHÔNG đổi. +1 route `/portal/school` + nav 4-vai. **Việc treo (UI cosmetic):** xác nhận lại sau deploy: tên PH hiển thị (embed `profiles!parent_profile_id`) + dropdown vai Mẹ/Bố/Giám hộ (đã trong bản vá). **Dọn:** data test KHM (Lớp Test Sáng·Cô Test·Bé Test·Mẹ-Bố Test·distributions test) · lưu mig 040+`school.tsx` repo.
+- **✅ DỌN v19 (NGÃ B — TRẢ NỢ REPO + SPF, KHÔNG đổi schema):** Trả nợ repo dồn từ v12 — **dump trung thực từ live (D90)**: `026_039_functions.sql` (14 hàm, `pg_get_functiondef`) + `026_039_grants_and_column.sql` (grant `proacl` + cột mig 030 `linked_moment_id`+FK; `link_master_user`/`write_audit_log`/`create_notification`=**service_role only** ✓) + 4 Edge `.ts` (`get_signed_media_url`/`upload_media`/`resolve_share_link`/`invite_master`) + `seed_010_012_pilots.sql` (pilot KHM-DN+MNDM-DN, `jsonb_populate_record`+`ON CONFLICT` idempotent; **đối chiếu KHỚP audit từng bảng** — schools 2·profiles 21·classes 4·children 14·enrollments 14·consents 13·moments 5·media 2; `user_id`/`master_profile_id` xử an-toàn-phục-hồi; KHÔNG gồm DEMO-001 đã ở repo 001–009). **SPF kép → gộp 1 record `-all`** (Cloudflare live, 14 records; bản hỏng `"TXT value:…flockmail/hostinger/mailchannels"` xoá). `bunny-sign-test` xác nhận đã xoá. **DB cấu trúc KHÔNG đổi: 46 bảng · 43 hàm definer · 125 policy · mig 001→039 · seed 001→012** (KHÔNG bump version).
+- **✅ NGHIỆM THU v17 (3 NGÃ — DATA ĐA-MÔN · SENSITIVE-ACCESS · SHARE LINK):** **(A — seed_012)** MNDM Hà/Phúc journey+moment hoạt động (giống An/Khang) + **Ballet moment cho An (KHM)** → An có CTAN+Ballet CÙNG nhật ký. Login thật 4: PH Thành toggle Hà↔Phúc xuyên lớp S2 · PH Hùng tab An **Hành trình 3 dòng (CTAN+Ballet icon khác)** + Khoảnh khắc card Ballet · GV Hân `/portal/moments` thấy 2 moment lớp mình · **GV Hân upload ảnh thật → "✓ Đã tải"** (chiều GHI tenant S2 — điểm v16 còn thiếu, nay đóng cả 2 tenant). **(B — mig 035 D86)** `request_sensitive_access` cửa-có-kiểm-soát: login admin "Quản trị viên Test" → `/portal/sensitive-access` nhập child An+reason+purpose → **granted card "Hồ sơ định danh"+mã audit** (scope identity); scope full → +Phụ huynh (Nguyễn Văn Hùng primary)+Ghi danh (KHM Hoa Hồng); PH Hùng mở màn → **"không có quyền"** + denied ghi kèm actor PH. Server-side: `granted_total=2` actor≠NULL school=`d1…001`, `denied_with_actor=1`. Ghi audit TRƯỚC khi trả; mọi đường (granted/denied/chưa-login NULL/sai-vai) để vết. **(C — mig 036/036b + Edge `resolve_share_link` D87)** SQL: KHM `no_external_sharing`→`school_blocks_share` (**phép thử linh hồn: trường khóa khung thì PH đồng ý cũng không share**)→mở KHM `private_share_link`+cấp consent An→`ok`. LIVE: PH Hùng card CTAN An "Chia sẻ"→**dialog link `/share/{token}`** (RPC 200); **tab ẩn danh chưa-login** mở link→**ảnh An hiện** qua signed dma-private, KHÔNG tên/caption/trường (data-minimization); **⭐ rút consent An→reload→403 "Ảnh này hiện không còn được chia sẻ"** = link tự chết dù chưa hết hạn (Edge re-check consent — PH cầm quyền tắt). **3 lỗi login-thật bắt → 3 luật:** D20 (`gen_random_bytes` không qualify dưới `search_path=''` — SQL Editor che) · D63 (Edge service-key = `SUPABASE_SERVICE_ROLE_KEY` built-in, KHÔNG `SERVICE_ROLE_KEY` → `supabaseKey is required`) · D2 (verify side-effect đừng đọc cùng-statement + đừng window hẹp — `denied_audit_written=0` tưởng engine lỗi, thực ra vết đã ghi). **DB cấu trúc KHÔNG đổi: 46 bảng · 40 hàm definer · 125 policy · mig 001→036. Seed 001→012.** +1 Edge `resolve_share_link`. **Data state:** KHM-DN `sharing_mode=private_share_link`; consent An `private_share_link` (`d1…e1`) hiện WITHDRAWN (để vậy).
+- **✅ NGHIỆM THU v16 (ONBOARD 2 TRƯỜNG PILOT — MULTI-TENANT LIVE, D85):** seed_010 onboard **KHM-DN** (Kids House Montessori ĐN — CTAN+Ballet·4seat·2lớp·8trẻ·7PH·HT Nguyệt Thi) + **MNDM-DN** (Trường Mầm Non Dế Mèn — CTAN-only·3seat·2lớp·6trẻ·5PH·HT Mai Phương Dung); mỗi trường 1 PH 2-con xuyên lớp + 1 bé consent-pending. 6 login mới (master/GV/PH × 2 trường, `Test@123`, auto-confirm). seed_011 journey+moment hoạt động An/Khang. **Nghiệm thu login thật 7 mục:** ① Nguyệt Thi school_id d1 · ② Mai Phương Dung school_id d2 (**2 master cạnh nhau = isolation rõ**) · ③ GV Hân `/portal/curriculum` **chỉ 2 track CTAN, KHÔNG Ballet** (license-theo-thành-phần sống ở UI) · ④ PH Hùng `/portal/journal` toggle **An+Khang xuyên lớp** · ⑤ journal **Hành trình** (2 dòng Buổi học·CTAN, **journey[] đã wire ra UI**) + **Khoảnh khắc** (card caption) · ⑥ GV Linh `/portal/moments` thấy đúng 2 moment "Đã duyệt" lớp mình · ⑦ GV Linh **upload ảnh thật → "✓ Đã tải"+ảnh hiện** (chiều GHI `upload_media` sống cho tenant mới, `check_media_upload_access` cho GV KHM PUT dma-private). **⭐ BÀI HỌC VÀNG: tenant pilot mới chạy TRỌN VÒNG ĐỜI (onboard→isolation→license→journal→GV upload) KHÔNG sửa 1 dòng code — engine v3–v14 tự phục vụ.** **⭐ D85:** guard trigger chặn cả UPDATE (link auth.users↔profiles lần đầu linked_count=0 vì quên `session_replication_role=replica`) → bọc replica cho mọi DML đụng bảng guard, không chỉ INSERT. DB cấu trúc KHÔNG đổi; seed 001→011, **3 tenant trong DB** (DEMO-001 + KHM-DN + MNDM-DN).
+
+---
+
+> **⚠️ HISTORICAL SNAPSHOT — KHÔNG PHẢI CURRENT SYSTEM TRUTH / NEXT ACTION.** (Consistency patch 2026-07-18: giữ nguyên evidence lịch sử bên dưới; mọi "Kế/Bước kế/CHƯA làm/Việc treo/inventory" trong đó KHÔNG còn hiệu lực. Current truth duy nhất = khối CURRENT CANONICAL ENDPOINT đầu tài liệu / D309.)
+
+*Skeleton v0.25 — **✅ 8/8 CỤM RLS XONG** + ✅ Consent engine (mig 026, D71) + RPC vận hành (mig 027, D72) + RPC đọc curated (mig 028, D73) + ⭐ **MEDIA ĐỐI XỨNG HOÀN CHỈNH 2 ZONE × 2 CHIỀU** (đọc/ghi học liệu+ảnh trẻ qua Edge `get_signed_media_url`+`upload_media`; topology 3-zone D74; storage-key≠token-key D77) + ⭐ **MIN-multi-child LIVE** (seed_009) + móng config mig 022. + ⭐ **DEPLOY LIVE (v15, D84):** Cloudflare Pages → `https://demenart.com`+`www` (Active+SSL); DNS NS GoDaddy→Cloudflare giữ email. + ⭐ **MULTI-TENANT VALIDATED LIVE (v16, D85):** 2 trường pilot KHM-DN/MNDM-DN, tenant mới chạy trọn vòng đời KHÔNG sửa 1 dòng code. + ⭐ **v17 — 3 NGÃ:** (A) seed_012 data đa-môn 2 tenant (An CTAN+Ballet CÙNG nhật ký); (B) mig 035 `request_sensitive_access` (D86 — cửa-có-kiểm-soát admin xem PII trẻ, ghi audit TRƯỚC khi trả, gate is_admin, scope data-min); (C) mig 036/036b `create_private_share_link` + Edge public `resolve_share_link` (D87 — PH share ảnh ngoài app, gate consent 'share' min trường-PH, re-check tại-thời-điểm-xem → link tự chết khi rút consent, KHÔNG trả PII). Nghiệm thu login thật trọn vòng cả 3 ngã. 3 lỗi login-thật bắt → D20 mở rộng (qualify hàm extension), D63 mở rộng (`SUPABASE_SERVICE_ROLE_KEY` built-in), D2 mở rộng (verify side-effect). + ⭐ **v18 — NGÃ D ADMIN ONBOARDING UI 2 LỚP (D88/D89):** Lớp 1 mig 037/037b `onboard_school` (tạo trọn tenant qua app, gate super/operation/sales, total từ pricing_config, master user_id=NULL, audit actor=profile-id D88) + UI `/portal/school-onboarding` (form+bảng-tính-tiền realtime+card); `has_subject_entitlement` nhận trial. Lớp 2 mig 038/039 + Edge `invite_master` (Verify JWT OFF) `list_masters_without_login` + `link_master_user`(secdef+replica gắn user_id qua guard D89) + Edge createUser auto-confirm+password-tạm-dùng-một-lần + section mời master. 4 lỗi login-thật bắt: preview≠deploy · 409→23503 · D88 (actor FK) · D89 (service_role không bypass trigger). Nghiệm thu trọn vòng login thật. Xoá Sao Mai test sạch gồm auth.users → 3 tenant/3 master. + ⭐ **v19 — NGÃ B TRẢ NỢ REPO + SPF (KHÔNG đổi schema, D90):** dump trung thực từ live → `026_039_functions.sql` + grants/cột + 4 Edge `.ts` + seed pilot 010–012 (KHỚP audit từng bảng); SPF kép → 1 record `-all`; `bunny-sign-test` xoá. + ⭐ **v20 — NGÃ A MASTER TỰ QUẢN TRƯỜNG (mig 040, D91):** audit D1 lộ `master_admin`∈`is_school_admin` → phần lớn self-manage RLS sẵn; chỉ 2 lỗ → 2 RPC: `assign_class_distribution` (rót môn LICENSE-GATED `has_subject_entitlement` + chống trùng `distribution_exists`) + `provision_parent_and_link` (tạo PH school_id=NULL + link atomic vá D29 + max-2-parent); cả 2 KHÔNG guard-INSERT → secdef đủ KHÔNG replica, mirror create_child_and_enroll KHÔNG audit. UI `/portal/school` 3 tab + nav 4-vai; quyết B GV read-only (D45); bẫy deploy-lag (D84). Nghiệm thu login thật 6 phép thử (rót/trùng/đủ-2-PH/license-MNDM-không-Ballet/GV-read-only/isolation) — engine v3–v14 + 8 cụm RLS KHÔNG sửa 1 dòng. **46 bảng · 45 hàm definer · 125 policy · mig 001→040. Seed 001→012 — 3 tenant trong DB.** **Edge: `get_signed_media_url` · `upload_media` · `resolve_share_link` · `invite_master`.** **UI:** `/portal/{notifications,consent,support,journal,curriculum,curriculum-admin,moments,sensitive-access,school-onboarding,school}` + nút "Chia sẻ" journal + route public `/share/$token`. **Data state (giữ từ v17):** KHM-DN `sharing_mode=private_share_link`; consent An `d1…e1` WITHDRAWN. **3 tenant / 3 master.** + ⭐ **v21 — ĐÓNG NGÃ A + PHÁT SINH (mig 041, D92):** dọn data test KHM (3 tenant sạch) · lưu repo `040_master_self_manage.sql`+`school.tsx` · hợp nhất 3 màn admin (`sensitive-access`/`curriculum-admin`/`school-onboarding`) vào `_authenticated/portal.*` (URL giữ nguyên, guard redirect→`/auth` ăn) · xóa dev panel `portal.rls-test.tsx` (404; row-test-rác audit 8/8=0) · **D92 vá D29 chiều ĐỌC** = mig 041 RPC curated `get_child_parents` (PH `school_id=NULL` chặn embed → master thấy "—" → RPC secdef gương D73 KHÔNG nới policy → PH An hiện "Nguyễn Văn Hùng"+email) + UI `link_role` CODE; bài học REVOKE-tách-block (verify-gọi-hàm raise→rollback; harden khối riêng). Cosmetic v20 (tên PH+email+dropdown vai+toast) đóng. **46 bảng · 46 hàm definer (+`get_child_parents`) · 125 policy · mig 001→041. Seed 001→012 — 3 tenant trong DB.** Route: 3 màn admin về `_authenticated`, bỏ `rls-test`. **Việc treo:** `revoke_share_link` UI · profile GV/PH chưa login · 2 file curriculum media chưa nguồn lưu · Vercel dormant · seed_007 repo fix. **Kế:** onboard staff/PH qua app (master mời login) · revoke-share-link UI · tách 4 portal. **Hoãn có theo dõi:** anti-fraud device/GPS (D70) · DRM (V2/V3) · parent community (V2) · Kid portal (V2). + ⭐ **v22 — ĐÓNG NGÃ A TRỌN (mig 042/043, D93):** master tự mời staff/PH đăng nhập — nhân pattern `invite_master` ra Edge `invite_staff` (A1 GV, gate `school_id` thẳng) + `invite_parent` (A2 PH, gate same-school đi vòng `child_parents→enrollments→classes.school_id` vì PH `school_id=NULL`); link qua RPC `link_school_user`/`link_parent_user` (service_role+replica D89); password tạm dùng-một-lần; `InviteResultDialog` dùng chung; nút chỉ hiện canManage (Quyết B). Nghiệm thu login thật A1 (4+bonus) + A2 (3+**same-school CỨNG `403 different_school` qua fetch JWT thật**). Vòng "trường tự vận hành KHÔNG cần Jean" KHÉP KÍN (D91 tự-thêm + D93 mời-login). **46 bảng · 49 hàm definer (+3) · 125 policy · mig 001→043 · seed 001→012 · 6 Edge.** 2 login mới giữ DB. **Việc treo:** 🔴 lưu repo Edge `invite_staff.ts`/`invite_parent.ts` · `revoke_share_link` UI · GV/PH còn lại chưa login (4 GV+9 PH) · 2 file curriculum media chưa nguồn lưu · Vercel dormant · seed_007 repo. **Kế sau v22:** revoke-share-link UI · tách 4 portal · dọn nợ repo. Nguồn: Tài liệu A–G UPDATED + tầm nhìn founder + DMWS v170. + ⭐ **v24 — NGÃ A SLICE 1 TÁCH CỔNG PH `/parent` + ROUTING THEO VAI (D95, thuần UI/IA):** DMA = **5 cổng** (`/admin·/school·/teacher·/parent·/kid`; `/kid`=V2 reserved). Shell PH ấm `parent.tsx` (amber, max-w-4xl, bỏ Music/Camera/School) + `parent.index`→journal + rename `portal.{journal,consent}`→`parent.{journal,consent}` (route-id + cầu consent D94 `/portal/consent`→`/parent/consent`); `lib/home-path.ts` `homePathForRole` PH→`/parent/journal` else→`/portal` wire `index.tsx`+`auth.tsx`. notifications/support=hạ-tầng-toàn-App GIỮ `/portal` KHÔNG nhân đôi. D5/D6 sống lại: sửa nhiều-chỗ=FULL paste-over KHÔNG prose. Nghiệm thu login thật PH Hùng→`/parent` amber, master Nguyệt Thi→`/portal` không vỡ. **46 bảng · 50 hàm definer · 125 policy · mig 001→044 · seed 001→012 · 6 Edge KHÔNG đổi.** Việc treo: gỡ nút "Bảng Test RLS" tàn dư (route xóa v21→Not Found); lưu repo Edge invite_staff/invite_parent+044. Kế: tách nốt `/teacher`·`/school`·`/admin`·`/kid` theo khuôn `parent.tsx`. Cập nhật "tới đâu ghi tới đó". Khi thêm bảng/module/Edge/policy mới → thêm dòng + cập nhật Trung Tâm Tra Cứu cùng nhịp (KỶ LUẬT VÀNG).* + ⭐ **v23 — REVOKE SHARE LINK ĐÓNG VÒNG ĐỜI D87 (mig 044, D94):** `revoke_share_link` RPC secdef creator-only + idempotent + audit actor-profile-id (KHÔNG trigger share_links → KHÔNG replica; trả verdict KHÔNG raise nhưng vẫn 3 khối tách D92; Edge resolve ĐÃ kiểm revoked_at → KHÔNG đụng Edge). UI `journal.tsx`: vòng đời đọc-thẳng share_links creator-only (KHÔNG cần RPC list) + Copy/Thu hồi + **vá bug v17 đẻ-row-mỗi-lần-bấm** (fetch-first) + **cầu UX consent↔share** (Link `/portal/consent` chỉ khi `consent_missing`). Engine media-nhạy-cảm thứ 5 (consent D71·entitlement D75·upload D77·share D87·revoke D94). Nghiệm thu login thật PH Hùng trọn vòng (tạo→thu hồi→link tự chết 403→cầu consent→bật→tạo lại ok). **46 bảng · 50 hàm definer (+`revoke_share_link`) · 125 policy · mig 001→044 · seed 001→012 · 6 Edge.** `share_links` KHÔNG mig cột. **3 tenant / 3 master.** **Data state:** consent An `d1…e1` đổi WITHDRAWN→GRANTED (test) + download consent An bật. **Việc treo:** 🔴 lưu repo Edge `invite_staff.ts`/`invite_parent.ts`+`044_revoke_share_link.sql` · GV/PH chưa login (4 GV+9 PH) · 2 file curriculum media chưa nguồn lưu · Vercel dormant · seed_007 repo. **Kế:** tách 4 portal · dọn nợ repo.* + ⭐ **v25 — NGÃ A TÁCH `/teacher` + `/school` (D95 mở rộng, thuần UI/IA):** nhân khuôn `parent.tsx` 2 lần — **slice 2 `/teacher`** (sky, "Phòng Giáo viên", max-w-5xl: dời `curriculum`+`moments` staff-thuần; gỡ nút "Bảng Test RLS" tàn dư v24) + **slice 3 `/school`** (emerald, "Quản lý Trường", max-w-6xl: dời `portal.school` 3 tab thành **index** `school.index.tsx` route-id `/_authenticated/school/` giữ `ssr:false`; GV vào read-only Quyết B). ⭐ **accent-per-cổng** amber-PH/sky-GV/emerald-Trường/plain-admin. ⭐ **cầu 2 portal thông nhau D45 2-chiều ở tầng IA**: `/school`↔`/teacher`↔`/portal` link chéo KHÔNG nhân đôi page, page đích tự gate. ⭐ **vá dead-link v24**: `portal.tsx` gỡ 2 icon journal/consent chết (route sang `/parent` ở v24) + sai phân-loại PH-thuần. ⭐ **routing 4 nhánh** `homePathForRole`: PH→`/parent/journal`·master/sub→`/school`·GV→`/teacher/curriculum`·admin→`/portal`. Nghiệm thu login thật 8 màn ĐẠT (GV sky phát nhạc · master emerald 3 tab + bắc cầu Học liệu→`/teacher` · GV read-only banner · PH không đổi · rls-test biến mất · dead-link đã gỡ). Engine v3–v14 + 8 cụm RLS + 50 hàm definer KHÔNG sửa 1 dòng. **DB cấu trúc KHÔNG đổi: 46 bảng · 50 hàm definer · 125 policy · mig 001→044 · seed 001→012 · 6 Edge.** **Routes:** TẠO `_authenticated/{teacher.tsx,teacher.index.tsx,teacher.curriculum.tsx,teacher.moments.tsx,school.tsx,school.index.tsx}`; sửa `home-path.ts`+`portal.tsx`+`portal.index.tsx`; xóa `portal.{curriculum,moments,school}.tsx`. **5 cổng — 3/5 đã tách** (`/parent`·`/teacher`·`/school`); còn `/admin` (gom school-onboarding·sensitive-access·curriculum-admin·modules) + `/kid` reserved. **Việc treo:** 🔴 lưu repo Edge `invite_staff.ts`/`invite_parent.ts`+`044` · 🟡 rough edge GV read-only `get_child_parents` rỗng (nới gate sau) · GV/PH chưa login · 2 file curriculum media chưa nguồn lưu · Vercel dormant · seed_007 repo. **Kế:** tách nốt `/admin` (khép Ngã A 4/4 cổng V1) · dọn nợ repo · vá rough edge.* + ⭐ **v26 — NGÃ A KHÉP: TÁCH CỔNG CUỐI `/admin` (D95 mở rộng, thuần UI/IA):** carve 4 trang admin-thuần (`school-onboarding`·`sensitive-access`·`curriculum-admin`·`modules`) `portal.X`→`admin.X` (accent **slate** "Quản trị Dế Mèn"); `/portal` chuyển vai = **shell hạ-tầng trung tính** chỉ ôm notifications+support (tỉa cầu staff, brand không-link, xóa `portal.index`); routing FLIP `else`→`/admin` (KHÔNG enumerate role admin); `admin.index` = dashboard thật (route-id `/_authenticated/admin/`, bê portal.index giữ guard chưa-kích-hoạt; bẫy stub "Hello"). Nghiệm thu login thật: super_admin `info@demenart.com`→`/admin` slate dashboard + 4 công cụ đủ + `/portal/{support,notifications}` trung tính; master→`/school` emerald không vỡ. Engine v3–v14 + 8 cụm RLS + 50 hàm definer KHÔNG sửa 1 dòng. **DB cấu trúc KHÔNG đổi: 46 bảng · 50 hàm definer · 125 policy · mig 001→044 · seed 001→012 · 6 Edge.** **Routes:** TẠO `_authenticated/{admin.tsx,admin.index.tsx,admin.school-onboarding.tsx,admin.sensitive-access.tsx,admin.curriculum-admin.tsx,admin.modules.tsx}`; sửa `home-path.ts`+`portal.tsx`; xóa `portal.{index,school-onboarding,sensitive-access,curriculum-admin,modules}.tsx`. **NGÃ A KHÉP — 4/5 cổng V1 tách** (`/parent`·`/teacher`·`/school`·`/admin`); `/kid` reserved V2. **Việc treo:** 🔴 lưu repo Edge `invite_staff.ts`/`invite_parent.ts`+`044` · 🟡 dead-link "Quay lại" modules `to=/portal`→`/admin` · 🟡 text /portal/curriculum→/teacher/curriculum · 🟡 rough edge GV read-only · GV/PH chưa login · 2 file curriculum media · Vercel dormant · seed_007 repo. **Kế:** dọn nợ repo · vá rough edge GV · UI/UX polish pass · `/kid` V2.* + ⭐ **v27 — NGÃ B TRẢ NỢ REPO + TỔ CHỨC LẠI SEED THEO PHẠM VI (D96, repo thuần KHÔNG đổi schema/Edge/UI):** trả nợ đỏ lâu nhất `044_revoke_share_link.sql` + 2 Edge `invite_staff.ts`/`invite_parent.ts` (dump trung thực từ live D90). **Tổ chức lại seed theo PHẠM VI** (thay dải số 001–012 trộn-phạm-vi): `seed_000_global_foundation.sql` (13 bảng TOÀN CỤC — curriculum 8 + badges/home_activities + pricing_config/app_settings/notification_types; **thay file `seed_007` lẻ**, gồm cả app_settings trước thiếu) + `seed_demo001_fixtures.sql` (21 bảng tenant DEMO-001, FK-order + replica D85 + chicken-egg master; lọc FK-ngược vì DEMO-001 UUID ngẫu nhiên; albums child-branch cứu bởi OR-filter) + giữ `seed_010_012_pilots.sql`. **Thứ tự phục hồi DB trắng: seed_000 → seed_demo001 → seed_010_012** (pilot/demo FK-phụ-thuộc móng toàn cục). **Giỏ nợ repo code+data SẠCH:** mig 001→044 + functions + grants + 6 Edge + seed (000/demo001/010_012). **DB cấu trúc KHÔNG đổi: 46 bảng · 50 hàm definer · 125 policy · mig 001→044 · 6 Edge. 3 tenant / 3 master.** SYSTEM_MAP v0.26 (KHÔNG bump — phiên repo thuần). **Việc treo:** 🟡 2 dead-link/cosmetic `/admin` (§6 v26) · 🟡 rough edge GV read-only · GV/PH pilot chưa login (4 GV+9 PH) · 2 file nhạc curriculum gốc chưa nguồn lưu · Vercel dormant. **Kế:** vá rough edge GV · UI/UX polish pass (accent nội-thân + mobile nav) · `/kid` V2.*
+ **Cập nhật 2026-06-28 09:48 GMT+7 (v28): ⭐ VÁ ROUGH EDGE GV READ-ONLY (mig 045) + CHỐT DESIGN NORTH-STAR + LỘ TRÌNH V1/V2/V3 + KHOÁ V1 SCOPE.** **(Engine)** mig 045 `CREATE OR REPLACE get_child_parents` nới gate thêm `lead_teacher`/`assistant_teacher` same-school read-only (D92/D45/D94 — đóng rough edge tồn từ v25; `user_school_ids()` không lọc role nên GV có school_id thẳng nằm sẵn trong mảng, vá 1-dòng; 3 khối tách D92; nghiệm thu login thật GV KHM Mỹ Linh `/school` bấm bé An → panel PH hiện đủ read-only, banner chỉ-đọc còn, hết toast; verify proacl leaky=[] gate_has_teacher=true). Dọn 2 dead-link/cosmetic `/admin` (§6 v26 — Jean áp Lovable). **(Chiến lược — output chính)** thêm D97 (mockup đẹp ≠ engine có; audit DB trước khi để hình định nghĩa scope). Chốt: **V1-nội-thất-TRƯỚC→pilot, `/kid` V2 sau** (cửa khoá để sẵn UI); **design north-star = bộ 6 mockup KTS** (gu "album con/vui trẻ thơ", màu thương hiệu **`#149A76`** sample từ logo Dế Mèn, linh vật dế); **lộ trình V1/V2/V3** + **Miu Nắng (AI bạn-đồng-hành) tách QUYẾT-RIÊNG V3** (engine 0 mảnh, chỉ chừa hook); **audit DB (D1→D97) khoá V1 scope** = 9/12 khối lõi engine-đã-có (chỉ nội thất) + Dashboard-LITE (thêm RPC đếm) + reaction-flex; đẩy chat-PH↔GV/hẹn-giờ-gửi/xuất-PDF-video/AI sang V2/V3. **DB cấu trúc KHÔNG đổi: 46 bảng · 50 hàm definer · 125 policy · mig 001→045 · seed 001→012 · 6 Edge. 3 tenant / 3 master.** SYSTEM_MAP **v0.26 (KHÔNG bump — vá 1 hàm, schema/route KHÔNG đổi).** Việc treo: 🟡 chốt 1 linh vật (dế-sắc-cạnh logo gốc / dế-tròn mockup / Miu-Nắng) trước build UI · GV/PH pilot chưa login (4 GV+9 PH) · 2 file nhạc curriculum gốc chưa nguồn lưu · Vercel dormant. Kế: **pass NỘI THẤT V1** (design direction bản B → 5 cổng: accent nội-thân + mobile nav + cửa /kid khoá "Sắp ra mắt" + 1 linh vật) · Dashboard LITE (RPC đếm) · reaction (flex). Mockup HTML = tài liệu hướng thiết kế, KHÔNG phải code production (D97).*
+ **Cập nhật 2026-06-28 14:26 GMT+7 (v29): ⭐ THIẾT KẾ TEACHER PORTAL V1 (D98, thuần thiết kế — KHÔNG đổi schema/route/Edge/seed).** Chốt look production Teacher Portal V1 ("Classroom Companion": nền ngà `#FBF8F1` + primary `#149A76` + accent mật ong `#EFA63A` + dế mark nhỏ): Home 7 khối + CTA state-aware (4 trạng thái giáo án edge: sẵn-sàng/thiếu-học-liệu/chưa-phân-lớp/cần-cập-nhật + 3 tiến trình) + luồng 4 bước (Chuẩn bị→Dạy học→Ghi nhận→Nhật ký, bước 3 có 3 tab con) + Xem lại Bước 4/4 trước khi gửi + empty state + nav 5 tab. Copy neo quyền/luật: "Báo thiếu học liệu" (GV không thay học liệu = IP Dế Mèn D75) · ảnh chưa-gắn-bé/bé-chưa-đồng-ý KHÔNG gửi PH, tạm giữ với gia đình bé đó (MIN consent D71/D47). **Engine phát sinh khi build (CHƯA làm): bảng `prep_items`+RPC readiness · RPC đếm Dashboard-LITE · reaction "Lời cảm ơn".** **DB cấu trúc KHÔNG đổi: 46 bảng · 50 hàm definer · 125 policy · mig 001→045 · seed 001→012 · 6 Edge. 3 tenant / 3 master.** v0.26 KHÔNG bump (phiên thiết kế). Kế: BUILD Teacher V1 — audit D1 → `prep_items`+RPC → count RPC → dịch Lovable → HANDOFF v30.*
+ **Cập nhật 2026-06-28 17:47 GMT+7 (v30): ⭐ BUILD TEACHER PORTAL V1 — HOME "CLASSROOM COMPANION" SỐNG (mig 046+046b + 2 file UI; D99/D100; nghiệm thu login thật ĐẠT).** Dịch đặc tả thiết kế v29 (D98) thành engine+UI thật. **(Engine)** mig 046 = bảng **`prep_items`** (grain `lesson_sessions`, 4 RLS gương `session_media`) + RPC `get_session_readiness(session_id)` (trả 1 field `status`: precedence tiến-trình-`state` TRƯỚC → readiness-4-cạnh SAU = unassigned/missing_materials/needs_update/ready; + prep{ready,total}); mig 046b = RPC `get_teacher_home()` (1-call Home: today_count + today_session gói `readiness` + next_session; đếm bé = enrollments active; tìm tiết của GV = lead `class_distributions` HOẶC `session_teachers`). **D99** (engine readiness pattern + ⭐ test login thật qua REST `apikey`=ANON-KEY[KHÔNG JWT→401]+`Bearer access_token` khi app không expose `window.supabase`; ⚠️ `revoke from public` KHÔNG gỡ `anon`→khối 2b riêng). **D100** (code-splitter TanStack vấp type generic inline trên `const`→tách named `type`; KHÔNG Try-to-fix). **(UI 2 file, Jean áp Lovable full paste-over)** `teacher.tsx` re-token sky→**ngà `#FBF8F1`/xanh-rừng `#149A76`/mật-ong `#EFA63A`** + mark dế hình-học + **bottom nav 5 tab** (Hôm nay·Lớp·Giáo án·Nhật ký·Hồ sơ; 3 tab chưa-route→toast "Sắp ra mắt", Quyết B render-đủ-cửa-khoá) · `teacher.index.tsx` = Home 7 khối thật (greeting "X tiết" · Hero state-aware pill+CTA · prep preview · Việc-cần-làm[placeholder `—`] · 4 quick action · lớp tiếp theo · Cần hỗ trợ · empty state) wire `get_teacher_home`. **Nghiệm thu login thật ĐẠT** (GV Mỹ Linh `gv.linh.kidshouse@demo.demenart.com`/`Test@123`): readiness 3 status đúng (REST 200) · home shape đúng (today_count:3·Hoa Hồng/CTAN/4 bé·ready prep 1/3) · Home UI render đủ 7 khối + tokens đúng D98 + bottom nav 5 tab + toast cửa-khoá. **DB cấu trúc CÓ ĐỔI: 47 bảng (+`prep_items`) · 52 hàm definer (+`get_session_readiness`/+`get_teacher_home`) · 129 policy (+4) · mig 001→046b · seed 001→012 · 6 Edge · 3 tenant/3 master.** SYSTEM_MAP **v0.27 (BUMP — thêm bảng+hàm+policy).** accent `/teacher` LIVE đổi sky→ngà/xanh-rừng/mật-ong (chỉ 2 file teacher; cổng khác giữ accent cũ). **Seed test `[v29-test]` GIỮ tạm** (3 buổi lớp Hoa Hồng dưới cd `d1000000-…-31` demo Home — dọn sau). **Routes:** sửa `teacher.tsx`+`teacher.index.tsx` (index từ redirect-hop→Home thật); curriculum/moments KHÔNG đổi. **Việc treo:** 🟢 mig 047 count "Việc cần làm" (Dashboard-LITE — TodoSection đang `—`) + reaction "Lời cảm ơn" · 🟢 luồng 4 bước (CTA Home chưa wire onClick; route session chưa dựng) · 🟡 dọn seed test · 🟡 land GV `/teacher/curriculum`→`/teacher` · 🟡 lock 1 linh vật · GV/PH pilot chưa login · 2 file nhạc · Vercel dormant. **Kế:** mig 047 count (wire TodoSection) → luồng 4 bước (route session, CTA onClick) → HANDOFF v31.*
+ **Cập nhật 2026-06-28 19:35 GMT+7 (v31): ⭐ BUILD TEACHER V1 CỤM 1+2 — LUỒNG 4 BƯỚC (Bước 1 Chuẩn bị + Bước 2 Player) + WIRE "VIỆC CẦN LÀM" (mig 047→050, D101; nghiệm thu login thật ĐẠT).** Dịch tiếp đặc tả D98 thành luồng thật. **(Engine)** mig 047 `get_teacher_todo_counts()` (Dashboard-LITE 4 số — attendance_pending/journal_pending/photos_untagged/parent_replies[hook=0]; scope GV gương get_teacher_home) · mig 048 `get_session_detail`(1-call màn session gói readiness+prep_items[]+class/program/child_count) + `start_session`(state→in_progress gate người-trong-phòng `is_session_lead OR is_session_teacher` + taught_by + audit) · mig 049 `get_session_curriculum`(track của buổi lọc-LV + entitlement, player mượn pattern v13) · mig 050 `get_teacher_home` CREATE OR REPLACE vá tie-break (ưu tiên in_progress khi nhiều buổi cùng giờ). **D101** (luồng đa-bước = 1 route step-nội-bộ KHÔNG đẻ sub-route; tick prep/báo-thiếu = client THẲNG không RPC [prep_items UPDATE lead|assistant · support_requests INSERT self RETURNING-qua D57]; cụm RPC session detail-1-call/state-transition-gate-người-trong-phòng/curriculum-lọc-LV; tie-break Home; Bước 2 KHÔNG đổi state). **(UI, Jean áp Lovable full paste-over)** `teacher.index.tsx` (wire counts vào TodoSection [>0 badge mật-ong/parent xanh-rừng, =0 mờ+`—`, total=0→"Mọi việc đã xong"] + CTA Hero onClick→navigate `/teacher/session/$id` + PrepPreview link session) · **route MỚI** `teacher.session.$id.tsx` (stepper 4 bước + Bước 1 Chuẩn bị[checklist tick + báo thiếu học liệu→support_requests + "Vào dạy"→start_session] + Bước 2 Player[get_session_curriculum + get_signed_media_url + watermark trôi + nodownload] + Bước 3/4 placeholder). **Nghiệm thu login thật ĐẠT** (GV Mỹ Linh, REST anon-key D99): todo attendance_pending:1 đúng + UI badge mật-ong · tick prep 1/3→2/3 ghi thật · báo thiếu→support_requests row · start_session→a0001 in_progress+taught_by=…011 · player 2 track phát+watermark "…Đà Nẵng·gv.linh…·giờ" · tie-break Home→a0001 "Đang diễn ra"+CTA "Tiếp tục buổi học"; leaky=[] cả 4 hàm. **DB cấu trúc: 47 bảng (KHÔNG đổi) · 56 hàm definer (+4: get_teacher_todo_counts/get_session_detail/start_session/get_session_curriculum; get_teacher_home replace) · 129 policy (KHÔNG đổi) · mig 001→050 · seed 001→012 · 6 Edge · 3 tenant/3 master.** SYSTEM_MAP **v0.28 (BUMP — +4 hàm).** **Seed `[v29-test]` a0001 giờ state=`in_progress`** (sau start_session test). **Routes:** TẠO `_authenticated/teacher.session.$id.tsx`; sửa `teacher.index.tsx`. **Việc treo:** 🟢 **Cụm 3 Ghi nhận** (3 tab Điểm danh·Ghi nhận tap-first·Ảnh-gắn-bé MIN consent — nặng nhất: child_observations+moment/consent/upload) + **Cụm 4 Review & gửi** (approval→PH) — CTA Bước 2→Bước 3 placeholder · 🟡 reaction "Lời cảm ơn" (parent_replies hook) · 🟡 dọn seed `[v29-test]` · 🟡 land GV `/teacher/curriculum`→`/teacher` · 🟡 lock 1 linh vật · GV/PH pilot chưa login · 2 file nhạc · Vercel dormant. **Kế:** boot sạch → audit D1 → **Cụm 3** → Cụm 4 → HANDOFF v32. Nguồn: Tài liệu A–G UPDATED + tầm nhìn founder + DMWS v170. Cập nhật "tới đâu ghi tới đó" (KỶ LUẬT VÀNG).*
+ **Cập nhật 2026-06-29 09:00 GMT+7 (v32): ⭐ ĐÓNG TEACHER V1 — CỤM 3 GHI NHẬN + CỤM 4 REVIEW & GỬI NHẬT KÝ, TRỌN VÒNG TỚI PH (mig 051→053, D102/D103/D104; nghiệm thu login thật ĐẠT cả GV lẫn PH).** **(Engine)** mig 051 = UNIQUE(session_id,child_id) `child_observations` [client upsert thẳng] + bảng **`skill_catalog`** (4 CTAN tap-first, KHÁC child_skills-tích-lũy; 2 RLS) + RPC `get_session_roster` (secdef same-school) · mig 052 = RPC `get_session_moments` + DELETE policy `moment_children` · mig 053 = **`submit_session_journal`** (secdef gate is_session_lead = GV-gửi-THẲNG-tới-PH D45; 6 việc idempotent: duyệt-moment-đã-gắn-bé-có-media → child_journey 'session' CHỈ present|late → child_skills++ dùng label_vi → session_reports submitted[nội bộ] → state→taught_report_pending → audit; idempotent đã-gửi chỉ duyệt ảnh mới). **D102** (nền Cụm 3: UNIQUE + skill_catalog + roster RPC + ⭐ BÉ VẮNG ẨN khỏi ghi-nhận&tag khớp engine present|late). **D103** (submit GV-gửi-thẳng; PH đọc qua get_child_journal KHÔNG session_reports/child_observations; sửa-sau-gửi qua stepper "3"). **D104** (consent ảnh ≥2 bé→`group_moment_in_class` MIN, 1 bé→`display_in_app`; ⭐ QUYẾT PRODUCT: ảnh nhóm MẶC-ĐỊNH-BẬT opt-out, thực thi v33 A onboard-default + C journal nút "Vì sao?"; blur-mặt=V2). **(UI Jean áp Lovable full paste-over)** `teacher.session.$id.tsx`: Bước 3 StepRecord 3 tab (Điểm danh auto-save · Ghi nhận tap-first không-nút-Lưu · Ảnh-gắn-bé upload+tag, bé-Vắng-ẩn) + Bước 4 StepReview (tóm tắt + cảnh báo + ghi-chú-nội-bộ + "Hoàn tất & gửi nhật ký"→submit + màn "Đã gửi 🎉"). **Nghiệm thu TRỌN VÒNG ĐẠT:** GV Mỹ Linh gửi a0001 → 🎉 "3 bé… 1 ảnh…" → PH Hùng bé An thấy Hành trình buổi 28/6 + Kỹ năng "Hát theo" + 2 ảnh nhóm [ban đầu "đang chờ" thiếu group_moment_in_class — đúng MIN; cấp demo_seed → hiện]. leaky=[] cả 3 hàm. **DB cấu trúc CÓ ĐỔI: 48 bảng (+`skill_catalog`) · 59 hàm definer (+get_session_roster/+get_session_moments/+submit_session_journal) · 132 policy (+3) · +1 constraint UNIQUE child_observations · mig 001→053 · seed 001→012 · 6 Edge · 3 tenant/3 master.** SYSTEM_MAP **v0.29 (BUMP — +bảng+3hàm+3policy+constraint).** **Data state:** a0001=taught_report_pending; consents demo_seed An(…41)+Chi(…43) group_moment_in_class granted source='demo_seed'; child_journey+child_skills An/Bình/Chi có entry từ submit thật. **Routes:** `teacher.session.$id.tsx` (Bước 3+4 thật) — Teacher V1 luồng 4 bước HOÀN CHỈNH. **TEACHER V1 FUNCTIONALLY COMPLETE** (Chuẩn bị→Player→Ghi nhận→Review&gửi + consent gated, trọn vòng GV→PH). **Việc treo:** 🟢 thực thi D104 A+C (ảnh nhóm default-on) · 🟡 nút "Sửa ảnh & ghi nhận" Bước 4 · `/teacher/moments` preview · 2 PH email-null Chi/Dung · dọn seed `[v29-test]`+demo_seed · land GV `/teacher` · lưu repo mig 045/051/052/053 + 2 Edge invite · dead-link admin.modules · reaction "Lời cảm ơn" · lock 1 linh vật · Vercel dormant. **Kế:** (I) thực thi D104 A+C HOẶC (II) pass NỘI THẤT V1 (D98) → HANDOFF v33. Nguồn: Tài liệu A–G UPDATED + tầm nhìn founder + DMWS v170. Cập nhật "tới đâu ghi tới đó" (KỶ LUẬT VÀNG).*
+ **Cập nhật 2026-06-29 10:40 GMT+7 (v33): ⭐ D104 A+C (ẢNH NHÓM DEFAULT-ON) + 2 UX FIX + TAB "LỚP" → TEACHER V1 THẬT SỰ COMPLETE (mig 054+055, D105).** **(Engine)** mig 054 = `provision_parent_and_link` CREATE OR REPLACE thêm INSERT consent `group_moment_in_class` granted `source='onboarding_default'` (ảnh nhóm mặc-định-BẬT opt-out, D104 A) + backfill 12 link PH cũ (B, idempotent NOT EXISTS → group_granted 16/16) · mig 055 = RPC `get_teacher_classes()` (1-call classes[] nested sessions[], mirror get_teacher_home union lead/assist D45, grain class_distribution. D105). **(UI Jean áp Lovable)** `parent.journal.tsx` (+nút "Vì sao?" `ConsentWaitingHint`→popover+link `/parent/consent`, C) · `teacher.session.$id.tsx` (+nút "Sửa ảnh & ghi nhận" Bước 4→`goToRecord('photo')`, a) · **MỚI `teacher.classes.tsx`** (tab Lớp: card lớp + buổi tách đã/đang-dạy vs Sắp tới + pill state; tap→`/teacher/session/$id`→stepForState→đóng gap buổi-quá-khứ) · `teacher.tsx` (nav "Lớp" `to:null`→`/teacher/classes`) · `admin.modules.tsx` (dead-link `/portal`→`/admin`, b). **Nghiệm thu login thật ĐẠT:** PH Hùng vòng tắt→"Vì sao?"→bật→ảnh-hiện; GV Mỹ Linh tab Lớp→tap buổi-quá-khứ→Bước 4→sửa ảnh→gửi lại 🎉; không hồi quy. Bẫy đã vấp: deploy-lag thêm-route-mới → 404 chunk → "This page didn't load" cả 2 cổng → hard reload (D84/D105), KHÔNG Try-to-fix. leaky=[] cả 2 hàm. **DB cấu trúc: 48 bảng (KHÔNG đổi) · 60 hàm definer (+`get_teacher_classes`; `provision_parent_and_link` replace-thân) · 132 policy (KHÔNG đổi) · mig 001→055 · seed 001→012 · 6 Edge · 3 tenant/3 master.** **v0.30 (BUMP — +1 hàm + route teacher.classes).** **Data state:** consents +12 `onboarding_default` (group_granted 16/16); a0001 taught_report_pending. **Routes:** TẠO `teacher.classes.tsx`; sửa `teacher.tsx`(nav)+`parent.journal.tsx`+`teacher.session.$id.tsx`+`admin.modules.tsx`. **TEACHER V1 THẬT SỰ COMPLETE** — vòng dạy + consent default-on + đường vào MỌI buổi. Việc treo: cửa khoá đúng-chủ-đích (Nhật ký/Hồ sơ · reaction flex · desktop-nav /teacher/classes) · blur-mặt V2 · dọn seed/demo_seed · lưu repo 045/051-055+2 Edge · land GV `/teacher` · lock linh vật. Kế: pass NỘI THẤT V1 (D98, 3 hướng thẩm mỹ→Jean react) → HANDOFF v34.*
+
+---
+
+ **Cập nhật 2026-06-29 16:05 GMT+7 (v34 · SYSTEM_MAP v0.31): ⭐ MÓNG TRA CỨU 3 LỚP + THƯ VIỆN ÂM (mig 056 + seed 013).** **+4 bảng:** `notification_sounds` (thư viện âm chuông, slug/label/bunny_path) · `admin_module_links` (Sơ đồ — cạnh có-hướng từ_slug→tới_slug + `link_type` ∈ requires/writes_to/reads_from/triggers/relates_to + FK→admin_modules.slug) · `admin_playbooks` + `admin_playbook_steps` (Quy trình SOP 2 lớp — step trỏ module_slug/rpc_name/table_name). **+cột `status` 4 mức** (live/building/reserved/planned) trên `admin_modules`/`admin_module_groups`/`admin_playbooks` = bản đồ tiến độ V1→V3. **Registry seed (seed 013):** 13 nhóm · 55 module (map bảng/RPC THẬT — gồm reserved Kid V2, planned Miu-Nắng[nhóm AI riêng]/License-PH/Referral[nhóm Kinh-doanh]/Mission-Control) · 9 cạnh · 1 Quy trình "Thêm GV cho trường". **Route mới `/admin/reference`** (`admin.reference.tsx`) — UI Trung Tâm Tra Cứu 3 tab (Module/Sơ đồ/Quy trình), gác RLS `is_admin()`, port pattern DMWS (registry-driven, KHÔNG bê module business). **Là móng-trí-nhớ tự-ghi-tài-liệu (D106): mỗi phiên cập nhật registry khi đóng = né "tài liệu tụt hậu" 162-phiên của DMWS.** **DB: 52 bảng · 60 hàm definer (KHÔNG đổi — tái dùng is_admin/set_updated_at) · 136 policy (+4 admin_all) · +5 FK · mig 001→056 · seed 001→013 · 6 Edge · 3 tenant/3 master.** Nghiệm thu login thật super_admin `/admin/reference` — cả 3 lớp resolve đúng (D106/D107 mới trong RULES). Việc treo: điền route thật ~50 module · thư viện âm rỗng (upload+UI gán) · SVG graph (bản gọn V1 dùng list) · pass NỘI THẤT V1 (Parent→School) · lưu repo 056+seed_013+nợ cũ.*
+ **Cập nhật 2026-06-29 ~20:30 GMT+7 (v36 · SYSTEM_MAP v0.33): ⭐ ADMIN DASHBOARD V1 "MISSION CONTROL" SỐNG (mig 058 + 2 UI, D108–D111; nghiệm thu login thật super_admin ĐẠT).** Tầng RPC aggregate admin-scope MỚI (RPC cũ đều scope hẹp GV/PH/trường — D108): **5 hàm secdef gate `is_admin()` bypass-RLS chỉ-số-ẩn-danh (D48)** — `get_admin_health_score` (4 trụ Ops35/Media30/Hỗ-trợ20/Tăng-trưởng15; bỏ trụ Phụ-huynh vì audit lộ KHÔNG log-xem-PH → hoãn V1.5, D110) · `get_admin_vitals` · `get_admin_action_center` ("Ticket học liệu" = support category='curriculum' thay "File lỗi phát" — media_assets không cờ lỗi-phát) · `get_admin_school_health` (path lesson_sessions→class_distribution_id→classes.school_id) · `get_admin_media_privacy`. Da `/admin` = tối-vũ-trụ honey/forest TÁCH kem-ấm cổng khách (D111). Registry route phần lớn rỗng → nav hardcode (D109). **(UI Jean áp Lovable full paste-over):** `admin.tsx` shell dark cosmic + sidebar nav (Vận hành/Hệ thống/Hạ tầng + 3 cửa khoá V1.5/V2/V3) + drawer mobile · `admin.index.tsx` dashboard wire 5 RPC: Health hero+modal · Vitals 8 · Action Center filter/owner/SLA/CTA · School Health table-desktop/card-mobile · Media 6 tile · Pulse empty-state-§5-D48 · Roadmap khoá · Focus Mode. Nghiệm thu login thật super_admin (Health 94·Vitals 3/5/16/0/67%/33%/0·Action ticket-học-liệu=1·School KH50-rủi-ro/2DM100·Media 7-private/Bunny-OK·Pulse empty đúng D48). **DB delta: +5 hàm definer · +mig 058 · bảng/policy/Edge/seed KHÔNG đổi** (tuyệt đối nếu v35=60 hàm → **65 hàm definer** · mig 001→058 · 3 tenant/3 master). **mig 058** `058_admin_dashboard_rpcs` = 5 secdef gated is_admin, search_path='' qualify, 3-khối D92, leaky=[], KHÔNG schema/policy mới. **Routes:** TẠO/SỬA `_authenticated/admin.tsx`+`admin.index.tsx`. Việc treo: 🟢 nút Xử lý wire onClick · re-theme trang con admin (sáng→cosmic) · điền route registry → nav data-driven · 🟡 ngưỡng risk School Health · `get_admin_pulse` khi có demen_marketing · lưu repo 058+2 UI+nợ cũ · cập nhật registry dashboard/mission-control (building→sống). Kế: Nội thất School→Teacher demo-grade HOẶC dọn nợ repo. Nguồn: Tài liệu A–G + tầm nhìn founder + DMWS v170. Cập nhật "tới đâu ghi tới đó" (KỶ LUẬT VÀNG).*
+
+ **Cập nhật 2026-06-30 02:13 GMT+7 (v38 · SYSTEM_MAP v0.34): ⭐ NỘI THẤT SCHOOL V1 — "TỔNG QUAN TRƯỜNG" (mig 059, D113).** Tầng RPC school-scope MỚI (trước đó cổng School KHÔNG có RPC dashboard — chỉ CRUD/onboard, query bảng thẳng RLS same_school): **`get_school_overview()`** secdef gate `current_school_id()` (KHÔNG nhận school_id → chống lộ chéo tenant) — 1-call gói `{ok, kpi{classes,students,teachers,sessions_done,journal_sent_pct,media_pct}, classes[]{distribution_id,class_name,program_name,progress_done,progress_total,journal_pct,status}}`. Đường-nối: `lesson_sessions.class_distribution_id→classes.school_id`; buổi-đã-dạy = state taught_report_pending/report_pending_approval/completed; **media↔buổi = `learning_moments.session_id` (D113 — KHÔNG `session_media`, bảng trống)**; mẫu số % = buổi-đã-bắt-đầu-dạy (in_progress trở đi); status ≥80 good/50–79 attention/<50 support/0-buổi not_started. **UI `school.index.tsx`** (sửa): +OverviewSection (lời chào + 6 KPI tile kem-ấm emerald + Tiến-độ-theo-lớp + pill status) + 3 liên-kết-nhanh (Khoảnh khắc/Hỗ trợ/Thông báo) + 2 cửa-khoá "Sắp ra mắt·V1.5" (Sức khỏe triển khai · Tương tác PH) + thin-state ấm + drift amber→emerald. 3 tab CRUD cũ giữ nguyên; `school.tsx` KHÔNG đụng. Mockup "Ánh Dương" = north-star (D97 — phần lớn khối là V1.5/V2; bản build V1 trung-thực-engine, cửa-khoá khối chưa-data). Nghiệm thu login thật ĐẠT 2 trường (KidsHouse số khớp audit · Dế Mèn thin-state 0-buổi). **DB: 52 bảng (KHÔNG đổi) · 66 hàm definer (+`get_school_overview`) · 137 policy* (KHÔNG đổi) · mig 001→059 · seed 001→014 · 7 Edge · 3 tenant/3 master.** Việc treo: `get_school_health` school-scope (cửa V1.5) · Nội thất Teacher demo-grade · drift mig057 chưa chạy · Admin wire+re-theme+route · lock linh vật · nợ cũ. Kế: Nội thất Teacher HOẶC get_school_health → HANDOFF v39.*
+ **Cập nhật 2026-06-30 ~04:30 GMT+7 (v39 · SYSTEM_MAP v0.35): ⭐ NỘI THẤT SCHOOL v2 + FINISHING 3-ZONE + 4 ROUTE `/school/*` SINGLE-SOURCE (mig 060–062, D114/D115).** Tầng RPC school-scope mở rộng: **+`get_school_week_schedule(p_week_start date)`** (lịch tuần grid distribution×7-ngày; match `(scheduled_at AT TIME ZONE 'Asia/Ho_Chi_Minh')::date`) · **+`get_school_moments(p_limit)`** (moment approved + media-asset đầu qua LATERAL; ảnh ký URL Edge `get_signed_media_url` D74) · **`get_school_overview` REPLACE** (+field `school_name`). Cả 3 secdef gate `current_school_id()` (KHÔNG nhận school_id → chống lộ chéo tenant), 3-khối D92, REVOKE public+anon/GRANT authenticated, leaky=[]. **UI:** `school.index.tsx` tổ chức lại **3 zone** (Sức khỏe trường / Bức tranh thành công / Hỗ trợ & vận hành) + premium-card kem-ấm + **Sức khỏe Lite** (vòng /100 tính client-side từ trung-bình 3 chỉ-số THẬT, badge good/attention/support, KHÔNG bịa số D97/D110) + **Tương tác PH** preview-V1.5 (🔒"—", KHÔNG số ước đoán) + nhãn ảnh "🛡 Nội bộ trường" + class-progress badge chấm-màu + **tách trang Quản lý** (`?tab` đổi-nguyên-trang: Tổng-quan=dashboard, Lớp/GV/Trẻ=trang riêng có breadcrumb, vá UX "menu chỉ là dashboard"). **⭐ 4 ROUTE `/school/*` SINGLE-SOURCE (D115):** Học liệu/Khoảnh khắc/Hỗ trợ/Thông báo mount trong shell xanh `/school` qua 4 **shared component** `@/components/portal/{Curriculum,Moments,Support,Notifications}View.tsx`; route `/school/x`+`/teacher/x`+`/portal/x` đều = wrapper mỏng trỏ cùng view (sửa 1 chỗ → mọi cổng cập nhật); `/portal` vẫn là bản gốc trung-tính. Sidebar+chuông+link "Xem tất cả" → `/school/*` (8 mục đều ở trong Cổng Trường, không-văng). **🆕 D114** (body-change secdef RPC verify bằng `pg_get_functiondef`/login thật — `aclexplode` chỉ kiểm grant; mig 060 thân-mới không-áp mà VERIFY vẫn pass) + **🆕 D115** (shared-component-đa-cổng). Nghiệm thu login thật ĐẠT 2 trường. **DB: 52 bảng (KHÔNG đổi) · 68 hàm definer (+2: get_school_week_schedule/get_school_moments) · 137 policy* (KHÔNG đổi) · mig 001→062 · seed 001→014 · 7 Edge · 3 tenant/3 master.** **Routes:** TẠO `_authenticated/school.{curriculum,moments,support,notifications}.tsx` + 4 shared component; SỬA `school.tsx`(sidebar+chuông)·`school.index.tsx`(3-zone+tách-trang)·`teacher.{curriculum,moments}.tsx`·`portal.{support,notifications}.tsx`(wrapper mỏng). **accent 4 view:** giữ amber gốc (hợp tông honey) — re-skin ivory/forest/honey để sau. Việc treo: re-skin 4 view · `get_school_health` school-scope · Nội thất Teacher · nhãn ảnh 3-mức (field consent vào get_school_moments) · lưu repo mig 060–062 (D90) · drift mig057 · Admin wire/re-theme/route (D109/D111) · Tương tác PH thật (`parent_reactions`) · nợ cũ. Kế: re-skin 4 view HOẶC get_school_health HOẶC Nội thất Teacher → HANDOFF v40. Cập nhật "tới đâu ghi tới đó" (KỶ LUẬT VÀNG).*
+ **Cập nhật 2026-06-30 16:55 GMT+7 (v40 · SYSTEM_MAP v0.36): ⭐ TEACHER WEB WORKSPACE V1 (mirror School) + RE-SKIN 4 VIEW SÁNG `#149A76` + THÉP CHỜ CLASSROOM/REMOTE (D116; thuần UI/DATA).** Đóng cổng demo thứ 3 (Teacher) demo-grade → 3 cổng (Admin·School·Teacher) nhất quán. **Shell `teacher.tsx` viết lại mirror `school.tsx`** (pixel: `lg:flex`+sidebar `lg:sticky`, gradient `#1a916f→#15795d→#114c3a`, active vạch honey `#EFA63A`, mobile pill-cuộn-ngang `lg:hidden`; nav 3 nhóm Lớp học/Chương trình&Media/Hỗ trợ + locked V1.5 Nhật ký·Hồ sơ; Bell/Hỗ trợ→`/teacher/*`). **+2 route `/teacher/{support,notifications}`** = wrapper mỏng mount `Support/NotificationsView` (D115 — giờ 4 shared view `@/components/portal/*` mount cả `/school`·`/teacher`·`/portal`). **`teacher.index.tsx` = Teacher Dashboard V1 premium** (engine giữ 100% — `get_teacher_home`+`get_teacher_todo_counts` mig047+`get_session_detail` cho prep-label; KHÔNG mig mới): banner mỏng + card \"Buổi học hôm nay\" (gộp Classroom actions, 1 primary CTA \"Bắt đầu buổi học\"→`session/$id` + 2 teaser `LockedAction` 🔒Sắp-ra-mắt·V1.1) + Prep card checklist-label-THẬT (fetch get_session_detail render động N item) + Today Tasks state-aware (prep-dở→\"Còn N việc\" / đã-dạy-chưa-gửi→\"nhật ký chờ gửi\" / xong→\"sẵn sàng 🌿\"). **⚓ Thép chờ Classroom/Remote** (comment HeroCard trỏ `/teacher/classroom`+`/teacher/remote`; kiến trúc chốt = same-laptop BroadcastChannel pattern Le PARIS bọc hook → sau nâng Realtime; monitor=TV full-screen nút-TẮT-màn, remote=control 1-tay). **Re-skin 4 view** flip amber→**sáng `#149A76`/`#EFA63A`** (D1 lộ School thật dùng SÁNG; giữ màu mang-nghĩa emerald/rose/sky). **🆕 D116** (mirror cổng audit file gốc thật trước, đoán-sai 2 lần forest-trầm + breakpoint) + bổ sung list D113/D114/D115. **🌱 SEED demo Teacher CHỈ LIVE (kéo ngày động, KHÔNG seed file):** `lesson_sessions` Hoa Hồng a0001 \"Tiếng mưa rơi\" hôm-nay-09:30 + `prep_items` 5 item 4/5. **DB cấu trúc KHÔNG ĐỔI: 52 bảng · 68 hàm definer · 137 policy* · mig 001→062 · seed 001→014 · 7 Edge · 3 tenant/3 master.** **Routes:** TẠO `_authenticated/teacher.{support,notifications}.tsx`; SỬA `teacher.tsx`(mirror School)·`teacher.index.tsx`(Dashboard V1)·4 view `@/components/portal/*`(flip sáng). Nghiệm thu login thật ĐẠT (GV Mỹ Linh). **Việc treo cụm \"Classroom & Journal V1.1\" (phiên sau):** Classroom View · Mobile Remote · BroadcastChannel hook · route Nhật ký `/teacher/journal` 3-tab+mở-khoá-sidebar · research render giáo-án · \"Học liệu có vấn đề\" count. 🟡 BUG UTC-không-HCM (get_teacher_home/get_teacher_classes → buổi 09:30 lọt \"Sắp tới\"). Nợ cũ: lưu repo mig 060–062 · drift mig057 · Admin wire/re-theme/route · lock linh vật · nợ pilot. Kế: cụm Classroom & Journal V1.1 HOẶC fix UTC HOẶC dọn nợ repo → HANDOFF v41. Cập nhật \"tới đâu ghi tới đó\" (KỶ LUẬT VÀNG).*
+> **⚠️ HISTORICAL SNAPSHOT — KHÔNG PHẢI CURRENT SYSTEM TRUTH / NEXT ACTION.** (Consistency patch 2026-07-18: giữ nguyên evidence lịch sử bên dưới; mọi "Kế/Bước kế/CHƯA làm/Việc treo/inventory" trong đó KHÔNG còn hiệu lực. Current truth duy nhất = khối CURRENT CANONICAL ENDPOINT đầu tài liệu / D309.)
+
+ **Cập nhật 2026-06-30 19:40 GMT+7 (v41 · SYSTEM_MAP v0.37): ⭐ BƯỚC 2 "DẠY HỌC" → LESSON PLAYER / CLASSROOM COMPANION + TÁCH TRACK DEMO "TIẾNG MƯA RƠI" (D117; UI thuần + DATA live, KHÔNG mig/Edge/policy/bảng).** Rebuild Bước 2 trong `teacher.session.$id.tsx` thành **2 cột** (`lg:grid-cols-[1.05fr_0.95fr]`), giữ NGUYÊN byte Bước 1/3/4 + stepper + shell ivory/forest/honey. **Cột trái = Lesson Player engine THẬT:** preview gradient `#0F6E56→#149A76` (video→`<video>`, audio→icon+equalizer, 1 `mediaRef` chung); signed URL fetch **on-demand từ thao-tác-người-dùng** (`get_signed_media_url` Edge — tránh autoplay-block); controls play/pause·prev/next-material·timeline-seek·volume·fullscreen; **watermark trôi** `DMA·CTAN·<school>·<email GV>·<startedAt>` (`wm-drift` 12s); StatusPill 5 trạng-thái (ready/playing/paused/missing/failed); "Chiếu lên TV"🔒V1.1 + "Báo lỗi phát"→`support_requests`. **Cột phải = Teaching Guide:** Hoạt-động N/5 + mục-tiêu + "Cô có thể nói"(script) + "Câu hỏi gợi mở" + CTA tiếp; buổi chưa-guide→graceful "đang biên soạn". + **dải 5 hoạt động ngang** (activity `materialHint` tự chọn track khớp) + **thanh điều khiển nhanh** (Ghi-nhận/Chụp-khoảnh-khắc→Bước 3) + 3 hành động dưới. **⚓ Teaching Guide = const `RAINDROP_GUIDE`** (5 hoạt động, "Lắng nghe âm thanh" text Jean verbatim) map theo tên-buổi "mưa" — **player engine 100% thật, CHỈ guide-content là const**; lý do: `lesson_versions` đã có cột `activities`/`guiding_questions` jsonb nhưng version demo để TRỐNG (D1: `has_activities=false`) → ⚓ phiên sau RPC `get_lesson_guide(lesson_version_id)` đọc jsonb. **🆕 D117** (paste-over phải verify đúng file đích — v41 dán đè `teacher.session.$id.tsx` lên `teacher.index.tsx`→Home chạy SessionFlow→`get_session_detail()` body rỗng→404 PGRST202 "WITHOUT PARAMETERS"; chẩn lạc 5+ bước vì lỗi trông như DB; khôi phục Lovable History "View file"). **🌱 Tách track demo "Tiếng mưa rơi" (DATA LIVE, Cách A):** audit `get_session_curriculum` (D114 đọc body) lộ media lấy theo `linked_lesson_version_id` + lọc `access_level='private_curriculum'`/`state='active'`/entitlement + **title=`metadata->>'title'`**; session a0001 mượn version `47c52596` (lesson "Bài 1: Lắng nghe âm thanh")→hiện "Chú Vịt Con". Fix: upload audio qua UI `/admin/curriculum-admin`→media `34ad7ff4` (UI tự set access_level/metadata.title="Lắng Nghe Tiếng Mưa") → **SQL 1-transaction**: tạo `lesson_version` `ac0a5c13` (clone `47c52596`, version_no kế, published)→UPDATE media mưa `linked_lesson_version_id=ac0a5c13`→UPDATE `lesson_sessions.lesson_version_id=ac0a5c13` cho a0001. Verify (D113): buổi mưa=`["Lắng Nghe Tiếng Mưa"]` (1 track), Bài 1 gốc=`["Chú Vịt Con (demo CTAN)","Chú Vịt Con"]` nguyên vẹn. Lesson "Bài 1" giờ 2 version (current_version_id KHÔNG đổi, chỉ session a0001 trỏ v2). **DB CẤU TRÚC KHÔNG ĐỔI (KHÔNG migration): 52 bảng · 68 hàm definer · 137 policy* · mig 001→062 · seed 001→014 · 7 Edge · 3 tenant/3 master.** Thay đổi DUY NHẤT = data live: +1 row `lesson_versions`(`ac0a5c13`) + +1 row `media_assets`(`34ad7ff4` qua UI) + 2 UPDATE. **Routes:** SỬA `_authenticated/teacher.session.$id.tsx` (Bước 2 rebuild; 1/3/4+stepper giữ). **Nghiệm thu login thật ĐẠT** (GV Mỹ Linh `gv.linh.kidshouse@demo.demenart.com`/`Test@123`): track "Lắng Nghe Tiếng Mưa" 1-track · pill "Đang phát" · timeline 0:03/9:59 chạy · tab-title 🔊 · watermark trôi đúng (school+email GV) · Teaching Guide "Hoạt động 1/5 Khởi động". **Cố ý KHÔNG làm:** branch VIDEO Bước 2 (code có nhưng demo chỉ audio — chưa test data thật) · pptx/pdf viewer (player chỉ audio/video, slide=tương lai) · jpg/png (đã có luồng Bước 3). **Việc treo:** 🟢 `get_lesson_guide` DB-backed (bỏ const, đọc jsonb) · 🟡 test branch VIDEO (upload 1 mp4) · 🟡 pptx/pdf viewer (tương lai) · cụm Classroom&Journal V1.1 (từ v40) · 🟡 BUG UTC-không-HCM · lưu repo mig 060–062 (D90) + **SQL tách-track v41** · drift mig057 · Admin wire/re-theme/route · nợ cũ (seed test · 2 PH email-null · pilot chưa login · 3 file nhạc curriculum · Vercel dormant · lock linh vật · pwa.theme_color). **Kế:** `get_lesson_guide` DB-backed HOẶC cụm Classroom&Journal V1.1 HOẶC fix UTC+test video → HANDOFF v42. Cập nhật "tới đâu ghi tới đó" (KỶ LUẬT VÀNG).*
+
+
+> **v42 +bảng `lesson_activity_media`** (mig 064): bảng nối giáo án×học liệu Cách B (version FK→CASCADE, activity_key, media_id FK→RESTRICT, UNIQUE). Gán học liệu vào từng Phần bằng media_id (D118). RLS admin-only.
+
+> **v42 +hàm `get_lesson_guide(p_session_id uuid)`** (mig 063 tạo · mig 065 replace-thân): secdef `search_path=''`, mirror gate `get_session_curriculum` (session_school_id→is_admin OR same_school). Đọc `lesson_versions.activities` jsonb, mỗi Phần `+=media[]` gán qua `lesson_activity_media` theo `activity_key` (WITH ORDINALITY giữ thứ tự). Bỏ const RAINDROP_GUIDE + cơ chế khớp-tên materialHint (D118). Player Bước 2 render theo MIME (audio/video/image). ⚠️ `upload_media` V1 chỉ-audio (D119) — video/image player chờ nâng Edge.
+
+ **Cập nhật 2026-07-01 14:11 GMT+7 (v43 · SYSTEM_MAP v0.39): ⭐ FIX UTC (mig 066) + DỌN NỢ REPO 060–065 + SPRINT 3A CLASSROOM TRIO + HẠ TẦNG CUSTOM DOMAIN CDN (D120–D123).** **(A)** mig 066 `get_teacher_home`+`get_teacher_todo_counts` UTC→`Asia/Ho_Chi_Minh` (đính chính D112: `get_teacher_classes` KHÔNG dính — không lọc ngày). Dọn nợ repo D90: 6 file dump-từ-live 060–065 + 066 (⚠️ 064 grant-bảng chưa-audit). **(B) Classroom Trio (UI mới, KHÔNG DB):** `useSessionChannel` hook (transport trừu-tượng BroadcastChannel, đối-xứng monitor/remote, heartbeat 2s D122 — đổi Realtime = 1 hàm `createTransport`) · `teacher.classroom.tsx` (Monitor/TV `fixed inset-0 z-50` D123, tái-dùng NGUYÊN engine Bước 2: `get_lesson_guide`→media[]-theo-MIME, `get_signed_media_url` Edge, watermark trôi; gesture "Bắt đầu trình chiếu"=fullscreen+audio-unlock; blackout TẮT-màn) · `teacher.remote.tsx` (control 1-tay: Phần/media·play/pause/tua/TẮT-màn + đọc script/câu-hỏi). Same-laptop (Remote=cửa-sổ-khác cùng-browser); phone-khác-máy = Realtime sau. Nghiệm thu GV Mỹ Linh session a0001 ĐẠT. **(C) CDN custom domain (D120/D121):** ISP chặn `*.b-cdn.net` (ERR_NAME_NOT_RESOLVED, đổi-mạng→chạy) → dựng 3 hostname Bunny + Cloudflare CNAME **DNS-only** + SSL: `learn`→dma-learning · `media`→dma-private · `cdn`→dma-public (`.demenart.com`); giữ `.b-cdn.net` System fallback. Fix Edge = **đổi 2 secret `BUNNY_LEARNING_HOST`/`BUNNY_PRIVATE_HOST` + redeploy, KHÔNG sửa code** (token ký `SHA256(key+path+expires)` không gồm host) — ⏳ PENDING áp+test-mạng-cũ. **🆕 D120–D123 + đính chính D112.** **DB: 53 bảng · 69 hàm definer (mig066 REPLACE 2) · 138 policy* · mig 001→066 · seed 001→014 · 7 Edge · 3 tenant/3 master.** **Routes:** TẠO `_authenticated/teacher.{classroom,remote}.tsx` + `src/hooks/useSessionChannel.ts`. **⏳ Registry D106 CHƯA cập nhật** (audit `admin_modules` trước). Việc treo: 🔴 đổi secret+test-mạng-cũ · 🟢 wire nút TV/Remote session · 🟢 3B Nhật ký · Remote V1.2 · registry · 064-grant-verify · Media Manager+upload_media(D119) · drift mig057 · Admin · nợ cũ. Kế: đóng-nốt-CDN+wire HOẶC 3B Nhật ký → HANDOFF v44. Cập nhật "tới đâu ghi tới đó" (KỶ LUẬT VÀNG).*
+
+> **v43 +hook `src/hooks/useSessionChannel.ts`** (Classroom↔Remote): transport trừu-tượng (BroadcastChannel same-browser) + hook đối-xứng 2-vai. ClassroomState (Remote sở-hữu: partIndex/mediaIndex/command/blackout/seekReq) ↔ MonitorStatus (Monitor sở-hữu: isPlaying/positionSec/durationSec/ready), last-write-wins theo `ts`, heartbeat ping 2s. Nâng Supabase Realtime = đổi DUY NHẤT `createTransport()`, UI y nguyên (D122).
+
+> **v43 +route `/teacher/classroom` + `/teacher/remote`** (`?session=<id>`, `fixed inset-0 z-50` phủ shell — D123): Monitor/TV tái-dùng engine Bước 2 (get_lesson_guide + player-MIME + signed-url + watermark) + blackout; Remote điều-khiển 1-tay + đọc lời-dẫn. CHƯA wire từ `teacher.session.$id.tsx` (test URL trực tiếp).
+
+> **v43 CDN custom domain (D120/D121):** dma-learning→`learn.demenart.com` · dma-private→`media.demenart.com` · dma-public→`cdn.demenart.com` (Bunny hostname + Cloudflare CNAME **DNS-only** + SSL LE). Fallback `.b-cdn.net` (System) giữ. Edge host = env `BUNNY_LEARNING_HOST`/`BUNNY_PRIVATE_HOST` (⏳ đổi sang custom domain + redeploy — pending). Token ký KHÔNG gồm hostname → đổi host cùng-zone không vỡ chữ ký.
+
+ **Cập nhật 2026-07-01 15:04 GMT+7 (v44 · SYSTEM_MAP v0.40): ⭐ WIRE NÚT "CHIẾU LÊN TV" (Classroom Trio LIVE, bấm-là-chạy) + NGHIỆM THU CDN MẠNG-CŨ + REGISTRY mig 067 (D124).** Đóng nốt 2 mảnh dở v43 + trả nợ registry. **(A)** Jean áp 2 secret Edge (`BUNNY_LEARNING_HOST=learn.demenart.com`/`BUNNY_PRIVATE_HOST=media.demenart.com` + redeploy `get_signed_media_url`) → **test mạng-cũ-đã-chặn → audio "Lắng Nghe Tiếng Mưa" phát OK** (`urlHead: learn.demenart.com`); D120 xác nhận thực chiến (đổi host cùng-zone = đổi secret, KHÔNG code, token vẫn hợp lệ). **(B)** SỬA `teacher.session.$id.tsx` Bước 2: khối "Chiếu lên TV" teaser🔒V1.1 → **2 nút thật** — "Chiếu lên TV"→`window.open('/teacher/classroom?session=<id>','dma_monitor_<id>')` + "Mở điều khiển"→`/teacher/remote?session=<id>` (icon Smartphone; named-window focus không mở trùng; dùng `session.id`); giữ "Báo lỗi phát"+hint; bỏ state chết tvHint+badge; route đích D117 giữ; `{}`961/961·`[]`144/144. Param `?session=` khớp nghiệm thu URL v43. **Nghiệm thu login thật ĐẠT** (GV Mỹ Linh, a0001, 5 ảnh): 2-nút+hint · Monitor "Remote đã kết nối"(heartbeat D122) · Remote "TV đã sẵn sàng" sync Phần · **Phần 2/5 audio 0:02/9:59 + watermark trôi (fix CDN+wire cùng màn)** · **blackout "Tắt màn TV"→Monitor đen, audio vẫn chạy 0:08**. **Deploy production** (ảnh 15:03 URL `demenart.com/teacher/session/...` domain thật → commit+Cloudflare Pages D84). **(C) Registry D106 mig 067** (nợ v43): D1 audit `admin_modules` (14 cột · status∈{building,live,planned,reserved} · group `lesson-session` f9d9e657 · route/icon đa-số-null D109) → INSERT 2 module `teacher-classroom`+`teacher-remote` (đủ description/usage_note/search_keywords/related_slugs/route/status=live) cùng group lesson-session + UPDATE nối ngược `lesson-session.related_slugs` → **2-chiều đối-xứng**; VERIFY `symmetric_2way_ok=true`·`all_enabled=true`·row 55→57. **🆕 D124** (route TẠO phiên trước chưa vào registry = nợ trả ngay phiên sau, nối related_slugs 2-chiều tới hub enabled). **DB: 53 bảng · 69 hàm definer · 138 policy* · mig 001→067 · seed 001→014 · 7 Edge · 3 tenant/3 master.** mig 067 = DATA change (INSERT 2+UPDATE 1 `admin_modules`, KHÔNG đổi cấu trúc); admin_modules row 55→57. **Routes:** SỬA `_authenticated/teacher.session.$id.tsx` (wire 2 nút TV/Remote — deploy production). **Việc treo:** 🟢 3B Route Nhật ký `/teacher/journal` (DB-first: `lesson_sessions.state`+RPC+mở-khoá-sidebar) · 🟢 Remote V1.2 (điểm-danh/chụp/kết-thúc — StepRecord) · 🟡 nâng Realtime (phone khác máy — `createTransport()`) · 🟡 `cdn.demenart.com` Edge chưa dùng · 064-grant-verify · Media Manager+upload_media video/image (D119) · drift mig057 · Admin wire/re-theme/route · nợ cũ. Kế: 3B Nhật ký HOẶC Remote V1.2 HOẶC nâng Realtime → HANDOFF v45. Cập nhật "tới đâu ghi tới đó" (KỶ LUẬT VÀNG).*
+
+> **v44 wire nút session→Classroom Trio:** `teacher.session.$id.tsx` Bước 2 mở `/teacher/classroom?session=<id>` (Monitor) + `/teacher/remote?session=<id>` (Remote) qua `window.open` named-target. Classroom Trio nay bấm-là-chạy từ luồng dạy (hết teaser URL-trực-tiếp). Deploy production LIVE.
+
+> **v44 registry (mig 067 · admin_modules):** +2 module `teacher-classroom` (Màn chiếu lớp học TV, `/teacher/classroom`) + `teacher-remote` (Bảng điều khiển Remote, `/teacher/remote`), status=live, group=`lesson-session`, related_slugs 2-chiều đối-xứng (classroom↔remote↔lesson-session). Row 55→57. DATA change (không đổi cấu trúc). SQL repo `067_registry_classroom_remote.sql` (D90).
+
+
+ **Cập nhật 2026-07-01 16:47 GMT+7 (v45 · SYSTEM_MAP v0.41): ⭐ KHO HỌC LIỆU LÁT 0 — NỀN ĐA-NGUỒN + ADMIN GÁN VAI + PLAYER/CLASSROOM LỌC `material_role` (mig 068–070, D125).** **Cột mới:** `media_assets.source ∈ {dma_global,school,teacher}` · `lesson_activity_media.material_role ∈ {present,teacher_guide,home_practice,reference}` + `parent_visible` + `kid_visible` · `schools.curriculum_scope ∈ {school,subject}` + `master_sees_teacher_drive`. **RPC mới (mig 069, secdef is_admin-gated, search_path=''):** `get_curriculum_library_tree()` (cây Program→Bài→Version→Phần + library[] assigned_count dò-mồ-côi) · `set_activity_media(version,activity_key,media_id,role,parent_visible,sort)` (gán/cập-nhật, **chéo-bài Hướng B**, idempotent) · `unset_activity_media(row_id)`. `get_lesson_guide` (mig068) REPLACE-thân trả source/material_role/parent_visible mỗi media. **Route mới:** `_authenticated/admin.curriculum-library.tsx` "Kho Học Liệu" (cosmic slate, cây + cửa-gán 4-vai + picker chéo-bài) — nav trong `admin.tsx` nhóm Vận hành (icon FolderTree). **Player lọc vai:** `teacher.session.$id.tsx` Bước 2 tách `present`→player / còn-lại→khối "Tài liệu của cô"; `teacher.classroom.tsx`+`teacher.remote.tsx` `.filter(present)` đối-xứng (index đồng-bộ BroadcastChannel — TV chỉ chiếu present). **Registry (mig 070):** `admin_modules` +`curriculum-library` (group media-security, route `/admin/curriculum-library`, live, 11 keyword) nối 2-chiều `media-vault`; row 57→58. **Hướng B:** `lesson_activity_media` = nguồn-sự-thật duy nhất "media↔Phần"; 1 media dùng nhiều Phần/bài. **⚠ Quota (LÁT 2):** lọc theo `access_level` KHÔNG `source` (dma_global backfill gồm 8 ảnh trẻ private). **DB: 53 bảng · 72 hàm definer (+3) · 138 policy* · +4 cột media/lam +2 cột schools +3 CHECK · mig 001→070 · admin_modules 58 · seed 001→014 · 7 Edge · 3 tenant/3 master.** LÁT 0 khép hoàn toàn (Admin gán + Bước 2 + Classroom Trio); nghiệm thu login thật ĐẠT super_admin + GV Mỹ Linh. Việc treo: LÁT 1 upload video/image (D119)+My Drive · LÁT 2 quota · LÁT 3 Admin browser · LÁT 4 picker-đứng-lớp.
+
+ **Cập nhật 2026-07-01 21:46 GMT+7 (v46 · SYSTEM_MAP v0.42): ⭐ KHO HỌC LIỆU LÁT 1a (ảnh curriculum) + LÁT 1b (video Bunny Stream + HLS) — D126/D127/D128; KHÔNG MIGRATION.** LÁT 1a: `upload_media` nhận ảnh curriculum (jpg/png/webp ≤10MB) + `admin.curriculum-admin.tsx` mở accept; ảnh render `<img>` Bước 2 + Trio. LÁT 1b: video curriculum qua **Bunny Stream lib dma-stream (694835)** + **HLS/hls.js** (băm `.ts` segment thật — bảo vệ IP, Jean chọn B). Edge `get_signed_media_url` +nhánh dma-stream **PATH-BASED token** `/bcdn_token=.../` (D126 — query-token phá variant sub-folder). Bunny `Block direct url file access=OFF` (D127 — phá HLS dù token hợp lệ; token auth vẫn bảo vệ). `teacher.session.$id.tsx` hls.js gắn `<video>` (config sạch, token path-based tự thừa kế; fullscreen phủ container giữ watermark — D128A). `teacher.classroom.tsx` video-chờ-bấm (ts-guard + stop-loop, không đấu autoplay — D128B). **Nghiệm thu TV thật ĐẠT:** Network `vz` master+variant+`.ts` toàn 206 (chunk thật) · watermark fullscreen giữ · Remote sync · video chờ bấm. **DB KHÔNG ĐỔI (KHÔNG mig): 53 bảng · 72 hàm definer · 138 policy* · mig 001→070 · seed 001→014 · 7 Edge · admin_modules 58 · 3 tenant/3 master.** Data live: +2 media_assets (a639f0c7 ảnh + 5e72a438 video Stream) +2 lesson_activity_media link (pick_image/share). **Routes SỬA:** `admin.curriculum-admin.tsx`·`teacher.session.$id.tsx`·`teacher.classroom.tsx` + Edge `upload_media`/`get_signed_media_url` redeploy. **Việc treo:** LÁT 1b-ii (upload video lớn browser→Bunny TUS) · LÁT 1c My Drive · LÁT 2 quota · LÁT 3 browser · LÁT 4 picker · 📋 Remote v2 (UI pro/volume/fullscreen-close-từ-Remote/loop/preview-Phần-kế/Back-Next-media — `part.media[]` đã hỗ trợ đa học liệu/Phần) · watermark burn-in defer · nợ cũ. Cập nhật "tới đâu ghi tới đó" (KỶ LUẬT VÀNG).*
+
+> **v47 +migration 071 (`lesson_sessions` remote-code):** +3 cột `remote_channel_key` (bí mật = phòng Realtime + payload QR sau `#`) · `remote_code` (PIN 6 ký tự, alphabet bỏ O/0/I/1, unique index where-not-null) · `remote_code_rotated_at` (nút Đổi-mã tương lai). +2 RPC secdef khuôn `start_session`: `mint_session_remote_code(session_id)` (authenticated, `is_session_lead OR is_session_teacher`, get-or-create, audit actor=current_profile D88) · `redeem_session_remote_code(code)` (**anon**+authenticated, đổi PIN→channel_key nếu buổi còn sống `scheduled·prep_ready·makeup·in_progress`). Mô hình ghế: Remote KHÔNG account-bound (D129).
+
+> **v47 +route công khai `src/routes/remote.tsx`** = `demenart.com/remote` (NGOÀI `_authenticated`): vào bằng `#k=channel_key` (QR) hoặc ô nhập PIN→`redeem`. KHÔNG gọi `get_lesson_guide` (authenticated) — guide nhận qua Realtime từ Monitor (hướng A, D131). Tái dùng UI điều khiển (nút to 1-tay); CHƯA phải UI Pro 2-layout (R2c treo).
+
+> **v47 `useSessionChannel.ts` v3 (Realtime):** transport BroadcastChannel→**Supabase Realtime Broadcast** (public mode `broadcast:{self:false}` — không đụng RLS `realtime.messages`, anon join được D132; flush hàng-đợi sau SUBSCRIBED). Chữ ký hook + protocol GIỮ NGUYÊN, chỉ đổi 1 hàm `createTransport` (D133/D122). +message type `guide` + `GuideActivityLite`/`GuideMediaLite` + `publishGuide`; `hello` handler (monitor) đẩy lại `status`+`guide` → Remote vào lúc nào cũng kéo được guide mới. Khoá kênh sessionId→channelKey (fallback R1-safe).
+
+> **v47 panel "Kết nối điều khiển"** (`teacher.session.$id.tsx` Bước 2): nút→`mint`→QR (`qrcode.react ^4.2.0`, SVG client-side vì channel_key bí mật) + PIN. Mã CHỈ trong panel GV sau đăng nhập, KHÔNG lên TV (D130). QR trỏ `/remote#k=`; openMonitor `?k=`. Dep mới `qrcode.react ^4.2.0` (React 19).
+
+ **Cập nhật 2026-07-02 (v47 · SYSTEM_MAP v0.43): ⭐ REMOTE v2 PHẦN MÓNG — R1 (mig071 PIN/QR + transport Realtime) + R2a (panel QR/PIN channel_key) + R2b (/remote công khai + guide-qua-Realtime hướng A). D129–D133; nghiệm thu THẬT điện thoại không-login qua QR+PIN.** Mô hình ghế: Remote = điều khiển ghép-theo-buổi (channel_key/PIN), KHÔNG account-bound → bảo toàn phí ghế GV (D129). Mã hiện trong panel GV KHÔNG lên TV (D130). Remote công khai chỉ chạm 1 RPC anon `redeem`; guide do Monitor đẩy Realtime (D131). Kênh broadcast public-mode → anon join dù `realtime.messages` RLS+0-policy (D132, xác nhận bằng spike). Transport đổi BroadcastChannel→Realtime không đập UI (D133). Bug dọc đường đều D105 deploy-lag (realtime=0 giả, QR-đá-auth giả) — hard-reload hết. **DB: 53 bảng · 74 hàm definer (72+2 mig071) · mig 001→071 · seed 001→014 · 7 Edge (KHÔNG đổi) · admin_modules 58 · 3 tenant/3 master.** **Routes:** TẠO `src/routes/remote.tsx` (công khai); SỬA `useSessionChannel.ts`(v3 Realtime+guide)·`teacher.classroom.tsx`(?k+publishGuide)·`teacher.remote.tsx`(#k fallback)·`teacher.session.$id.tsx`(panel QR/PIN, QR→/remote). Dep +`qrcode.react ^4.2.0`. **⏳ Registry D106:** route `/remote` công khai — kiểm có cần INSERT admin_modules không (phiên sau). **Việc treo:** 📋 R2c UI Pro 2-layout (dọc Gọn↔ngang Full, 2 mockup đã chốt: tối+xanh-rừng+honey, theo-tay+Ghim, landscape 2-cột, carve "sắp có", tách 2 nút đỏ, BỎ vuốt) · 📋 R2d Nền chờ TV Tầng 0 (Monitor tự vẽ từ tên-bài+trường) · nút khoá-màn chống trẻ · bug CDN học liệu (audit get_signed_media_url+Bunny) · "Try to fix all" 11 issues CHƯA ĐỘNG (D5/D14) · LÁT 1b-ii TUS · LÁT 1c My Drive · LÁT 2 quota · 3B Nhật ký · lưu repo mig 060–071 (D90) · drift mig057 · nợ cũ. Kế: R2c UI Pro HOẶC R2d Nền chờ HOẶC bug CDN → HANDOFF v48. Cập nhật "tới đâu ghi tới đó" (KỶ LUẬT VÀNG).*
+
+> **v48 migration 072 (`remote_code` 6→4 số + unique scoped-live):** `mint_session_remote_code` REPLACE alphabet `0123456789` len4 + chống-trùng-chỉ-buổi-sống + chốt 50 lần (`code_pool_exhausted`); index `lesson_sessions_remote_code_uidx` DROP→partial `WHERE remote_code NOT NULL AND state IN (scheduled/prep_ready/makeup/in_progress)` (buổi chết trả mã về kho 10k — D135); `redeem` KHÔNG đổi; re-grant mint→[authenticated] (D15). Số hàm definer GIỮ 74 (REPLACE, không thêm).
+
+> **v48 R2c UI Pro (`remote.tsx` viết lại):** tông tối premium; 2 layout theo-tay dọc "Gọn"↔ngang "Full" + nút Ghim khoá hướng; BỎ vuốt; volume/mute/loop thật; seek/blackout/part-nav; thẻ "PHẦN KẾ" (preview Phần sau, thông tin-không-bấm); carve nút "sắp có"; nút đỏ Thoát điều khiển. PIN nhập 4 số (inputMode numeric).
+
+> **v48 `useSessionChannel.ts` v4:** +`volume(0..1)/muted/loop` vào `ClassroomState`+`DEFAULT_STATE` (default backward-compat, publishState merge patch — remote cũ không vỡ). Monitor áp `el.volume/muted/loop` 1 effect idempotent.
+
+> **v48 `teacher.classroom.tsx`:** áp volume/loop; `onCanPlay→setLoadErr(null)` (banner lỗi thoáng-qua tự tắt) + `onMediaError` `load()` 1-lần/media auto-recover (D136); `mapMediaReason` tách `not_school_member`≠`no_active_entitlement` (D138).
+
+> **v48 CHẨN LỖI TV (D137, không phải bug app):** xuất âm ra HDMI (dây+không dây) → Chrome `DECODE`/`SRC_NOT_SUPPORTED` cả mp3+mp4; loa laptop ổn → giới hạn môi trường Chrome↔CoreAudio/thiết-bị-âm-ảo Mac (nghi Teams Audio/EPSON MPP). Chốt lớp: âm loa laptop/BT, TV chỉ hình.
+
+> **🔴 v48 TREO ƯU TIÊN — R2e đồng bộ trang Tiết học:** `teacher.session.$id.tsx` (StepTeach) có player CỤC BỘ, KHÔNG dùng `useSessionChannel` → điều khiển laptop không sang Màn chiếu/Remote (laptop Phần 4, TV Phần 1). Mô hình chốt: nối StepTeach vào kênh làm controller 2-chiều; Monitor = màn phát duy nhất (tiếng loa laptop, hình TV); StepTeach thôi tự-phát-tiếng. Sửa engine+kiến trúc → lát riêng.
+
+ **Cập nhật 2026-07-02 15:49 GMT+7 (v48 · SYSTEM_MAP v0.44): ⭐ REMOTE v2 — R2c UI PRO 2-LAYOUT ship production + preview Phần kế + PIN 6→4 số (mig 072) + banner tự-tắt/auto-recover + tách thông báo entitlement + quy ước AUTO-PUBLISH. D134–D138.** Nối v47 (móng R1/R2a/R2b). R2c: `remote.tsx` viết lại tông tối, 2 layout theo-tay dọc Gọn↔ngang Full + nút Ghim, BỎ vuốt, volume/mute/loop thật, thẻ "PHẦN KẾ" (thông tin-không-bấm), carve "sắp có", nút đỏ Thoát. Hook **v4** +volume/muted/loop (backward-compat). Mig 072 PIN 4 số + index partial scoped-live (chống cạn kho 10k — D135) + re-grant mint. `classroom.tsx` banner onCanPlay tự-tắt + auto-recover load() (D136). Tách thông báo `not_school_member`≠`no_active_entitlement` (chẩn qua verdict-engine+audit_logs: actor `info@demenart.com` school=null bị chặn ĐÚNG — D138). Quy ước auto-publish (build pass→tự publish; dừng khi build-fail/schema-data/live-breaking — D134). Chẩn lỗi TV `DECODE` = môi trường HDMI Mac, không phải bug app (D137) → lớp: âm loa laptop/BT, TV chỉ hình. **DB: 53 bảng · 74 hàm definer (mig072=REPLACE mint, không thêm) · mig 001→072 · seed 001→014 · 7 Edge (KHÔNG đổi) · admin_modules 58 · 3 tenant/3 master.** mig 072 = đổi hàm+index+data (reset buổi demo a0001), KHÔNG đổi cấu trúc bảng. **Routes:** SỬA `remote.tsx`(R2c+preview+PIN4)·`useSessionChannel.ts`(v4)·`teacher.classroom.tsx`(volume/loop+onCanPlay+auto-recover+tách-thông-báo)·`teacher.session.$id.tsx`(tách-thông-báo). **🔴 Việc treo ưu tiên: R2e đồng bộ trang Tiết học ↔ kênh** (StepTeach player cục bộ → nối kênh làm controller 2-chiều, Monitor màn-phát-duy-nhất). **Treo khác:** R2d Nền chờ TV Tầng 0 · nút khoá-màn · bug CDN học liệu (hạ ưu tiên, D126-128) · rate-limit redeem (tùy) · "Try to fix all" 11 issues CHƯA ĐỘNG · LÁT 1b-ii TUS · LÁT 1c My Drive · LÁT 2 quota · 3B Nhật ký · lưu repo mig 060–072 (D90) · drift mig057 · registry /remote D106 · nợ cũ. Kế: R2e → HANDOFF v49. Cập nhật "tới đâu ghi tới đó" (KỶ LUẬT VÀNG).*
+
+---
+
+**Cập nhật 2026-07-02 23:58 GMT+7 (v0.45 — R2e ĐỒNG BỘ TIẾT HỌC ↔ KÊNH XONG).** KHÔNG đổi schema (0 migration; chỉ 1 data reseed). Thay đổi kiến trúc/route:
+- **Trang Tiết học (`teacher.session.$id.tsx`, StepTeach) = BỘ ĐIỀU KHIỂN** (vai `remote` của `useSessionChannel`), KHÔNG còn player cục bộ tự phát tiếng. **Màn chiếu (`teacher.classroom.tsx`) = màn PHÁT DUY NHẤT** (tiếng loa laptop, hình TV) → hết đúp tiếng. Đồng bộ 2 chiều laptop ↔ Remote ↔ TV.
+- **`useSessionChannel.ts`**: +`presentReq{nonce}` trong `ClassroomState` (Remote/laptop bấm "Trình chiếu" → Monitor tự "Bắt đầu trình chiếu" từ xa; fullscreen vẫn cần 1 cử chỉ trên tab Monitor — giới hạn trình duyệt, D143).
+- **KHÔNG autoplay** khi đổi Phần/học liệu ở MỌI bộ điều khiển (StepTeach + `/remote`): command `stop` (cue tại đầu), GV chủ động bấm Phát (D140).
+- **Monitor echo reset** `isPlaying=false + positionSec=0` mỗi lần đổi Phần → nút Phát/Dừng của điều khiển luôn đúng (sửa bug nút kẹt Pause khi lui) (D141).
+- **Toast lỗi Monitor trễ ~1s** (lỗi tự phục hồi không chớp đỏ) (D144).
+- ⭐ **HAI file remote** (D142): **`src/routes/remote.tsx`** = route công khai `/remote` (PIN/QR, 2-layout Gọn/Full) — **BẢN ĐANG DÙNG**; `_authenticated/teacher.remote.tsx` = bản cũ/không dùng (dọn sau). Sửa remote phải sửa `/remote`.
+- **Data:** Phần 4 (`move`/`present`, lesson_version `ac0a5c13`) TẠM trỏ `34ad7ff4` (file "Lắng Nghe Tiếng Mưa" chạy được) vì 2 file "Chú Vịt Con" không đáng tin — chờ Jean upload bản chuẩn.
+
+**Cập nhật 2026-07-04 08:25 GMT+7 (v50 · SYSTEM_MAP v0.46): ⭐ ORG CLOUD (O1–O5) + HỌC LIỆU CÔ THÊM — Phần(0) Nền mở đầu + slideshow · "Học liệu bổ trợ" chiếu-chèn (một-slot) · video GV MP4 ≤100MB · Remote carousel LP-style · đồng bộ guide (guideRev) · mở khoá autoplay. D146–D156; nghiệm thu thật laptop+iPhone.** Nối v0.45. **(Org Cloud, mig 073–078):** `session_media` +`kind`(background/supplement)+`sort_order`(đếm riêng theo kind); RPC `get_school_storage_usage`·`check_session_media_upload_access`(gate theo profile.id vì Edge=service_role, D146)·`get_school_media_library`; `get_lesson_guide` REPLACE thêm-only build `_intro`(Phần 0 từ background)+mảng `aux`(supplement). Edge: `upload_media` **v11**(nhánh session nhận video MP4/webm/mov ≤100MB=`SESSION_VIDEO_MAX` config + form `kind`; nhánh ảnh trẻ+curriculum giữ nguyên byte, D149)·`get_signed_media_url` **v18**(+nhánh private_school_resource ký dma-private)·`delete_session_media` **v1**·`school_media_admin` **v1** → **9 Edge**. **(Nền≠bổ trợ, D147):** (0) tự chiếu đón lớp; bổ trợ = palette chiếu-chèn một-slot (D148: element key=url swap→không đụp; "Về bài dạy"; auto-clear khi đổi phần). **(Slideshow, D150):** ảnh 5s/video muted hết-file/lặp; CHỈ Phần 0 (khu trú); rời=dừng; toggle `bgPlay` (Remote+laptop; resume video phải gọi el.play() thủ công vì autoPlay chỉ chạy lúc mount). **(Fix engine):** `guideRev` reload guide khi media-buổi đổi (D151, hết lệch index (0)/(1)) · `shown` gate chỉ render element khi URL khớp media hiệu lực (D152, tránh SRC_NOT_SUPPORTED loop) · BỎ fade chặn phá play (D154; crossfade 2-element để sau) · lớp phủ "Chạm để bật tiếng" cho autoplay bị chặn NotAllowedError (D153, nối D143; rõ nhất Incognito). **(Remote, D155):** carousel "trang phần" LP-style (Gọn: card giữa+hé mép+snap+cuộn-trong-card) + 2 cột (Full) + Ghim; palette "Học liệu bổ sung"+"Về bài dạy"(midEllipsis+icon loại); toggle nền; banner mediaError; đánh số (0)/1–N. **(Hook):** `ClassroomState` +`auxMediaId`/`bgPlay`/`guideRev`; `MonitorStatus` +`mediaError`; message +`aux` — tất cả thêm-có-default (tương thích ngược). **(Quy trình, D156):** Lovable API write/deploy chập chờn giữa phiên (read OK) → fallback paste; Preview URL phản ánh commit mới tức thì để test. **DB: 53 bảng · 77 hàm definer · session_media +kind+sort_order · 9 Edge · 3 tenant/3 master.** **Routes/Components SỬA:** `useSessionChannel.ts`·`teacher.classroom.tsx`·`teacher.session.$id.tsx`·`remote.tsx`·`SessionResourcePanel.tsx`·`school.drive.tsx`+`school.tsx`(nav "Kho của trường"). **Việc treo:** crossfade 2-element+preload (giảm chớp đen slideshow) · xác nhận toggle nền laptop đã paste · 4 ô "sắp có" Remote + prev/next aux · dọn 7 file Bunny rác (Dọn rác kho) · upload "Chú Vịt Con" Phần 4 · dọn `teacher.remote.tsx` · "Try to fix all" 11 issues CHƯA ĐỘNG (D5/D14) · registry D106 route `/remote`+`/school/drive` · repo backup mig 060–078 (D90) · drift mig057. **Kế:** polish fade/preload HOẶC 4 ô Remote HOẶC admin portal → HANDOFF v51. Cập nhật "tới đâu ghi tới đó" (KỶ LUẬT VÀNG).*
+
+## 🔖 SYSTEM_MAP v0.46 — Org Cloud + Học liệu cô thêm (04/07/2026)
+
+### DB (audit live 04/07/2026)
+- **53 bảng · 77 SECURITY DEFINER · 9 Edge Functions · 3 tenants** (DEMO-001, KHM-DN, MNDM-DN).
+- Migrations nội bộ tới **078** (áp qua execute_sql, VERIFY pass; không track hết trong supabase_migrations).
+
+### Bảng đổi
+- **`session_media`** (junction media ↔ buổi): `id, session_id, media_id, source, added_by, created_at,` **`sort_order int default 0,`** **`kind text default 'supplement' CHECK (kind IN ('background','supplement'))`**.
+  - `kind='background'` → Nền mở đầu → build "Phần 0" (`_intro`) trong get_lesson_guide.
+  - `kind='supplement'` → Học liệu bổ trợ → mảng `aux` (chiếu chèn).
+  - `sort_order` đếm **riêng theo từng kind** trong 1 buổi.
+
+### RPC (SECURITY DEFINER) mới/đụng
+| Hàm | Vai trò |
+|---|---|
+| `get_school_storage_usage(p_school_id)` | dung lượng đã dùng / hạn mức trường (quota bar) |
+| `check_session_media_upload_access(p_session_id, p_viewer_profile)` | gate GV-của-buổi theo **profile.id** (Edge=service_role, D146) |
+| `get_school_media_library(p_school_id, p_scope)` | kho media trường; scope 'school' (master/super) \| 'mine' |
+| `get_lesson_guide(p_session_id)` | REPLACE thêm-only: build `_intro`(Phần 0 từ background) + trả mảng `aux`(supplement); khối phần-thật byte-giống bản cũ |
+| `mint_session_remote_code` / `redeem_session_remote_code` | PIN remote (nguyên từ v48) |
+
+### Edge Functions (9)
+| Function | Ver | Ghi chú |
+|---|---|---|
+| `upload_media` | **v11** | nhánh session: ảnh 10MB + **video mp4/webm/mov/x-m4v 100MB** (`SESSION_VIDEO_MAX` config) + form `kind`; nhánh ảnh trẻ (dma-private) + curriculum (dma-learning) giữ nguyên byte |
+| `get_signed_media_url` | **v18** | +nhánh `private_school_resource` (gate school_id) → ký dma-private, is_stream=false |
+| `delete_session_media` | **v1** | gate GV-buổi → xoá junction → media mồ côi thì xoá file Bunny + state='deleted' |
+| `school_media_admin` | **v1** | gate master/super → 'delete' (used_count=0) \| 'purge' (quét state='deleted' mồ côi) |
+| (5 Edge cũ) | — | get_signed_media_url gốc, check_* verdict, write_audit_log path, v.v. |
+
+### Kênh Realtime (`useSessionChannel.ts`) — field mới
+- **`ClassroomState`**: `auxMediaId: string|null` (aux chiếu-chèn; null=chiếu media phần) · `bgPlay: boolean` (default true; toggle slideshow Phần 0) · `guideRev: number` (default 0; bump→Monitor reload guide) — tất cả **thêm-có-default**, tương thích ngược.
+- **`MonitorStatus`**: `mediaError: string|null` (Monitor→Remote báo lỗi phát).
+- **Message** thêm `aux` (Monitor publish danh sách học liệu bổ sung → Remote palette).
+
+### Routes / Components đổi
+- **`teacher.classroom.tsx` (Màn chiếu):** media hiệu lực = aux > slideshow(Phần 0) > media phần; slideshow (ảnh 5s/video muted hết-file/lặp, chỉ Phần 0); `shown` gate; lớp phủ "Chạm để bật tiếng"; reload guide theo guideRev; banner mediaError; đánh số (0)/1–N.
+- **`teacher.session.$id.tsx` (StepTeach/laptop):** đánh số (0)/1–N; chip (0) disable khi chưa nền; palette aux + "Về bài dạy"; reloadGuide (fix ảnh đọng); toggle nền (bgPlay); bump guideRev khi media đổi.
+- **`remote.tsx` (/remote công khai):** carousel "trang phần" LP-style (Gọn) + 2 cột (Full) + Ghim; palette "Học liệu bổ sung" + "Về bài dạy" (midEllipsis + icon loại); toggle nền card Phần 0; banner mediaError; đánh số (0)/1–N.
+- **`SessionResourcePanel.tsx`:** 2 khu upload "Nền mở đầu"(background) / "Học liệu bổ trợ"(supplement); ảnh+video; preview video badge; quota bar; delete_session_media; onChanged.
+- **`school.drive.tsx` + `school.tsx`:** nav "Kho của trường" (HardDrive); master xem media trường, quota, xoá chưa dùng, "Dọn rác kho" (purge).
+
+### Bunny (nhắc)
+- Video GV → zone **dma-private**, path `/school/{school_id}/…`, signed URL 10' (MP4 thẳng, KHÔNG Stream — D149). Curriculum vẫn Stream/HLS (dma-learning).
+- 7 file rác cũ (state='deleted', quota=0) — file Bunny CHƯA xoá; dọn qua "Dọn rác kho" (school_media_admin purge).
+
+### Nguyên tắc engine phát (media, nhạy cảm — đọc trước khi sửa)
+- Một nguồn phát duy nhất = Màn chiếu (Monitor); StepTeach/Remote = controller.
+- aux = một-slot (element key=url swap → không đụp).
+- Slideshow khu-trú Phần 0; rời=dừng; video nền muted.
+- `guideRev` → Monitor reload guide khi media-buổi đổi (nếu không → lệch index).
+- `shown` → chỉ render element khi URL khớp media hiệu lực (tránh SRC_NOT_SUPPORTED).
+- Autoplay tiếng cần cử chỉ trực tiếp trên Monitor → lớp phủ "Chạm để bật tiếng".
+- KHÔNG chặn setLoaded bằng fade (phá play); crossfade phải 2-element.
+
+---
+
+**Cập nhật 2026-07-05 08:00 GMT+7 (v51 · SYSTEM_MAP v0.47): ⭐ POLISH ENGINE + AN TOÀN BUỔI — (1) Registry D106 hygiene + media-vault description · (2) Preload URL + cross-dissolve ảnh (hết chớp đen Phần 0) · (3) Screen-lock chống trẻ chạm · (4) FIX VIDEO HLS bằng hls.js. D157–D160; KHÔNG migration (chỉ update data admin_modules); ĐÃ PUBLISH production.** Nối v0.46. **(Video HLS — D157):** video Bunny Stream `.m3u8` chết `SRC_NOT_SUPPORTED` trên Chrome/Firefox (chỉ Safari native) → thêm `hls.js@1.6.16`; Màn chiếu bỏ `src={shown.url}`, 1 effect gắn nguồn: `.m3u8`+non-Safari+`Hls.isSupported()`→hls.js attach MediaSource, else `el.src` (MP4 GV D149 + Safari HLS native); mp4_fallback đã thử & bỏ (canPlayType "maybe" + rendition tuỳ chọn). An toàn nguyên vẹn (watermark/token path-based/audit/gate ở Edge+RPC; HLS còn chống tải lậu tốt hơn — segment qua blob). **(Chẩn — D158):** SRC_NOT_SUPPORTED(4)≠NETWORK(2); soi audit_logs `kind_delivery` + get_edge_function + pg_get_functiondef, không đoán; hay test nhầm production vs Preview. **(Preload/cross-dissolve — D159):** cache signed URL RAM TTL 8'<expires (không dùng URL chết) + preload URL slide kế → nền Phần 0 hết chớp đen; cross-dissolve chỉ ẢNH (imgLayers 2 lớp, xfade-in .8s); dọn dead code fadeVol. **(Screen-lock — D160):** field kênh `locked` additive-default; Màn chiếu lớp nuốt-chạm z-30 < needTap z-40 + van giữ-3s tại TV; chống chạm chỉ trong web (không chặn Esc/phím vật lý). **(Registry D106):** teacher-remote route /teacher/remote→/remote; tạo school-drive; điền media-vault description; đối xứng media-vault↔school-drive. **DB: 53 bảng · 77 hàm definer · 9 Edge · 3 tenant (KHÔNG đổi cấu trúc).** **Files:** `teacher.classroom.tsx`(preload+dissolve+dọn fadeVol+screen-lock+hls.js)·`remote.tsx`(nút 🔒)·`useSessionChannel.ts`(+locked)·`package.json`(+hls.js@1.6.16)·admin_modules(data). **Kế:** Tín hiệu TV HOẶC Journal sprint → HANDOFF v52. Cập nhật "tới đâu ghi tới đó" (KỶ LUẬT VÀNG).*
+
+## 🔖 SYSTEM_MAP v0.47 — Polish engine + an toàn buổi (05/07/2026)
+
+### DB (audit live 05/07/2026)
+- **53 bảng · 77 SECURITY DEFINER · 9 Edge Functions · 3 tenants** — **KHÔNG đổi cấu trúc** so với v0.46 (không migration phiên này; chỉ update data `admin_modules`).
+
+### Registry (`admin_modules`) — CẬP NHẬT DATA (D106)
+| Module | Thay đổi |
+|---|---|
+| `teacher-remote` | `route` `/teacher/remote`(chết)→**`/remote`**; title/description/usage_note/search_keywords làm mới đúng bản công khai PIN/QR + Realtime Broadcast (bỏ mô tả "BroadcastChannel" cũ) |
+| **`school-drive`** (MỚI) | route `/school/drive`, group 🏫 Trường & Lớp, status live, đầy đủ description/usage_note/search_keywords, `related_slugs=['media-vault']` |
+| `media-vault` | điền **`description`** (kho media giáo trình admin, khác school-drive); `related_slugs` +`school-drive` (đối xứng 2 chiều §6) |
+> Còn 51 module trống `description` — gần hết roadmap/chưa build; KHÔNG điền hàng loạt (đoán mò). Chỉ backfill module LIVE khi cần.
+
+### Video HLS — hls.js (D157) ⭐
+- **`package.json`** +`hls.js@1.6.16`.
+- **`teacher.classroom.tsx`**: bỏ `src={shown.url}` khỏi `<video>`; effect gắn nguồn video:
+  - url `.m3u8` + `!el.canPlayType('application/vnd.apple.mpegurl')` + `Hls.isSupported()` → `new Hls();loadSource;attachMedia` + `Hls.Events.ERROR` fatal→onMediaError; cleanup `hls.destroy()`.
+  - else → `el.src=url` (MP4 GV thẳng D149 + Safari HLS native).
+- Edge `get_signed_media_url` (KHÔNG đổi) trả cho stream: `signed_url`=HLS `.m3u8` + `mp4_fallback`=play_720p.mp4 + `is_stream:true`. Client dùng HLS (không dùng mp4_fallback — không đáng tin).
+- Video demo HLS: `5e72a438-cac6-43e9-94ec-4021adc44b35` (stream_only, watermark_required, download_allowed=false, expires 15').
+
+### Preload + cross-dissolve (D159)
+- **`teacher.classroom.tsx`**: `urlCacheRef` Map(media_id→{url,watermark,at}) TTL `URL_TTL_MS=8'`; effect ký URL ưu tiên cache-hit; effect preload URL slide kế `introSlides[(bgIdx+1)%n]`; state `imgLayers` (2 lớp) render 2 `<img absolute inset-0>` `animation:xfade-in .8s` (chỉ ẢNH); dọn `fadeVol`+comment+console.error thừa.
+
+### Screen-lock (D160)
+- **`useSessionChannel.ts`**: `ClassroomState` +`locked:boolean`; `DEFAULT_STATE` +`locked:false` (additive-default).
+- **`remote.tsx`**: import Lock/Unlock; `toggleLock()`=publishState({locked:!state.locked}); nút 🔒 "Khoá màn/Đã khoá" ở StatusBar.
+- **`teacher.classroom.tsx`**: state `unlockedAtTV` + re-arm (locked→true reset); `lockPressRef` giữ-3s; khi `state.locked && !unlockedAtTV` phủ `<div z-30>` nuốt chạm + huy hiệu; needTap z-20→z-40.
+- Lớp phủ trong suốt (không che bài); chống chạm chỉ trong web.
+
+### Kênh Realtime (`useSessionChannel.ts`) — field mới
+- **`ClassroomState`** +`locked: boolean` (default false; Remote bật/tắt khoá màn) — thêm-có-default, tương thích ngược.
+
+### Nguyên tắc engine phát (bổ sung v0.47 — đọc trước khi sửa)
+- **Video HLS (Bunny Stream) PHẢI qua hls.js** cho Chrome/Firefox; `<video src=.m3u8>` chỉ chạy Safari (D157).
+- **Preload cache TTL < expires_policy_minutes** (8'<10–15') để không dùng URL chết; cross-dissolve chỉ ẢNH (D159).
+- **Screen-lock `locked`**: lớp nuốt-chạm z-30 < needTap z-40; van giữ-3s tại TV; không chặn Esc/phím vật lý (D160).
+- **KHÔNG auto-publish đường phát video/engine** — test Preview (Chrome+Safari+iPhone) rồi Jean tự Publish.
+- Chẩn lỗi phát: SRC_NOT_SUPPORTED(4)=định dạng/HLS ≠ NETWORK(2)=404/token; soi Edge/RPC/audit, không đoán (D158).
+
+### ✅ Gỡ khỏi treo v50
+- `teacher.remote.tsx` đã xoá khỏi repo (D142 xong) · toggle nền laptop đã có trong StepTeach · registry /remote + /school/drive đã ghi (D106) · media-vault description đã điền · crossfade/preload đã làm.
+
+ **Cập nhật 2026-07-05 16:24 GMT+7 (v52 · SYSTEM_MAP v0.48): ⭐ TÍN HIỆU TV + SFX · PREV/NEXT AUX · REPO 071–078 · JOURNAL SPRINT J1–J3 (mig 079–080, D161–D163). PUBLISHED.**
+
+### Tín hiệu TV (D161)
+- Kênh `ClassroomState` +`signal:{cue,nonce}|null` (additive-default). Remote: nút "Tín hiệu TV" mở strip 4 cue (look 👀 Nhìn lên cô · clap 👏 Vỗ tay nào · quiet 🤫 Trật tự nhé · listen 🔔 Lắng nghe cô), flash "Đã gửi lên TV ✓" 1.5s.
+- Màn chiếu: overlay emoji 130px + chữ, `pointer-events-none`, tự ẩn 5s, `key={nonce}`. **Thứ tự lớp chốt: blackout z-10 < cue z-20 < lock z-30 < needTap z-40.**
+- SFX = Web Audio synth (`playCueSfx`, oscillator+envelope, master 0.22, ~0.5–0.9s/cue) — không file, không đụng element phát; `sfxCtxRef` riêng, resume nếu suspended. Config nội dung+sound per-school = sprint sau.
+
+### prev/next aux (Remote)
+- `gotoAux(delta)` clamp không wrap; ◀▶ trong header AuxPalette cạnh "Về bài dạy"; `auxChipRefs` + `scrollIntoView` đưa chip đang chiếu vào giữa; đổi aux luôn `command:"stop"` (một-slot).
+
+### Journal sprint (mig 079–080, D162/D163)
+- **Bảng MỚI `session_marks`** (id, session_id FK cascade, part_key, part_title, note, marked_at, created_by FK profiles) + RLS: insert/delete GV-của-buổi, select same_school; index (session_id, marked_at).
+- **RPC MỚI `get_teacher_journals()`** — buổi của cô (cd.lead_teacher_id ∪ session_teachers), cửa sổ −60/+7 ngày **giờ HCM**; trả items[]{session_id,title,scheduled_at,state,class_name,program_name,journal_status(not_started/in_progress/submitted/completed/skipped),obs_count,has_report}. Grant authenticated+service_role.
+- **`get_child_journal` REPLACE thêm-only** — journey entry +`teacher_note` CHỈ KHI `child_observations.visibility='parent_visible'` (join live theo ref_id+child_id) → tick là PH thấy ngay nếu entry đã tồn tại (D163).
+- **Route MỚI `_authenticated/teacher.journal.tsx`** (/teacher/journal) — 3 nhóm Cần ghi nhận / Sắp tới / Đã gửi & lịch sử; nav teacher.tsx: "Nhật ký" vào nhóm Lớp học, gỡ khỏi LOCKED.
+- **J3 mạch mark (D162):** Remote (anon) `mark:{partKey,partTitle,nonce}` broadcast → Monitor (GV login) INSERT session_marks qua RLS + toast pill đáy màn → StepRecord dải honey "Mốc cô đánh dấu trong buổi" (chips Phần·giờ).
+- **J2:** ObserveTab +checkbox "Chia sẻ nhận xét này với ba mẹ" (upsert visibility qua saveObs sẵn có, visMap load từ child_observations); parent.journal.tsx render khung amber "Cô nhận xét" khi entry.teacher_note.
+- Registry (mig 080): +`teacher-journal` (group lesson-session, cạnh 2 chiều) → **admin_modules 60**.
+
+### Repo backup 071–078 (D90/D112 — đối chiếu: 060–070 đã dump v43–v45)
+- `071_072_session_remote_code.sql` · `073_078_org_cloud.sql` · `registry_addendum_v46_v51.sql` · `MANIFEST_071_078.md` — tất cả dump live (pg_get_functiondef + aclexplode + constraintdef + pg_policies + to_jsonb); 072 khớp verbatim `supabase_migrations.schema_migrations` (20260702064148). ⏳ 4 Edge (upload_media v11 · get_signed_media_url v18 · delete_session_media · school_media_admin) Jean copy tay từ Dashboard.
+
+**DB: 54 bảng · 78 hàm definer · mig 001→080 · admin_modules 60 · 9 Edge · 3 tenant/3 master.** Mig 079/080 apply qua MCP → có vết schema_migrations (không nợ D90).
+
+---
+
+## Phiên v53 (2026-07-05) — Chụp/Quay tức thì + school_settings (D164–D167)
+
+### Chụp/Quay từ Remote (định nghĩa lại — D165)
+- **Use-case:** tư liệu TỨC THÌ trong tiết (quay bé diễn lại bài, chụp tác phẩm vừa xong → cả lớp xem ngay). KHÔNG phải khoảnh khắc kỷ niệm (ảnh nhật ký cô dùng camera máy, lúc ghi nhận mới chọn).
+- **Đường đi:** Remote (anon) → Edge **`capture_session_media`** (gate `remote_channel_key` qua RPC `check_remote_capture_access` — grant CHỈ service_role, D164) → quota Org Drive check TRƯỚC → Bunny `dma-private /school/{school}/` → `media_assets` (private_school_resource, uploaded_by = cô chính) + `session_media` kind=`supplement` sort kế → Remote publish `{guideRev, auxMediaId, command:"stop"}` → **Màn chiếu chiếu ngay**, chip mọc Remote + StepTeach.
+- **Trần:** quota trường (không trần đếm riêng) · video ≤2 phút (check client metadata trước upload) · ảnh ≤10MB / video ≤100MB (server).
+- **Xoá:** nút 🗑 trong SessionResourcePanel (Edge `delete_session_media` sẵn có) — trừ quota ngay.
+- **Bề mặt cũ:** `capture_session_moment` = **stub 410 deprecated** (không tạo learning_moments từ Remote nữa).
+- **D166:** `guideRev` được lắng ở CẢ Monitor (D151) LẪN StepTeach (+effect refetch, KHÔNG publish lại — chống echo); `SessionResourcePanel` +prop `refreshKey` nối `state.guideRev`.
+
+### school_settings + TV cue per-school (D167)
+- **Bảng MỚI `school_settings`** (school_id, key, value jsonb, updated_at, updated_by) PK (school_id,key); RLS select `same_school`, write `is_school_admin() AND same_school` — thép chờ mọi config theo trường (mig 083).
+- **Cue TV:** key `tv_cues` = `{cues:[{cue,emoji,label,sfx}×4]}`, sfx ∈ preset synth {look,clap,quiet,listen} (không upload file, D161). Monitor nạp+validate → publish field kênh `cueConfig` (additive-default null) + đẩy lại trong nhịp republish guide; Remote strip + TV overlay + SFX `cueConfig ?? mặc định`.
+- **UI:** route MỚI `/school/settings` ("Cài đặt", nhóm Quản lý trường) — 4 hàng emoji/chữ/giai điệu + 🔊 Nghe thử synth + preview chip + Khôi phục mặc định (DELETE row); non-master lưu → RLS chặn + thông điệp.
+- **Registry:** +`school-settings` (cạnh 2 chiều teacher-remote) + **backfill 33→0 module LIVE thiếu description** (mig 084) → 61 module.
+
+**DB: 55 bảng · 79 hàm definer · mig 001→085 · admin_modules 61 · Edge 11 (10 dùng + 1 stub) · 3 tenant/3 master.** Mig 081–085 apply qua MCP → có vết schema_migrations (không nợ D90). ⏳ Edge repo tay: 4 file v52 + `capture_session_media`.
+
+**Cập nhật 2026-07-05 18:26 GMT+7 (v53 · SYSTEM_MAP v0.49): ⭐ CHỤP/QUAY TỨC THÌ → AUX + CHIẾU NGAY · SCHOOL_SETTINGS + TV CUE PER-SCHOOL · BACKFILL REGISTRY (mig 081–085, D164–D167). PUBLISHED + nghiệm thu thật.**
+
+---
+
+## Phiên v54 (2026-07-06) — Org Drive & Teacher Drive: cây thư mục + thùng rác + cron (D168–D172)
+
+### Cây thư mục 3 cấp (mig 086–087, D168)
+- **Bảng MỚI `drive_folders`** (school_id, parent_id FK self CASCADE, owner_profile_id [NULL=trường], name 1-80, created_by) — unique tên-per-parent (COALESCE sentinel + lower) · unique zone-root (school, owner) WHERE parent NULL · RLS: SELECT same_school / write is_school_admin OR owner=me. `media_assets` +`folder_id` FK SET NULL.
+- **Lãnh thổ:** Gốc kho = Master · Ngăn GV (zone root, tên = full_name, bất khả xâm) · folder con kế thừa owner; move sang lãnh thổ khác → cả subtree đổi owner theo ĐÍCH. Đọc MỞ cả trường; thao tác file theo `uploaded_by`, folder theo owner. Cây LOGIC — không đổi path Bunny, không đụng session_media.
+- **RPC:** `drive_ensure_path` (service-only, idempotent — Edge tự tạo Ngăn→"Chụp tại lớp"→YYYY-MM-DD) · `drive_list` (breadcrumb + folders + files + can_write + quota + trash_mb) · `drive_create_folder` · `drive_rename` (folder/file-title) · `drive_move` (chống cycle, `cannot_move_zone_root`) · `drive_my_zone` (mig 090 — GV tự lãnh ngăn khi vào /teacher/media).
+- Data migration: 10 file cũ tự dọn vào ngăn "Đặng Mỹ Linh".
+
+### Thùng rác + purge đêm (mig 088–089 + 092, D169/D170/D171)
+- `media_assets` +`trashed_at`/`trashed_by`/`restore_folder_id`(FK SET NULL) + **mig 092:** `restore_owner_profile_id` + `restore_path text[]` (snapshot đường dẫn TÊN lúc bỏ rác, `drive_folder_pathinfo` loại tên zone-root).
+- **`drive_trash`**: gỡ session_media ngay + folder xoá row thật (cascade), file mang snapshot; `cannot_delete_zone_root`. **`drive_restore`**: folder sống → về chỗ cũ; mất → `ensure_path(restore_owner, restore_path)` DỰNG LẠI CÂY; fallback gốc ngăn. **`drive_list_trash`**: "sẽ về: <path>" + days_left + retention (school_settings `drive_trash_retention_days` fb 7). **`drive_trash_media_service`** (service-only) cho Edge delete_session_media v3.
+- **QUOTA GỒM RÁC** (active+trashed) ở `get_school_storage_usage`/`get_school_media_library`/`drive_list` + 2 Edge upload — byte còn trên Bunny thì còn tính.
+- **Purge 2 pha:** cron `purge-drive-trash-nightly` 02:15 HCM (pg_cron+pg_net, secret trong Vault — D171) → Edge `purge_trash` (gate x-cron-secret) → `drive_purge_expired_list` → Bunny DELETE từng file (404 vẫn finalize) → `drive_purge_finalize` state='deleted'. Bunny fail → giữ trashed, đêm sau thử lại. ⏳ Việc tay: Jean copy secret vault → Edge Secrets `CRON_PURGE_SECRET`.
+
+### Edge (12)
+- `capture_session_media` **v2** (quota gồm rác + folder ngày) · `upload_media` **v12** (nhánh C cất về ngăn; **NHÁNH D MỚI**: form chỉ `folder_id` = kéo-thả Finder vào Drive, không gắn buổi) · `delete_session_media` **v3** (mồ côi → thùng rác kèm snapshot) · `purge_trash` **v1 MỚI**.
+
+### UI (D172)
+- **`@/components/portal/DriveExplorer.tsx` MỚI** (shared D115): breadcrumb (drop-target) · Tạo thư mục · sort/grid/list · multi-select + action bar · menu ⋯ Đổi tên/Di chuyển (dialog navigator)/Bỏ vào thùng rác (cảnh báo xoá-cả-ruột) · kéo-thả nội bộ (`application/x-dma-drive`) · kéo-thả TỪ FINDER upload (overlay + progress + pre-check type/size) · **tile video `<video preload="metadata">` — FIX vỡ tile /school/drive** · quota bar + "Thùng rác đang chiếm X MB" · view Thùng rác (Khôi phục, sẽ-về-path).
+- `school.drive.tsx` = wrapper mỏng (giữ nút Dọn rác kho Bunny) · **`teacher.media.tsx` MỚI** /teacher/media "Học liệu của tôi" (drive_my_zone → mở sẵn ngăn) · nav teacher "Học liệu" (FolderOpen).
+- **D172:** overflow-hidden nuốt dropdown — bo góc đặt ở thumbnail, card mở menu bump zIndex.
+
+**DB: 56 bảng · 93 hàm definer · mig 001→092 · admin_modules 62 (+teacher-media ⇄ school-drive) · Edge 12 · cron 1 active · 3 tenant/3 master.** Mig 086–092 apply qua MCP → có vết schema_migrations. Nghiệm thu thật 18 ảnh (Master Nguyệt Thi + GV Mỹ Linh) 2 vòng.
+
+**Cập nhật 2026-07-06 00:49 GMT+7 (v54 · SYSTEM_MAP v0.50): ⭐ ORG DRIVE & TEACHER DRIVE — CÂY 3 CẤP · THÙNG RÁC RESTORE-DỰNG-LẠI-CÂY · CRON DỌN ĐÊM · DriveExplorer + /teacher/media (mig 086–092, D168–D172). PUBLISHED + nghiệm thu thật.**
+
+---
+
+## 📌 CẬP NHẬT LIVE v0.51 → v0.53 (bồi sau v0.50; nuôi "tới đâu ghi tới đó")
+
+> Số liệu DB mới nhất (audit live v58): **63 bảng · 105 SECURITY DEFINER · 155 policy · mig 001→102 · admin_modules 63 · Edge 14 · cron 1 active · 3 tenant.**
+
+### v0.51 — CỔNG KID V2 (mig 093–095, phiên v56)
+Namespace `/kid` sống thật (Edge-gated session, PIN-based, ba mẹ duyệt — D174).
+- **5 bảng kid_*:** `kid_access` (PIN bcrypt + khung giờ jsonb + lockout) · `kid_devices` (thiết bị ghép, token sha256) · `kid_pairing_codes` (mã 6 số, hạn 10') · `kid_sessions` (phiên 60', token sha256, `channel_key` ngẫu nhiên) · `kid_reactions` (❤️⭐🌈🎵👏, unique child×moment, KHÔNG đếm/xếp hạng).
+- **Edge `kid_gate`** = một cổng service-side (bé không `auth.uid()`). **Realtime 2-làn (D175):** Broadcast key ngẫu nhiên cho điều khiển (kick theo reason); trigger nudge rỗng `notif:{profile}` cho thông báo bền vững → hook `useRealtimeNotifications` 5 shell.
+- Route: `/parent/kid` "Cổng của bé" (bật-tắt/khung giờ/PIN/ghép-thu hồi thiết bị) · `/kid` công khai (state machine pair→pin→album).
+
+### v0.52 — NOTIFICATION HUB TẦNG TRÌNH BÀY (mig 096, phiên v57)
+- `notification_types` = registry điều khiển hành vi, **3 trục trực giao (D176):** `display_style` {silent,toast,popup} (cột MỚI) · `position` · `sound`.
+- **`NotificationPresenter`** (`@/components/portal`, mount 1 chỗ `_authenticated/route.tsx` — D177): render đúng kiểu + tiếng best-effort dma-public + chớp; lastSeen-guard + seen-dedupe + suppress buổi-dạy; badge shell tách biệt.
+
+### v0.53 — KID V2.2: 3 HOẠT ĐỘNG (mig 097–102, phiên v58)
+**2 bảng MỚI (nhóm Cổng Kid):**
+- **`kid_creations`** — sáng tác của bé (thuộc TRẺ + gia đình). `id·child_id→children·kind∈{drawing,recording}·media_id→media_assets·caption·created_at`. RLS bật, không policy permissive (chỉ secdef chạm). media gắn: `source='kid'·private_child_media·dma-private·stream_only=false·linked_child_id`.
+- **`kid_game_items`** — nội dung trò "Nghe & chạm" (TOÀN CỤC). `id·label·emoji·sound_path(dma-public,nullable)·is_enabled·sort·created_at·updated_at`. RLS `is_admin()`+`select_enabled`.
+
+**Hàm definer MỚI:** `kid_save_creation_service` · `get_kid_game_items_service` (đều service-only). REPLACE (+creations): `get_kid_album_service` · `get_child_journal` (creations **parent-only** — trường không thấy).
+
+**Edge (nay 14):** `upload_kid_game_sound` v1 MỚI (admin PUT dma-public) · `kid_gate` **v6** (+save_creation +game_items; actions pair·login·album·react·ping·logout·save_creation·game_items) · `get_signed_media_url` **v20** (4 nhánh: học liệu · moment[consent] · **kid-creation[child_parents, no-consent]** · kho-trường).
+
+**Cổng Kid — 3 hoạt động "bé tự làm"** (cạnh album):
+1. 🎨 **Góc vẽ** — canvas 8 sáp → png → kid_creations(drawing). Hiện album bé + `/parent/journal` "Bé tự làm". Trường không thấy.
+2. 🎤 **Bé hát** — MediaRecorder ≤60s → kid_creations(recording). Player 🎤 ở 2 nơi.
+3. 🎧 **Nghe & chạm** — nghe âm nhạc cụ → chạm đúng emoji (3 lựa chọn). Đúng→🌸, sai→nghe lại. Không điểm/không thua. Nội dung `kid_game_items` (admin `/admin/kid-sound-game`).
+
+**admin_modules (nay 63):** `kid-sound-game` route `/admin/kid-sound-game` nhóm "🧒 Cổng Kid", cạnh 2 chiều `notification-sounds`.
+
+### v0.54 — TRÒ CẢM THỤ MỞ RỘNG + NHÃN RIÊNG TƯ PARENT (mig 103–104, phiên v59)
+- **`kid_game_items` +cột `category`** ('instrument'|'mood', default instrument, CHECK `kid_game_items_category_chk`). 5 nhạc cụ cũ tự về instrument; thêm loại → nới CHECK (additive).
+- **`get_kid_game_items_service`** REPLACE (+category, service-only). **`get_child_journal`** REPLACE (+`tagged_count`, `authenticated`+`service_role` — parent gọi thẳng, D182). kid_gate giữ **v6** (category trôi qua spread — D181).
+- **UI:** `kid.tsx` GameView nhóm theo category + màn CHỌN TRÒ khi >1 loại đủ ≥3 (câu hỏi theo loại 🎵/😊) · `admin.kid-sound-game` ô Loại + đếm ≥3 theo loại · `parent.journal` `MomentPrivacyBadge` (≥2→👨‍👩‍👧 ảnh chung/sky · 1→🔒 riêng gia đình/amber; tooltip trường luôn xem — D183) + `MomentImage` status "empty" (media_id null ≠ denied).
+
+### v0.55 — FIX VIDEO TILE + 2 MEDIA-POOL TÁCH (phiên v60, 0 mig)
+- **`DriveExplorer.tsx`** (dùng chung `/school/drive` + `/teacher/media`): tile video → placeholder gradient `#1c3b30→#0F6E56` + nút Play (bỏ `<video>` inline, hết trắng/đen) + **lightbox** xem/phát ảnh+video; list double-click mở. Ảnh giữ `<img>`. Chỉ Bunny Stream (`bunny_stream_video_id`) mới poster/HLS thật (D185).
+- **2 media-pool TÁCH HOÀN TOÀN:** `private_child_media` (dma-private, ảnh/nhật ký trẻ, KHÔNG auto-purge) vs `private_school_resource` (kho GV/trường, drive purge + nightly cron chỉ đụng pool này) — D184/D48.
+- `teacher.media.tsx`→`drive_my_zone` ("Học liệu của tôi") xác nhận ĐÃ build sẵn (drift vs memory cũ, D112 tin live).
+- DB KHÔNG đổi cấu trúc (UI + data cleanup journal An: hard-delete card trống a3, khôi phục a1 — D186).
+
+### v0.56 — LANDING (`/`) + LOGIN (`/auth`) NÂNG CẤP (phiên v61, 0 mig)
+- **Route `/` (`src/routes/index.tsx`)** — thay placeholder cũ bằng **CỔNG CHÍNH CÔNG KHAI** (ngoài `_authenticated`):
+  - **Header:** logo-banner (ảnh) · "Tôi có mã mời" (→`/auth` tạm, chưa có backend invite) · "Hỗ trợ" (mailto) · nút "Đăng nhập" / "Vào cổng của bạn" (`homePathForRole` khi đã login).
+  - **Hero:** tiêu đề + microcopy ("Mỗi bài học là một trải nghiệm. Mỗi khoảnh khắc là một ký ức.") + 3 chip · **Gateway visual CSS/SVG** (node trung tâm logo-ring + 5 node vệ tinh portal, đường nối chấm) — không phụ thuộc ảnh nặng.
+  - **5 card cổng:** School→`/school` · Teacher→`/teacher` · Parent→`/parent` · Kid→`/kid` · Team→`/admin`. Ảnh watercolor + status badge (Đang hoạt động/Sắp ra mắt/Cần mã PIN/Nội bộ) + CTA màu-theo-portal (green/honey/honey-pink/teal/navy). Kid: lock + note mở khoá.
+  - **Trust strip** 4 mục + **footer** (© 2026 · hotline 1900 636 002 · support@demenart.com · 3 link chính sách tĩnh).
+- **Route `/auth` (`src/routes/auth.tsx`)** — login nâng cấp (giữ 100% auth logic, chỉ UI):
+  - **Hero:** logo-standing (logo đứng) + "Chào mừng trở lại ✨" + subtitle + trang trí lá/sparkle CSS · nền gradient cream.
+  - **Card** (fix z-index D188 — `relative z-10` để không bị hero cắt góc): tiêu đề "Đăng nhập" + gạch honey · form icon-in-input (mail/lock) + **eye toggle** (a11y) · Ghi nhớ (checkbox UI, KHÔNG đổi persist) + Quên mật khẩu→modal hỗ trợ · CTA forest + loading "Đang đăng nhập…" + **error banner thân thiện** (không raw error) · divider "hoặc" + 2 nút outline "Tôi có mã mời"/"Cần hỗ trợ".
+  - **2 modal** (shadcn Dialog): Nhập mã mời (placeholder, chưa backend) · Hỗ trợ (hotline+email). Security notice + support footer.
+  - **Auth flow giữ nguyên:** `signInWithPassword` → `resolveHome` → redirect theo role · `useEffect` session-check.
+- **Asset Bunny `dma-public/landing/`** (9 webp ~190KB): logo-banner · logo-ring · logo-mascot · logo-standing · card-school/teacher/parent/kid/team. Code trỏ `const CDN` + `LANDING_ASSETS` (D187).
+- **CHƯA build (V1 bỏ có chủ đích):** mã mời backend invite · tạo tài khoản/social login · multi-role · i18n/đổi ngữ · trang Giới thiệu/Tin tức. Slot ảnh hero landing để ngỏ (nếu sau thay gateway CSS bằng tranh).
+
+### v0.57 — CỔNG KID: IA "THẾ GIỚI SÁNG TẠO" + 8 HOẠT ĐỘNG / 3 VÙNG (phiên v62+v63, 0 mig)
+- **Kiến trúc:** mỗi game Kid = 1 component `src/components/kid/*` (D189); `kid.tsx` = khung auth+album+điều phối; `shared.ts` `callGate`. **Components:** `DrawView` · `RecordView` · `GameView` · `BellsView` · `PianoView` · `EchoView` · `MixColorView` · `ColorBookView`.
+- **IA màn Kid = "Thế giới sáng tạo của {tên} 🌈"** (DMA-KID-IA-001, KHÔNG phải album page): hero + companion 🐱 (placeholder) + **3 vùng hoạt động** → Con tự sáng tạo ✨ · Vùng âm nhạc 🎵 · Vùng sắc màu 🎨; dưới là Tác phẩm (filter Tất cả/Tranh/Giọng hát + audio card + **empty state**) · Khoảnh khắc (badge nguồn MOCK, chờ taxonomy DMA-KID-MEDIA-001) · Huy hiệu · Hạt giống (4 seed) · Hành trình (timeline).
+- **8 hoạt động / 3 vùng:**
+  1. 🎨 **Vẽ một bức tranh** (`DrawView`, FE) — canvas full-tool → `drawing`→`kid_creations`. Không rotate-gate.
+  2. 🎤 **Hát cho ba mẹ nghe** (`RecordView`, MediaRecorder ≤60s) → `recording`→`kid_creations`. Không rotate-gate.
+  3. 🎧 **Nghe và chạm** (`GameView`) — ⚠️ KHÔNG thuần FE: đọc `kid_game_items` qua Edge `kid_gate` (không sinh data trẻ); 2 category instrument/mood + chooser; không lưu.
+  4. 🔔 **Chuông Định Âm** (`BellsView`, Web Audio celesta) — 8 chuông + 5 bài chơi-theo. Rotate-gate mềm. Không lưu.
+  5. 🎹 **Đàn Piano** (`PianoView`, Web Audio ấm) — 8 trắng+5 đen, +2 quãng, phím tắt, glissando. Rotate-gate mềm. Không lưu.
+  6. 👏 **Con Gõ Lại Nhé** (`EchoView`, Web Audio reuse chuông — D191) — echo notes nghe→gõ lại, 3 cấp (2/3/4 nốt), không điểm/phạt. Rotate-gate mềm. Không lưu.
+  7. 🌈 **Pha Màu Thần Kỳ** (`MixColorView`, FE — D192) — 2 mode (Chơi tự do + Thử thách), 8 công thức order-insensitive. Không rotate-gate. Không lưu.
+  8. 🖍️ **Tô Màu Truyện Tranh** (`ColorBookView`, SVG — D193/D194) — **coloring TEMPLATE ENGINE** (tranh = data `{regions,deco,sampleRegions}`, engine render chung; 5 tranh demo) + 2 mode (Tô tự do / Tô theo mẫu) + undo per-tranh + palette 12 màu. **Save THẬT:** rasterize SVG→PNG→`saveCreation("drawing")`→`kid_creations` (vào "Tác phẩm của {tên}", badge "Tranh", persist Supabase). Không rotate-gate.
+- **Rotate-gate mềm** (D189e): chỉ `(orientation:portrait)` && `(pointer:coarse)`; desktop/landscape không chặn; chỉ MỜI xoay (iOS không lock được) → nhạc cụ phím ngang giữ 8 note một hàng khi landscape. Game sắc màu KHÔNG cần rotate-gate.
+- **Polish (v63):** empty state "Tác phẩm của {tên}" (trước bị ẩn khi rỗng) + header Vẽ khớp card. **KHÔNG (cố ý):** extract KidGameShell · fake badge "Tô màu" (thiếu schema phân biệt drawing/coloring) · migration · đụng logic chạy.
+- **DB KHÔNG đổi cấu trúc** (v62+v63 thuần frontend Kid): 63 bảng · 105 definer · 155 policy · mig 001→104 · Edge 14 · cron 1 · 3 tenant. `kid_gate` giữ v6; sáng tác (gồm tranh tô màu) qua `save_creation` cũ `kind:"drawing"`. Nhạc cụ/Pha Màu không sinh data trẻ.
+- **Backlog Kid:** 🔴 Coloring JSON schema (`{type:"coloring",templateId,coloredRegions}` — phân biệt drawing/coloring + mở lại chỉnh) · 🔴 Moment media source taxonomy (DMA-KID-MEDIA-001) · 🟡 companion chính thức thay 🐱 · 🟡 official DMA SVG coloring templates thay 5 tranh demo.
+
+### v0.58 — KID JOURNEY TIMELINE + AI GROWTH REVIEW PLACEHOLDER (phiên v64, 0 mig)
+- **Kiến trúc chốt = Option A (gộp frontend read-time).** Thư viện MỚI `src/lib/kidJourneyModel.ts` (thuần TS, 0 side-effect): `buildJourneyFeed(album)` gộp 5 mảng thật của `get_kid_album_service` (journey/creations/moments/badges; skills suy seed) → `JourneyEventViewModel[]` sort desc. Fields: `id·eventType(artifact|moment|session|badge)·category(tac_pham|am_nhac|lop_hoc|cot_moc)·title·storyText·occurredAt·sourceLabel·displayKind·seeds[]·media(image|audio|null)·artifact·reactionEmoji`. `SEED_CATALOG` 9 hạt. 0 DB, KHÔNG đụng `get_child_journal`.
+- **`child_journey` (thép chờ #1) = spine JourneyEvent đã có sẵn** (cột `entry_type·source·ref_id·program_id·occurred_at`), audit live v64 = chỉ session(13)+badge(1), `source='demen'`, CHƯA chứa creations/moments. Hai đường đọc journey còn TÁCH RỜI: PH `get_child_journal(child_id)` / Kid `get_kid_album_service(token)`. Hợp nhất về 1 spine (canonical) = việc sau.
+- **Kid Timeline "Hành trình của {tên} 🚌" (C2)** — scrapbook: thẻ ảnh/audio (`KidAudioCard`)/hạt giống/ngày, `journeyEmoji()`, filter mềm (Tất cả·Tác phẩm·Âm nhạc·Lớp học·Cột mốc; pill chỉ hiện khi có data). Thay timeline mềm cũ.
+- **Thẻ AI Growth Review placeholder (C3)** đầu Timeline — nhãn "AI hỗ trợ quan sát", KHÔNG gọi AI (`journeySpanDays`/`topSeeds`); `reviewReady = span≥90 ngày && feed≥8` → chưa đủ hiện insufficient-data (DMA-KID-AI-REVIEW-002/003, D197).
+- **2 rào trung thực (C2.1):** drawing (vẽ+tô màu) → nhãn chung "Tranh"; moment → "Khoảnh khắc ở lớp" — đồng bộ CẢ album LẪN timeline (giết mock Workshop/Sân khấu; xoá `sourceForMoment`), đúng DMA-KID-MEDIA-001. storyText tranh xoay 3 câu trung tính (bỏ "Hôm nay").
+- **DB KHÔNG đổi cấu trúc** (thuần frontend Kid): 63 bảng · 105 definer · 155 policy · mig 001→104 · Edge 14 · cron 1 · 3 tenant. **Commit:** `b38818d`(C1)·`cc648d7`(C2)·`a368e3e`(C2.1)·`47eddf6`(C3).
+- **Backlog Journey:** 🟠 RPC `get_kid_journey_service` (V65 — PH+Radar dùng chung taxonomy seed) · 🟠 AI Review THẬT (V66, cần policy/consent) · 🟠 Parent Art Growth Radar (V67) · 🟠 canonical spine (ghi creations/moments vào `child_journey`).
+
+### v0.59 — KID JOURNEY TIMELINE POLISH + PARENT PREVIEW (phiên v65, 0 mig)
+- **Polish frontend-only trên Timeline V64** (tiếp Option A, `kidJourneyModel.ts`, 0 DB/RPC/RLS/Auth/migration, 0 AI thật). 5 commit: C1 `eb52ccf9` · C3 `c38613eb` · C4 `8a8a2df3` · C5 `502a030b` · C2 `2ad722e8` (thứ tự chạy C1→C3→C4→C5→C2), đều deploy production.
+- **Exports MỚI trong `kidJourneyModel.ts`:** `journeySummary(feed,topN=3): JourneySummary{works,music,moments,sessions,seeds[],total}` (C4) · `groupDrawingRows(feed): TimelineRow[]` với `TimelineRow = single|drawingGroup` + private `dayKeyHCM()` (Intl Asia/Ho_Chi_Minh) (C2). `buildJourneyFeed` giữ nguyên.
+- **`kid.tsx` Timeline:** ảnh branch `eventType==="moment"` → `object-cover` / còn lại (tranh) → `object-contain` + height cap responsive 280–380 / 300–400 (C1). Block **Parent Preview "Ba mẹ nhìn lại cùng {tên} 💛"** đặt đầu section Hành trình, TRƯỚC thẻ AI Review; gate total≥3 mới hiện chips 🎨/🎵/📸 + hạt giống (C4). **Empty-state** khi feed rỗng + CTA Vẽ/Hát (C5). `<ul>` map qua `groupDrawingRows(shownFeed)` — 2 nhánh row, gom ≥3 tranh cùng ngày thành mini-grid grid-cols-3 ≤6 thumbnail (C2).
+- **2 rào trung thực giữ nguyên:** Tô màu chưa tách → "Tranh" · origin chưa có → "Khoảnh khắc ở lớp".
+- **DB KHÔNG đổi** (thuần frontend Kid): 63 bảng · 105 definer · mig 001→104 · Edge 14 · cron 1 · 3 tenant.
+- **Backlog:** 🟡 letterbox tranh nền xám→trắng/soft-paper (version sau) · 🟡 group C2 chờ data ≥3 tranh/ngày mới hiển thị.
+
+### v0.60 — KID JOURNEY TRUST POLISH + PARENT READING EXPERIENCE (phiên v66, 0 mig)
+- **Polish frontend-only trên Timeline V65** — mục tiêu = tăng **độ tin cậy** + **khả năng đọc** Kid Portal cho phụ huynh, KHÔNG tăng phức tạp kỹ thuật. Chỉ đụng `src/routes/kid.tsx` (9 edit), **KHÔNG đụng `kidJourneyModel.ts`** (model V64/V65 đã đủ). 0 DB/RPC/RLS/Auth/migration · 0 AI thật · không Art Growth Radar · không game mới. **3 commit:** C1 `751a31bd` · C2 `23170377` · C3 `c3f535b7` (deploy 1 lần cuối).
+- **C1 Trust copy + source label color-code:** (a) footnote nghiêng nguồn dữ liệu dưới Parent Preview 💛 ("Tổng hợp từ những hoạt động và khoảnh khắc đã được lưu trong hành trình của con."); (b) helper thuần MỚI `journeyLabelClass(category)` color-code nhãn timeline: tac_pham→rose · am_nhac→teal · lop_hoc→sky · cot_moc→violet · default→amber — áp cho cả card đơn (`e.category`) lẫn card gom tranh (`"tac_pham"`). **Text nhãn GIỮ NGUYÊN** ("Tranh"/"Giọng hát"/"Khoảnh khắc ở lớp"/"Buổi học"/"Huy hiệu") — trung thực data thật, KHÔNG đổi taxonomy (D199-nguyên-tắc).
+- **C2 AI Review disclaimer + Parent conversation prompt:** (a) micro-section **"Gợi ý ba mẹ hỏi con hôm nay 💬"** (3 câu hỏi mềm STATIC, không phụ thuộc AI/event) đặt NGAY SAU Parent Preview, TRƯỚC thẻ AI Review — biến Kid Portal thành cầu nối ba mẹ–con; (b) viết lại copy nhánh insufficient-data của AI Review non-diagnostic rõ ("AI chưa đưa ra nhận xét phát triển vì hành trình của {tên} cần thêm dữ liệu theo thời gian. Khi đủ dữ liệu, AI chỉ hỗ trợ ba mẹ và giáo viên quan sát xu hướng nghệ thuật của con — không thay thế nhận xét của giáo viên."). Giữ nhãn "AI hỗ trợ quan sát"; KHÔNG gọi AI thật; KHÔNG từ chẩn đoán (đánh giá năng lực/kết luận/xếp loại).
+- **C3 Artwork soft-paper background + empty-state:** (a) letterbox artwork `object-contain` (timeline single + drawingGroup thumbnails) đổi từ xám `bg-black/5` → **cream `bg-amber-50/50`** (soft-paper, hợp ivory/honey); TÁCH bg vào từng nhánh để moment `object-cover` GIỮ NGUYÊN `bg-black/5` (giải quyết D198-note letterbox); tranh của bé KHÔNG bị cắt; (b) empty-state Tác phẩm mềm hơn ("Đây sẽ là nơi cất những tác phẩm đầu tiên của con…"). 2 empty-state còn lại (Hành trình rỗng, Parent Preview <3) đã tích cực → giữ nguyên.
+- **DB KHÔNG đổi** (thuần frontend Kid): 63 bảng · 105 definer · mig 001→104 · Edge 14 · cron 1 · 3 tenant.
+- **Nghiệm thu 13/13 PASS** trên `/kid` phiên An (9 ảnh Jean). Overlay "📌 Save" = extension Pinterest browser Jean (KHÔNG phải code app). Card gom tranh cùng ngày chưa trigger vì data chưa ≥3 tranh liên tiếp/ngày (không bug).
+- **Backlog:** 🟡 group artwork chỉ hiện khi có ≥3 tranh cùng ngày LIÊN TIẾP (logic đã ship V65) · 🟡 empty-state (Hành trình rỗng + Parent Preview <3) cần child ít data để nghiệm thu · 🟠 Parent Portal đầy đủ / Journey Detail (chi tiết từng tác phẩm) / Art Growth Radar — KHÔNG thuộc V66, cân nhắc version sau · 🟠 AI Review THẬT (cần policy/consent, DMA-KID-AI-REVIEW-001 còn treo) · 🔴 Coloring JSON schema · 🔴 Moment media source taxonomy · 🟠 canonical spine (creations/moments → `child_journey`).
+
+### v0.61 — PARENT PORTAL FOUNDATION + CHILD JOURNEY ENTRY (phiên v67, 0 mig)
+- **`/parent` từ redirect-câm → landing thật** (Parent Portal Foundation). Trước v67: `parent.index.tsx` chỉ `throw redirect({to:"/parent/journal"})` + `home-path.ts` map PH → `/parent/journal` → landing "vô hình". v67: PH login vào thẳng `/parent` (cửa đầu tiên), có tổng quan → chọn con → đi vào hành trình. **Frontend-only, 0 DB/RPC/RLS/Auth/migration, 0 AI thật, không Radar/game/upload/notification.** 1 build auto-app (get_diff sạch đúng 2 file, typecheck pass, deploy production).
+- **2 file đụng (không hơn):** `src/lib/home-path.ts` (1 dòng: PH `primary_parent`/`secondary_parent` → `/parent`) · `src/routes/_authenticated/parent.index.tsx` (paste-over: bỏ redirect → component `ParentHome`). KHÔNG đụng `parent.tsx`(shell)/`parent.journal.tsx`/`parent.kid.tsx`/`parent.consent.tsx`/`kidJourneyModel.ts`/`routeTree.gen.ts`.
+- **Landing gồm 4 phần:** (C2) hero amber "Chào ba mẹ của {tên} 💛" (else "Chào ba mẹ 💛") + subcopy + 2 CTA (Xem hành trình của con → `/parent/journal`; Cổng của bé → `/parent/kid`); (C3) **Child Journey Summary Card** + child-selector pills khi >1 con; (C4) section "Ba mẹ có thể cùng con…" 3 gợi ý STATIC; (C6) empty-state trung thực (chưa liên kết con / chưa đủ data).
+- **Data thật (KHÔNG hardcode, KHÔNG RPC mới):** `child_parents` select `children:child_id(id,full_name,nickname)` theo `parent_profile_id` (danh sách con) + RPC **`get_child_journal(p_child_id)`** → `{journey,skills,badges,moments,creations}`. Đếm inline: works=`creations` kind=drawing · voice=kind=recording · moments=`moments.length` · badges=`badges.length` · topSeed=`skills` sort `signal_count` desc. `hasData = works+voice+moments > 0` → hiện Summary; else → empty-state tích cực. 2 rào trung thực: drawing (vẽ+tô màu) → "Tác phẩm"; moment → "Khoảnh khắc".
+- **⭐ Đường đọc journey của PARENT = `get_child_journal` (RLS `is_child_parent`, không PIN), KHÔNG `get_kid_album_service` (cần kid token).** `/kid` = màn thiết bị bé (PIN+device pairing) → Parent Portal KHÔNG trỏ `/kid` trực tiếp (máy ba mẹ kẹt màn PIN). Hai đường đọc journey vẫn tách rời; số có thể lệch giữa route parent vs kid (đã biết, không bug) — với An hiện KHỚP 6/2/3.
+- **DB KHÔNG đổi** (thuần frontend Parent): 63 bảng · 105 definer · mig 001→104 · Edge 14 · cron 1 · 3 tenant.
+- **Nghiệm thu 14/14 PASS** phiên PH Nguyễn Văn Hùng (con An/Khang, 3 ảnh Jean): `/parent` hero + selector An/Khang + Summary 6 tác phẩm/2 giọng hát/3 khoảnh khắc + "Hạt giống nổi bật: Hát theo"; `/parent/journal` + `/parent/kid` nguyên vẹn (không đụng).
+- **Backlog:** 🟠 Parent Portal đầy đủ (multi-child dashboard, quản lý nhiều con) · 🟠 Journey Detail (chi tiết từng tác phẩm) · 🟠 canonical spine hợp nhất 2 đường đọc journey (`get_child_journal` ↔ `get_kid_album_service`) · 🟠 Art Growth Radar · 🟠 AI Review THẬT · 🔴 Coloring JSON schema · 🔴 Moment media source taxonomy.
+
+### v0.62 — SHARED JOURNEY SUMMARY (phiên v68 audit + v69, 0 mig)
+- **V68 audit-only** (0 code): chốt 2 đường đọc journey TÁCH RỜI + **`child_journey` KHÔNG phải spine thật** (chỉ session(13)+badge(1); spine hiện tại = jsonb merge tầng RPC từ 5 bảng gốc — creations/moments/skills/badges đọc thẳng bảng, không qua child_journey). 6 rủi ro lệch R1–R6 (R1 moment thiếu media: parent đếm raw / kid lọc → parent≥kid; R2 total khác định nghĩa; R4 badge trùng hiển thị parent.journal; R6 creations phụ thuộc caller). Jean chọn **Phương án A** (shared frontend adapter); B (RPC canonical) / C (enrichment spine) để dành.
+- **V69 frontend-only** (0 DB/RPC/Edge/Auth/RLS/migration · 0 AI · không Radar/Detail). **Exports MỚI trong `kidJourneyModel.ts`:** `hasDisplayableMedia(item)=!!(signed_url||media_id)` + `summarizeChildJournal(input): {works,voice,moments,badges,topSeed,visibleTotal}`. `buildJourneyFeed`/`journeySummary`/`groupDrawingRows` GIỮ NGUYÊN. Fix D8 (paste tay nuốt `<`: `Array`→`Array<`).
+- **`/parent` landing (`parent.index.tsx`):** bỏ đếm raw inline → `summarizeChildJournal(data)` (payload `get_child_journal`, media_id); xoá 2 type chết. **`/kid` Parent Preview 💛 (`kid.tsx`):** 3 chip (🎨 works · 🎵 voice · 📸 moments) đổi nguồn số sang `summarizeChildJournal(album)` (signed_url); `enough`(=`journeySummary(feed).total>=3`)/`sum.seeds`/feed/timeline GIỮ NGUYÊN. **`parent.journal.tsx` KHÔNG đụng.**
+- **Luật canonical R1:** visible-media; moment/creation thiếu media active KHÔNG đếm/KHÔNG hiện, KHÔNG xoá gốc. Badge count từ `badges[]` (không journey). visibleTotal=works+voice+moments (không sessions/badges).
+- **DB KHÔNG đổi:** 63 bảng · 105 definer · 155 policy · mig 001→104 · Edge 14 · cron 1 · 3 tenant.
+- **Commit:** C1(paste tay)·`43d139c`(C1-fix+C2)·`e134d58`(C3). get_diff sạch từng lượt, typecheck pass, deploy 1 lần. Nghiệm thu PASS khớp 6/2/3 (PH Hùng, An; 2 ảnh Jean).
+- **Backlog:** 🟠 R4 badge trùng HIỂN THỊ `/parent/journal` (V69 chỉ chống trùng count) · 🟠 nghiệm thu R1 chờ data moment thiếu ảnh · 🟠 Phương án B RPC canonical khi cần superset (Journey Detail/Dashboard/Radar) · 🟠 rename `kidJourneyModel.ts`→`journeyModel.ts` · 🟠 consent-aware count landing.
+
+### v0.63 — JOURNEY DETAIL LIGHTBOX (KID) (phiên v70, 0 mig)
+- **Detail experience nhẹ trên Kid Timeline V64–V69** (tiếp Option A, `kidJourneyModel.ts`, 0 DB/RPC/Edge/RLS/Auth/migration, 0 AI thật, không Radar/Dashboard). Mục tiêu: bấm vào tác phẩm/khoảnh khắc trong timeline "Hành trình" → mở lightbox ảnh lớn + thông tin nhẹ + gợi ý trò chuyện, để ba mẹ và con cùng mở ra kể chuyện. **2 file, 2 commit agent auto-app, deploy 1 lần** (C1 `501c68e` · C2 `dcf794c`).
+- **C1 — Export MỚI trong `kidJourneyModel.ts`:** `conversationPrompt(event: JourneyEventViewModel): string` — pure/static, map eventType/artifact → 1 câu mở lời cố định (artifact drawing→màu sắc/ý tưởng · artifact recording→bài hát · moment→hoạt động ở lớp · session→buổi học · badge→khích lệ nhẹ · fallback). KHÔNG AI, KHÔNG chấm điểm. `summarizeChildJournal`/`buildJourneyFeed`/`journeySummary`/`groupDrawingRows`/`hasDisplayableMedia` GIỮ NGUYÊN.
+- **C2 — `kid.tsx` (5 edit):** (1) import `conversationPrompt`; (2) state `openItem: JourneyEventViewModel | null` trong `AlbumView`; (3) thumbnail trong `drawingGroup` bọc `<button onClick={setOpenItem(ev)}>`; (4) ảnh card `single` bọc `<button onClick={setOpenItem(e)}>` (giữ nguyên `max-h`/`object-fit`/`bg` — chỉ dời class `mt-3` ra button); (5) `<Dialog>` detail cuối `AlbumView` — nhãn màu (`journeyLabelClass`) + ngày (`formatDateVi`) + ảnh lớn (`object-contain` cream `bg-amber-50/50` cho tranh / `object-cover` `bg-black/5` cho moment, `max-h-[60vh]`) + `KidAudioCard` nếu media audio + storyText + khối 💬 "Gợi ý trò chuyện" (`conversationPrompt`). Reuse `Dialog`/`DialogContent` đã import sẵn — shadcn tự lo ✕/Escape/overlay đóng.
+- **⭐ Detail dùng `openItem.media.url` ĐÃ ký batch từ `get_kid_album_service`** → 0 gọi thêm `get_signed_media_url`/Edge → frontend-only rủi ro thấp. (Đối lập `/parent/journal` ký lẻ + consent gate → Parent Lightbox thuộc sprint riêng.)
+- **Item click được:** 🎨 Tranh (card single + thumbnail trong drawingGroup) · 📸 Khoảnh khắc (moment). **Chưa click (backlog):** 🎤 recording (audio card không bọc button — tránh nested-button) · session/badge (không media) · album "Tác phẩm" grid (ngoài timeline).
+- **2 rào trung thực giữ nguyên:** Tô màu chưa tách → "Tranh" · origin chưa có → "Khoảnh khắc ở lớp".
+- **DB KHÔNG đổi** (thuần frontend Kid): 63 bảng · 105 definer · 155 policy · mig 001→104 · Edge 14 · cron 1 · 3 tenant.
+- **Nghiệm thu PASS** (PH Nguyễn Văn Hùng, con An, 10 ảnh Jean): timeline render đủ 8/7→19/6 không vỡ; Summary Parent Preview 💛 GIỮ 🎨 6 · 🎵 2 · 📸 3; bấm tranh 8/7 → lightbox (nhãn "Tranh" + ngày + tranh không cắt + storyText + 💬 "Con muốn kể cho ba mẹ nghe về bức tranh này không? Con thích màu nào nhất?"); bấm khoảnh khắc 29/6 → lightbox (nhãn "Khoảnh khắc ở lớp" + ảnh lớn + 💬 "Lúc đó con đang làm gì? Con thích điều gì nhất?"); ✕ đóng. Overlay "Save" = extension Pinterest browser Jean (không phải bug).
+- **Backlog:** 🟠 Parent Journal Lightbox (sprint riêng: card clickable CHỈ khi media `status==="ok"`, dùng URL đã ký, KHÔNG re-sign/bypass consent; `parent.journal.tsx` chưa import Dialog) · 🟠 album "Tác phẩm" grid `/kid` clickable · 🟠 recording detail (giải nested-button) · 🟠 session/badge detail · (kế thừa) 🟠 Phương án B RPC canonical · 🟠 rename model · 🟠 Parent Dashboard/Radar/AI Review THẬT · 🔴 Coloring schema · 🔴 Moment taxonomy.
+
+**Cập nhật 2026-07-08 20:56 GMT+7 (v71 · SYSTEM_MAP v0.64): ⭐ PARENT JOURNAL LIGHTBOX (CONSENT-SAFE DETAIL) — frontend-only, 0 DB/RPC/Edge/Auth/RLS/migration, 0 AI, 0 re-sign. Đưa detail lightbox V70 từ `/kid` sang `/parent/journal` cho Tác phẩm+Khoảnh khắc; consent-safe. 1 file `_authenticated/parent.journal.tsx`: import Dialog + local `ParentJournalLightbox` (pure presentational, không network/media_id/consent-logic) + CreationCard drawing clickable + MomentImage `onReady` + MomentCard **overlay button** (D203: overlay `absolute inset-0` KHÔNG bọc `MomentImage` → chống remount/re-sign + giữ nút "Vì sao?" consent hint ở trạng thái denied). Mở CHỈ khi media `status==="ok"`, dùng lại signed URL đã ký trên card — 0 gọi `get_signed_media_url` mới. denied/hidden/empty/loading + recording (audio) KHÔNG mở. Commit `f705173`(C1)·`66710b6`(C2)·`4066dfb`(C3), agent auto-app, get_diff sạch đúng 1 file, deploy 1 lần production. Nghiệm thu login thật PH Hùng con An (6 ảnh): lightbox Tác phẩm (tranh con sâu 8/7, object-contain không cắt) + Khoảnh khắc (ảnh nhóm 28/6) + 💬 gợi ý trò chuyện đúng loại; recording giữ player inline; summary 6/2/3 giữ nguyên. **DB/Edge KHÔNG ĐỤNG (0 migration/RPC/Edge/policy).** Routes: SỬA `_authenticated/parent.journal.tsx`. Việc treo: nghiệm thu nhánh denied/hidden/empty Parent Lightbox (chờ data consent-blocked, gộp R1) · album Tác phẩm grid `/kid` · recording/session/badge detail · lưu repo `parent.journal.tsx` V71 · nợ cũ. Cập nhật "tới đâu ghi tới đó" (KỶ LUẬT VÀNG).*
+
+**Cập nhật 2026-07-09 00:42 GMT+7 (v72 · SYSTEM_MAP v0.65): ⭐ PARENT JOURNAL CONSENT-BLOCKED QA + UX GUARD — audit/QA-only, 0 code, 0 DB thay đổi vĩnh viễn (0 migration/RPC/Edge/Auth/RLS/AI), KHÔNG C3.** Khóa nợ nghiệm thu V71: chứng minh Parent Journal Lightbox **tuyệt đối không mở** khi media không ở `ok`.
+- **C1 audit code sống** (`parent.journal.tsx` qua Lovable `read_file`) + đọc Edge `get_signed_media_url` (v20) + RPC `media_consent_check` + `get_child_journal` (Supabase read-only): guard V71 đúng **bằng cấu trúc**. Ma trận state→behavior: Moment mở lightbox CHỈ khi `MomentImage`→`onReady` bắn (nhánh `ok`) → `canOpen=!!signedUrl`; loading/denied/hidden/empty/recording KHÔNG render overlay. Creation mở CHỈ `status==="ok" && kind==="drawing"`. Overlay `absolute inset-0` **vắng DOM** khi không ok → không click xuyên + không che nút "Vì sao?" (denied consent_missing → `ConsentWaitingHint` bấm thẳng). 0 network trong lightbox · 0 media_id thô · 0 re-sign.
+- **⭐ Gate consent xem ảnh (truy nguồn thật):** Edge nhánh `linked_moment_id` → `media_consent_check(p_action='view')` chọn `required_consent_type` **động theo `tagged_count`**: `≥2`→**`group_moment_in_class`** (ảnh nhóm) · `=1`→**`display_in_app`** (ảnh 1 bé) · MIN-consent gom mọi bé tag thiếu → `consent_missing`+`blocking_children`. Creation nhánh `source='kid'`+`linked_child_id` → ba mẹ liên kết xem KHÔNG cần consent.
+- **⭐ `get_child_journal` trả `media_id` KHÔNG lọc consent** (chỉ `state='approved'`+active media) → consent chỉ chặn lúc **ký** ở Edge → `summarizeChildJournal` (đếm `!!media_id`) **bất biến khi tắt consent** → summary 6/2/3 GIỮ NGUYÊN. QA consent-toggle an toàn cho nghiệm thu chính.
+- **C2 QA nghiệm thu bằng ảnh** (login thật PH Nguyễn Văn Hùng con An, 9 ảnh Jean): baseline journal 3 ảnh khoảnh khắc + lightbox 29/6 mở + `/parent` 6/2/3 → `/parent/consent` tắt **CHỈ** `group_moment_in_class` (share/download giữ ON, toast "Đã cập nhật") → journal: 28/6+29/6 (ảnh nhóm) chuyển "Đang chờ ba mẹ đồng ý cho xem ảnh này" + nút "Vì sao?" sống, KHÔNG mở; 26/6 (ảnh 1 bé, `display_in_app` còn ON) VẪN mở lightbox → `/parent` VẪN 6/2/3 → rollback bật lại `group_moment_in_class`, ảnh nhóm hiện lại.
+- **Rollback DB confirm (read-only):** `group_moment_in_class` của An = ĐANG BẬT (granted_at 2026-07-09 00:36 = dấu vết re-grant); `display_in_app`/`download`/`private_share_link` KHÔNG bị đụng. Demo về đúng trạng thái nghiệm thu chính.
+- **AC 16/16:** PASS bằng ảnh #1–3,#7,#11–16; PASS bằng cấu trúc (C1) #4 hidden/#5 empty (nhánh phòng thủ, chưa có data hiện bằng mắt)/#8 re-sign/#10 media_id thô.
+- **DB/code KHÔNG ĐỔI:** 63 bảng · 105 definer · 155 policy · mig 001→104 · Edge 14 · cron 1 · 3 tenant. `parent.journal.tsx` KHÔNG sửa (guard V71 giữ nguyên). **Việc treo:** 🟠 hidden/empty Parent Lightbox chờ data consent-blocked thật (gộp R1) · 🟠 lưu repo/backup thay đổi V71 · (kế thừa) 🟠 Parent Dashboard/Radar/AI Review THẬT · 🟠 Phương án B RPC canonical · 🟠 rename `kidJourneyModel.ts` · 🔴 Coloring schema · 🔴 Moment media taxonomy. Cập nhật "tới đâu ghi tới đó" (KỶ LUẬT VÀNG).*
+
+**Cập nhật 2026-07-09 09:58 GMT+7 (v73 · SYSTEM_MAP v0.66): ⭐ PARENT JOURNAL READING EXPERIENCE POLISH — frontend-only, 0 DB/RPC/Edge/Auth/RLS/migration, 0 AI, 0 re-sign. 3 commit agent auto-app (get_diff sạch từng lượt, đúng 1 file `_authenticated/parent.journal.tsx`, KHÔNG đụng `routeTree.gen.ts`, typecheck pass, 3 deploy).**
+- **C1 `6be6edd` copy/section polish:** header subcopy ấm hơn; nhãn "Bé tự làm"→"Tác phẩm của con" + "Khoảnh khắc"→"Khoảnh khắc ở lớp" (đồng bộ title lightbox V71); recording label "Âm thanh của con" (trung tính — `kind='recording'` chưa phân biệt hát/nhạc) + câu khích lệ "Ba mẹ có thể nghe lại cùng con và hỏi con thích đoạn nào nhất."; moment empty ấm hơn. `<audio>` GIỮ NGUYÊN. Nghiệm thu PASS (PH Hùng, An, 5 ảnh); summary 6/2/3 giữ nguyên.
+- **C2 `f9018ef` lightbox affordance:** badge "🔍 Xem lớn" (`ZoomIn`, `pointer-events-none`) CHỈ trong gate `canOpen` (Moment overlay) / `status==="ok" && kind==="drawing"` (Creation button); recording + denied/hidden/empty/loading KHÔNG có badge → không rò, không chặn click, không che nút "Vì sao?". Nghiệm thu PASS gồm consent-blocked (tắt `group_moment_in_class` → 2 ảnh nhóm KHÔNG rò badge + "Vì sao?" sống; ảnh 1-bé `display_in_app` còn ON vẫn có badge).
+- **C3 `4885121` badge dedup:** filter `entry_type !== "badge"` khỏi timeline "Hành trình" bằng IIFE `const timelineEntries = data.journey.filter((e) => e.entry_type !== "badge")`, dùng cho CẢ empty-check LẪN `.map` (bẫy empty-list: bé chỉ có badge → hiện empty copy đúng, không `<ol>` rỗng). Sidebar "Huy hiệu kỷ niệm" (đọc `child_badges` `confirmed`) = nguồn hiển thị chính. 0 đổi data/count/RPC; inner `.map` + curly-quotes teacher_note nguyên vẹn; sidebar `data.badges` KHÔNG đụng.
+- **⭐ C3 nghiệm thu bằng CẤU TRÚC + DATA AUDIT (KHÔNG bằng ảnh An):** `get_child_journal` `journey[]`=`child_journey` (MỌI `entry_type` gồm `'badge'`) vs `badges[]`=`child_badges` JOIN `badges` `status='confirmed'` — **2 NGUỒN KHÁC NHAU**. Audit toàn hệ (2026-07-09): chỉ **Bé Jenny Demo** (`429d4fb7-67f0-4166-8ec3-fee7ad1a3666`, PH `parent.demo@demenart.com`) có badge — có CẢ journey-badge entry LẪN `child_badges` confirmed; **KHÔNG bé nào** có journey-badge thiếu confirmed-badge → dedup an toàn (badge không mất, chuyển về sidebar). **An (`d1000000-…-0041`) có 4 session, 0 badge** → C3 **no-op** với An; sidebar "Huy hiệu kỷ niệm" **VẮNG là ĐÚNG** (badges[] rỗng), KHÔNG phải regression. An KHÔNG phải dataset nghiệm thu badge dedup; visual QA dùng Jenny hoặc seed badge confirmed cho An ở sprint data riêng (ngoài V73).
+- **Bài học D1/D3:** nghiệm thu C3 lần đầu nói "sidebar badge vẫn hiện" — suy từ premise R4, chưa kiểm data An → SAI (An 0 badge); sửa bằng audit DB sống. Badge dedup / mọi "vẫn hiện ở nơi khác" phải verify bằng query dataset THẬT.
+- **DB KHÔNG ĐỔI** (thuần frontend): 63 bảng · 105 definer · 155 policy · mig 001→104 · Edge 14 · cron 1 · 3 tenant. **Guard giữ nguyên:** summary V69 (6/2/3) · `/kid` lightbox V70 · Parent Journal Lightbox V71 · consent guard V72 (D204). Routes: SỬA `_authenticated/parent.journal.tsx`.
+- **Backlog:** 🟠 lưu repo/backup `parent.journal.tsx` V73 · 🟠 visual QA badge dedup (Jenny Demo / seed badge confirmed cho An) · 🟠 R4 đã xử lý HIỂN THỊ (dedup timeline; count đã chống trùng từ V69) · (kế thừa) 🟠 Parent Dashboard đầy đủ/Radar/AI Review THẬT · 🟠 Phương án B RPC canonical `get_child_journey_service` · 🟠 rename `kidJourneyModel.ts` · 🟠 consent-aware count landing · 🟠 hidden/empty Parent Lightbox chờ data · 🔴 Coloring schema · 🔴 Moment media taxonomy. Cập nhật "tới đâu ghi tới đó" (KỶ LUẬT VÀNG).*
+
+**Cập nhật 2026-07-09 12:15 GMT+7 (v74 · SYSTEM_MAP v0.67): ⭐ PARENT JOURNAL = TIMELINE SPINE ("Cây ký ức nghệ thuật của con") — frontend-only, 0 DB/RPC/Edge/Auth/RLS/migration, 0 AI, 0 re-sign. `/parent/journal` cột chính chuyển section-based → 1 trục dọc (hướng A-rich). 3 commit agent auto-app (get_diff sạch, đúng 1 file `_authenticated/parent.journal.tsx`, KHÔNG đụng `routeTree.gen.ts`, typecheck pass, deploy 1 lần cuối → demenart.lovable.app).**
+- **C1 `1f41a67` adapter thuần metadata:** `buildParentTimeline(data)` merge journey(entry_type≠"badge") + creations + moments → `ParentTimelineEvent[]` sort desc `occurredAt` (journey→`occurred_at`; creation/moment→`created_at`); `groupTimelineByMonth`; `formatTimelineMonthLabel`/`formatTimelineDayLabel`/`hcmYmd` (Intl en-CA, TZ Asia/Ho_Chi_Minh). Types `ParentTimelineEvent`/`ParentTimelineMonth`. Dead-code an toàn tới C2. KHÔNG ký, KHÔNG chạm media.
+- **C2 `e7b38df` spine UI:** thay 3 section rời cột chính bằng 1 trục; leaf render `journey→TimelineSessionLeaf` (mới, không media, dùng `entryVisual`+`formatViDate`+teacher_note) · `creation→CreationCard` · `moment→MomentCard`. Sidebar (Kỹ năng + Huy hiệu) + summary logic KHÔNG đụng.
+- **C3 `3aa591b` polish:** `timelineNode(ev)` icon/màu theo loại (🎨 rose tranh · 🎵 teal recording · 📸 sky moment · 🚌 amber session); micro-header ngày trong tháng (line liên tục border-l container tháng); dọn import mồ côi `Palette`.
+- **⭐ Kiến trúc A-rich = trục CHỈ sắp xếp, leaf tự ký như cũ:** payload parent chỉ có `media_id` (KHÔNG signed_url — khác `/kid`); mọi ký sống trong `MomentImage`/`CreationCard` qua Edge `get_signed_media_url`. Leaf reuse card → consent/lightbox V71/share/privacy tự sống, số lần ký không đổi so V73. KHÔNG lift signed_url lên adapter, KHÔNG dựng cover ở tầng cha (chống re-sign/remount D203). "Thép chờ" multi-image chỉ là tư duy — chưa build (backend 1 media_id/moment). Badge KHÔNG lên trục (giữ dedup D205; sidebar là nguồn chính).
+- **Cards giữ byte-exact** như V71–V73: `CreationCard`, `MomentCard`, `MomentImage`, `MomentPrivacyBadge`, `ParentJournalLightbox`, `ShareMomentButton`, `ConsentWaitingHint`, `entryVisual` — signing/consent/lightbox/share KHÔNG đổi.
+- **DB KHÔNG ĐỔI** (thuần frontend): 63 bảng · 105 definer · 155 policy · mig 001→104 · Edge 14 · cron 1 · 3 tenant. **Guard giữ:** summary V69 (6/2/3) · `/kid` lightbox V70 · Parent Lightbox V71 · consent guard V72 · badge dedup V73. Routes: SỬA `_authenticated/parent.journal.tsx`.
+- **Nghiệm thu PASS** (PH Nguyễn Văn Hùng, con An, 17 ảnh): 15 leaf = 4 buổi học + 6 tranh + 2 âm thanh + 3 khoảnh khắc, 0 badge, 2 tháng (Tháng 7: 8/7·7/7·6/7 = 8 tác phẩm; Tháng 6: 29/6·28/6·26/6·24/6·23/6·19/6 = 3 khoảnh khắc + 4 buổi); node màu theo loại + header tháng/ngày; lightbox tranh (6/7 xoáy) + khoảnh khắc (26/6) mở; recording audio chạy 0:02/0:10; share mở + consent-gate khi ảnh nhóm chưa đủ đồng ý; tắt `group_moment_in_class` → 2 ảnh nhóm "Đang chờ… + Vì sao?" KHÔNG rò "Xem lớn"; `/parent` giữ 6/2/3. An live-verified: `display_in_app` ON; `group_moment_in_class` TẮT sau QA (bật lại ở `/parent/consent` trước demo nếu muốn đủ 3 khoảnh khắc).
+- **Backlog:** 🟠 B-compact leaf (cover thumbnail + lightbox, cần tách inner-sign an toàn) · 🟠 badge trên trục (đọc `badges[]`, QA Jenny) · 🟠 multi-image moment (`coverMediaUrl`/`mediaCount`/`galleryItems[]`) khi backend hỗ trợ 1-n media · 🟠 lưu repo/backup `parent.journal.tsx` V74 · (kế thừa) 🟠 Parent Dashboard đầy đủ/Radar/AI Review THẬT · 🟠 Phương án B RPC canonical `get_child_journey_service` · 🟠 rename `kidJourneyModel.ts` · 🟠 enrichment `child_journey` (creations/moments chảy vào spine) · 🔴 Coloring schema · 🔴 Moment media taxonomy. Cập nhật "tới đâu ghi tới đó" (KỶ LUẬT VÀNG).*
+
+**Cập nhật 2026-07-09 12:52 GMT+7 (v75 · SYSTEM_MAP v0.68): ⭐ PARENT JOURNAL = COMPACT TIMELINE SPINE ("trục ký ức, lá nhỏ bám trên trục") — frontend-only, 0 DB/RPC/Edge/Auth/RLS/migration, 0 AI, 0 re-sign. V74 spine reuse full card → "album ảnh dọc" (ảnh lớn, 1 màn 1–2 mốc); V75 nén thành compact leaf (rail thumbnail ~96px + cột chữ) → trục là nhân vật chính, 1 màn nhiều mốc hơn, bấm leaf mới mở lightbox. 4 commit agent auto-app (get_diff sạch, đúng 1 file `_authenticated/parent.journal.tsx`, KHÔNG đụng routeTree.gen.ts, typecheck pass, deploy 1 lần → demenart.lovable.app).**
+- **C1 audit-only (0 code):** đọc code sống `parent.journal.tsx` (Lovable read_file). Chốt: signing/consent sống trong `MomentImage`/`CreationCard` (mỗi media ký 1 lần); compact an toàn nếu reuse engine + tái dùng URL đã ký, KHÔNG mount thêm signer. Chốt 1A (giữ share nhỏ ở leaf) + 2A (zero-touch MomentImage, rail nở cao lo denied).
+- **C2 `21df44db`:** thêm `CompactMomentLeaf` + `CompactCreationLeaf` (export, dead-code an toàn tới C3). Moment reuse `MomentImage` nguyên xi; creation replicate 1 useEffect ký của CreationCard.
+- **C3 `26d8ebf9`:** swap render `creation→CompactCreationLeaf` / `moment→CompactMomentLeaf` (session giữ `TimelineSessionLeaf`); xoá `MomentCard`/`CreationCard` mồ côi (−156 dòng); siết trục (`space-y-6→space-y-4`, line `amber-200/60→amber-300/50`); session `p-4→p-3.5`.
+- **C4 `7b8b9f46`:** node `top-1.5→top-2` (canh giữa leaf header) + day micro-header `mb-3→mb-2`. Không import mồ côi (mọi icon/lib còn dùng).
+- **⭐ Compact = zero-touch engine (D207):** rail moment `flex + min-h-[96px] + self-start` → MomentImage tự stretch thumbnail 96×96 khi `ok`, tự nở cao khi `denied` (giữ "Đang chờ… + Vì sao?"), Skeleton stretch 96px khi `loading`; overlay "Xem" `absolute inset-0` CHỈ render khi `canOpen` (D203/D204: denied không click xuyên / không che "Vì sao?"). Lightbox reuse URL đã ký (moment qua `onReady`→`signedUrl`; creation qua `state.url`), KHÔNG re-sign, KHÔNG media_id thô. Số lần ký/media = V73/V74. 1A: `ShareMomentButton` nhỏ giữ ở cột chữ leaf (share không mất, không đụng lightbox). 2A: KHÔNG thêm `onDenied` — rail nở cao lo denied.
+- **Cards giữ byte-exact:** `MomentImage`, `MomentPrivacyBadge`, `ShareMomentButton`, `ParentJournalLightbox`, `ConsentWaitingHint`, `entryVisual`, adapter V74 (`buildParentTimeline`/`groupTimelineByMonth`/`timelineNode`/`format*`/`hcmYmd`). Sidebar (Kỹ năng + Huy hiệu) + summary logic KHÔNG đụng.
+- **DB KHÔNG ĐỔI** (thuần frontend): 63 bảng · 105 definer · 155 policy · mig 001→104 · Edge 14 · cron 1 · 3 tenant. **Guard giữ:** summary V69 (6/2/3) · /kid lightbox V70 · Parent Lightbox V71 · consent V72 (D204) · badge dedup V73 · adapter V74. Badge KHÔNG lên trục. Routes: SỬA `_authenticated/parent.journal.tsx`.
+- **Nghiệm thu:** Jean review preview compact (không lỗi visual lớn) → duyệt deploy production `demenart.lovable.app`. An live: `display_in_app` ON, `group_moment_in_class` TẮT sau QA V74 → 2 ảnh nhóm 28/6·29/6 hiện leaf "Đang chờ… + Vì sao?" (đúng để soi 2A), ảnh 1-bé 26/6 ra thumbnail ok; bật lại `group_moment_in_class` ở /parent/consent nếu muốn đủ 3 khoảnh khắc.
+- **Backlog:** 🟠 nghiệm thu ẢNH THẬT compact (thumbnail ok · drawing/moment lightbox mở · recording audio chạy · consent-blocked leaf denied nở cao + "Vì sao?" sống) · 🟠 lưu repo/backup `parent.journal.tsx` V75 · (kế thừa) 🟠 Parent Dashboard đầy đủ/Radar/AI Review THẬT · 🟠 Phương án B RPC canonical `get_child_journey_service` · 🟠 rename `kidJourneyModel.ts` · 🟠 enrichment `child_journey` (creations/moments chảy vào spine) · 🔴 Coloring schema · 🔴 Moment media taxonomy. Cập nhật "tới đâu ghi tới đó" (KỶ LUẬT VÀNG).*
+
+**Cập nhật 2026-07-09 13:34 GMT+7 (v76 · SYSTEM_MAP v0.69): ⭐ PARENT JOURNAL MEMORY DETAIL POLISH ("bấm vào chiếc lá, mở ra mốc ký ức") — frontend-only, 0 DB/RPC/Edge/Auth/RLS/migration, 0 AI, 0 re-sign. Sau compact spine V75, V76 làm giàu cảm xúc DETAIL khi PH bấm 1 leaf: nâng `ParentJournalLightbox` tại chỗ (KHÔNG dialog mới). Jean chốt A/A/A/A. 3 commit agent auto-app (get_diff sạch, đúng 1 file `_authenticated/parent.journal.tsx`, KHÔNG đụng routeTree.gen.ts, typecheck pass, deploy 1 lần → demenart.lovable.app, deployment 63586147).**
+- **C1 `b124e04c` nâng lightbox:** chip loại (accent màu theo loại: rose tranh / sky khoảnh khắc / amber mặc định) + emoji · privacy badge cho moment (reuse `MomentPrivacyBadge`, đọc `tagged_count`) · `warmLine` câu cảm xúc italic · nút "Đóng" (`DialogClose`) + padding/ảnh responsive mobile (`p-3 sm:p-4`, `max-h-[55vh] sm:max-h-[60vh]`). Props mới (`emoji`/`accent`/`warmLine`/`taggedCount`) đều optional → C1 typecheck sạch một mình. `DialogTitle` chuyển `sr-only` (chip mang nhãn hiển thị) — giữ a11y.
+- **C2 `792e721a` wire props:** moment → `emoji="📸"` `accent="sky"` `taggedCount={moment.tagged_count}` + warmLine "…nhìn lại khoảnh khắc này ở lớp."; drawing → `emoji="🎨"` `accent="rose"` + warmLine "…nhìn lại tác phẩm và nghe con kể về nó.". Thuần prop, 0 fetch, 0 re-sign.
+- **C3 `634802eb` recording+session copy:** recording giữ `<audio controls preload="none">` inline + thêm 1 câu italic teal "Ba mẹ có thể nghe lại cùng con và hỏi con thích đoạn nào nhất." (chỉ khi ok+recording); session `TimelineSessionLeaf` thêm kicker "MỐC HÀNH TRÌNH" (uppercase amber-500/80) phía trên tiêu đề, GIỮ non-clickable + curly-quotes teacher_note.
+- **⭐ Nâng lightbox tại chỗ > tạo dialog mới (D208, đối xứng D207/D203):** lightbox V71 đã pure presentational + consent-safe (nhận signedUrl đã ký, KHÔNG fetch/KHÔNG media_id), cả 2 compact leaf dùng chung → tạo `ParentMemoryDetailDialog` mới = nhân đôi bề mặt consent, thừa. Detail giàu cảm xúc = props thuần từ data leaf sẵn có (caption/created_at/tagged_count/kind), 0 re-sign, 0 fetch trong dialog, 0 media_id thô. **Gate mở dialog KHÔNG đổi:** moment mở CHỈ khi `canOpen (=!!signedUrl)` từ `onReady`; creation mở CHỈ khi `status==="ok" && kind==="drawing"`; consent-blocked/recording/denied KHÔNG mở (giữ D203/D204). Share GIỮ ở leaf (1A V75 — không popover-trong-dialog).
+> **⚠️ HISTORICAL SNAPSHOT — KHÔNG PHẢI CURRENT SYSTEM TRUTH / NEXT ACTION.** (Consistency patch 2026-07-18: giữ nguyên evidence lịch sử bên dưới; mọi "Kế/Bước kế/CHƯA làm/Việc treo/inventory" trong đó KHÔNG còn hiệu lực. Current truth duy nhất = khối CURRENT CANONICAL ENDPOINT đầu tài liệu / D309.)
+
+- **Multi-media CHƯA làm:** `get_child_journal` trả 1 `media_id`/moment (không `galleryItems[]`/`mediaCount`/`coverMediaId`) → KHÔNG fake gallery/số ảnh. Backlog thép chờ.
+- **Cards giữ byte-exact:** `MomentImage`, `MomentPrivacyBadge`, `ShareMomentButton`, `ConsentWaitingHint`, adapter V74 (`buildParentTimeline`/`groupTimelineByMonth`/`timelineNode`/`format*`/`hcmYmd`), compact leaf V75 (`CompactMomentLeaf`/`CompactCreationLeaf` — chỉ đổi props truyền vào lightbox + thêm 1 câu recording). Sidebar (Kỹ năng + Huy hiệu) + summary logic KHÔNG đụng.
+- **DB KHÔNG ĐỔI** (thuần frontend): 63 bảng · 105 definer · 155 policy · mig 001→104 · Edge 14 · cron 1 · 3 tenant. **Guard giữ:** summary V69 (6/2/3) · /kid lightbox V70 · Parent Lightbox V71 · consent V72 (D204) · badge dedup V73 · adapter V74 · compact spine V75. Routes: SỬA `_authenticated/parent.journal.tsx`.
+- **Nghiệm thu PASS 8 ảnh** (PH Nguyễn Văn Hùng, con An): tranh → chip 🎨 hồng + warmLine + Gợi ý trò chuyện + Đóng + ảnh object-contain; moment nhóm 29/6 → chip 📸 xanh + privacy "Ảnh chung nhiều bé" + caption "Bé chăm chú xem" + warmLine + prompt; recording → 🎵 "Âm thanh của con" + audio 0:01/0:10 + câu italic teal; session "Tiếng mưa rơi"/"Buổi học" → kicker "MỐC HÀNH TRÌNH" + Cô nhận xét nguyên vẹn; privacy leaf: nhóm→"Ảnh chung nhiều bé"/1-bé 26/6→"🔒 Riêng gia đình"; share leaf + consent-gate popover sống ("một số bé trong ảnh chưa được đồng ý" + Tạo link + hết hạn 24h); compact spine V75 giữ. An live: `group_moment_in_class` BẬT → moment nhóm mở được (soi được badge trong dialog — nghiệm thu bù cho backlog V75).
+- **Backlog:** 🟠 lưu repo/backup `parent.journal.tsx` V76 · 🟠 multi-media moment gallery (`galleryItems[]`/`coverMediaId`/`mediaCount`) khi backend hỗ trợ 1-n media/moment · (kế thừa) 🟠 Parent Dashboard đầy đủ/Radar/AI Review THẬT · 🟠 Phương án B RPC canonical `get_child_journey_service` · 🟠 rename `kidJourneyModel.ts` · 🟠 enrichment `child_journey` (creations/moments chảy vào spine) · 🔴 Coloring schema · 🔴 Moment media taxonomy. Cập nhật "tới đâu ghi tới đó" (KỶ LUẬT VÀNG).*
+
+
+**Cập nhật 2026-07-09 14:00 GMT+7 (v77 · SYSTEM_MAP v0.70): ⭐ PARENT HOME = "CỬA VÀO HÀNH TRÌNH NGHỆ THUẬT CỦA CON" (V77A polish) + MULTI-MEDIA MOMENT GALLERY = PLANNING (V77B audit-only). Frontend-only, 0 DB/RPC/Edge/Auth/RLS/migration, 0 AI, 0 signing. `/parent` (`_authenticated/parent.index.tsx`) polish từ "dashboard số" thành cổng cảm xúc dẫn vào timeline. 2 commit agent auto-app (get_diff sạch, đúng 1 file, KHÔNG đụng routeTree.gen.ts, typecheck pass, deploy 1 lần → demenart.lovable.app, deployment 1a3288fa).**
+- **C2 `b41c10cc` hero + summary copy:** hero thêm dòng 1 "Hành trình nghệ thuật của con đang lớn lên từng ngày." + dòng phụ "Mỗi tác phẩm, âm thanh và khoảnh khắc là một chiếc lá ký ức trên dòng thời gian của con."; `SummaryStat` thêm prop optional `hint?`; 3 stat 6/2/3 thêm hint ("Con tự tay làm nên."/"Giai điệu con đã thử."/"Được lưu lại ở lớp.") + đổi nhãn "Giọng hát"→"Âm thanh". KHÔNG đổi logic đếm.
+- **C3 `05ec1209` memory highlight text-only:** helper thuần `buildPreview(data)` + `formatDayMonth(iso)` (module scope) đọc lại payload `get_child_journal` đã fetch → merge `journey`(non-badge)/`creations`/`moments`, sort desc, `slice(0,3)`; card "Dòng thời gian nghệ thuật của {con}" liệt kê 2–3 lá (emoji+nhãn+caption+ngày d/M) + CTA `/parent/journal`. Chỉ hiện khi `hasData && preview.length>0`.
+- **⭐ Preview = đọc lại data, KHÔNG ký lại (D209):** 0 signed_url, 0 Edge, 0 thumbnail; moment CHỈ vào preview khi có `media_id` (khớp `hasDisplayableMedia`/count 6/2/3 + khớp journal thật). `buildJourneyFeed` (V64 /kid) KHÔNG tái dùng (đòi signed_url; parent chỉ có media_id) → merge text-only tại chỗ, KHÔNG chọc `kidJourneyModel.ts`.
+- **⭐ V77B multi-media (audit-only, KHÔNG code):** `media_assets.linked_moment_id` FK 1-n → schema HỖ TRỢ nhiều ảnh/moment; `get_child_journal` moment ký `LIMIT 1 ORDER BY created_at` → trả 1 media/moment; data thực toàn hệ 0 moment ≥2 ảnh (6×1, 2×0); `learning_moments` KHÔNG có `cover_media_id`/`sort_order`, `media_assets` có `file_type`(→kind)/`metadata` jsonb (không cột sort_order); `get_child_journey_service` chưa tồn tại. Gallery chưa làm được frontend-only. Thứ tự sprint sau: (1) seed/upload data nhiều ảnh; (2) enrich RPC `galleryItems[]`+`mediaCount`+`coverMediaId` (0 migration nếu cover=ảnh đầu); (3) UI gallery ký TỪNG item khi mở (consent per-media qua Edge, 0 lift signed_url lên RPC, 0 re-sign); (4/5 tùy) migration cover/sort hoặc Edge batch-sign nếu cần.
+- **Cards/engine giữ byte-exact:** toàn bộ `parent.journal.tsx` (V74–76: adapter, `MomentImage`, `MomentPrivacyBadge`, `ShareMomentButton`, `ConsentWaitingHint`, `ParentJournalLightbox`, compact leaf), `kidJourneyModel.ts`, `kid.tsx` KHÔNG đụng. `/parent` chỉ đổi trong `parent.index.tsx`.
+- **DB KHÔNG ĐỔI** (thuần frontend): 63 bảng · 105 definer · 155 policy · mig 001→104 · Edge 14 · cron 1 · 3 tenant. **Guard giữ:** summary V69 (6/2/3) · /kid lightbox V70 · Parent Lightbox V71 · consent V72 (D204) · badge dedup V73 · adapter V74 · compact spine V75 · detail polish V76. Routes: SỬA `_authenticated/parent.index.tsx`.
+- **Nghiệm thu PASS 5 ảnh** (PH Nguyễn Văn Hùng, con An): `/parent` hero 2 dòng ấm + summary "6 Tác phẩm / 2 Âm thanh / 3 Khoảnh khắc" (6/2/3 GIỮ) + 3 hint + "Hạt giống nổi bật: Hát theo" + selector An/Khang; `/parent/journal` V74–76 nguyên vẹn (tranh/âm thanh/khoảnh khắc/buổi học, lightbox "Xem", privacy "Ảnh chung nhiều bé"/"Riêng gia đình", "Cô nhận xét" curly-quotes, kỹ năng "Hát theo"). Preview card `/parent` dẫn đúng lá tháng 7 mới nhất.
+- **Backlog:** 🟠 lưu repo/backup `parent.index.tsx` V77 · 🟠 multi-media moment gallery (thứ tự sprint DATA→RPC enrich→UI ký từng item→(tùy) migration cover/sort / batch-sign) · (kế thừa) 🟠 Parent Dashboard đầy đủ/Radar/AI Review THẬT · 🟠 Phương án B RPC canonical `get_child_journey_service` · 🟠 rename `kidJourneyModel.ts` · 🟠 enrichment `child_journey` (creations/moments chảy vào spine) · 🔴 Coloring schema · 🔴 Moment media taxonomy. Cập nhật "tới đâu ghi tới đó" (KỶ LUẬT VÀNG).*
+
+**Cập nhật 2026-07-09 GMT+7 (v78 · SYSTEM_MAP v0.71): ⭐ V78A DEMO-DATA FOUNDATION (approve moment 2-ảnh có sẵn) + V78B/C GALLERY RPC SHAPE & V79 PLAN (planning-only). KHÔNG code/UI/RPC/Edge/migration.**
+- **V78A (data-only, 1 UPDATE):** audit DB sống lộ moment `f51039be…cd1f` (tag An/Bình/Chi, consent cả 3 `group_moment_in_class` granted) đã có **2 media active THẬT** (2 object Bunny `dma-private`, teacher_upload) nhưng `state=draft` → vô hình `/parent/journal` (RPC nhánh moments lọc `state='approved'`). V77B đếm "0 moment ≥2 ảnh" đúng **nhưng chỉ trong nhóm approved** — soi mọi state mới lộ. `f51039be` là moment 2-ảnh DUY NHẤT toàn hệ. UPDATE tối giản `learning_moments.state` draft→approved (execute_sql, **KHÔNG migration**; `learning_moments` chỉ có trigger `set_updated_at`, KHÔNG guard `auth.uid()` → chạy sạch, KHÔNG replica; `caption` GIỮ null → fallback "Khoảnh khắc ở lớp", `approved_by` null). 0 media row mới · 0 RPC · 0 Edge · 0 UI. **Rollback:** `state` approved→draft.
+- **⭐ Summary An 6/2/3 → 6/2/4 (CTO accepted, trung thực — KHÔNG regression):** moment nhóm tag An nên lên journal + đếm vào "Khoảnh khắc" → 3→4. Mô phỏng số + surface TRƯỚC khi ghi (D210); CTO chốt Lối 1. Rollback về draft → summary về 6/2/3.
+- **V78B gallery RPC shape (planning, chưa áp):** nhánh moments tương lai giữ `media_id` (backward-compat) + `coverMediaId`(=media_id, ảnh đầu `created_at ASC`) + `mediaCount` + `hasGallery`(count>1) + `galleryItems[]{mediaId, fileType(←media_assets.file_type), createdAt, caption?, sortOrder?}`. `caption`/`sortOrder`=null tới khi có cột (né migration; sau dùng `metadata`). Order tạm `created_at ASC`. **0 signed_url trong RPC · 0 ký ở adapter · 0 Edge batch-sign · 0 migration cover/sort.** Cover `f51039be` = `3ca6c3dd…e909` (verify).
+- **V78C V79 plan:** V79 enrich `get_child_journal` trả galleryItems[]/mediaCount/coverMediaId; adapter backward-compat; timeline vẫn 1 cover thumbnail; gallery CHỈ trong `ParentJournalLightbox` (≤1 item→UI y nguyên, >1→thumbnail rail/điều hướng); ký **TỪNG item khi mở lightbox** (KHÔNG ở adapter/RPC — giữ D203/D204/D206); consent V72 + badge dedup V73 giữ; baseline 6/2/4; Vn Edge batch-sign nếu waterfall. KHÔNG tiến V79 tới khi CTO duyệt.
+- **DB cấu trúc KHÔNG ĐỔI** (data-only, KHÔNG migration): 63 bảng · 105 definer · 155 policy · mig 001→104 · Edge 14 · cron 1 · 3 tenant. Thay đổi DUY NHẤT = 1 UPDATE `learning_moments.state` (moment `f51039be`). **Guard giữ:** summary V69 · /kid lightbox V70 · Parent Lightbox V71 · consent V72 · badge dedup V73 · adapter V74 · compact spine V75 · detail polish V76 · parent home V77. Routes: KHÔNG đụng file nào.
+- **Nghiệm thu:** AFTER SQL PASS (state=approved · caption=null · 2 media active · tag An/Bình/Chi · consent cả 3 granted · summary An=6/2/4 · cover=3ca6c3dd). Smoke UI NGHIỆM THU Jean ĐẠT 5 ảnh (login PH Hùng): summary 6/2/4 · journal render · moment f51039be 1-cover "Khoảnh khắc ở lớp"/Ảnh chung nhiều bé/caption null · consent An nhóm BẬT · Console No Issues · "chạy ổn".
+- **Backlog:** 🟠 lưu repo/backup (phiên này KHÔNG đụng file code) · 🟠 V79 multi-media gallery (RPC enrich→UI ký từng item→tùy migration/batch-sign) · (kế thừa) 🟠 Parent Dashboard/Radar/AI Review THẬT · 🟠 Phương án B RPC `get_child_journey_service` · 🟠 rename `kidJourneyModel.ts` · 🟠 enrichment `child_journey` · 🔴 Coloring schema · 🔴 Moment media taxonomy. Cập nhật "tới đâu ghi tới đó" (KỶ LUẬT VÀNG).*
+
+**Cập nhật 2026-07-09 GMT+7 (v79 · SYSTEM_MAP v0.72): ⭐ GALLERY RPC ENRICH + BACKWARD-COMPATIBLE ADAPTER. C2 enrich `get_child_journal` nhánh moments (`apply_migration` Lối A/D92) + C3 type-only `MomentRow`. 0 UI change · 0 signed_url · 0 cột/bảng/Edge.**
+- **C2 RPC (`v79_get_child_journal_gallery_enrich`, apply_migration/D92, 3-KHỐI):** CHỈ nhánh moments đổi (4 nhánh journey/skills/badges/creations byte-exact). Giữ `media_id`+`tagged_count`; thêm `coverMediaId`(=media_id, subquery `ORDER BY created_at LIMIT 1`) + `mediaCount`(count active) + `hasGallery`(count>1) + `galleryItems[]{mediaId, fileType←`file_type`, createdAt, caption←`metadata->>'caption'`, sortOrder:null}` ORDER BY `created_at ASC`. **0 signed_url · 0 ký adapter · 0 Edge batch-sign · 0 migration cột.** KHỐI2 `REVOKE PUBLIC`+`GRANT` authenticated+service_role. KHỐI3 VERIFY (`RAISE`=rollback) query underlying tables (auth.uid() NULL → không gọi RPC trong editor).
+- **⭐ Verify shape 3 mẫu PASS:** `f51039be` mediaCount=2/hasGallery=true/gallery len 2 ASC (`3ca6c3dd` 29/6 → `b2d5d20a` 30/6)/coverMediaId=media_id=`3ca6c3dd` · single `…00a1`=1/false/len1 · no-media `…00a2`=0/false/`[]`/media_id=null/coverMediaId=null. Grants sau = authenticated+service_role (anon/PUBLIC revoked).
+- **C3 adapter type-only (`parent.journal.tsx`):** KHÔNG có file adapter riêng — `buildParentTimeline` inline passthrough (`payload.moments ?? []`, KHÔNG strip → field mới tự sống). Chỉ +4 field optional vào `type MomentRow`. `CompactMomentLeaf`/`ParentJournalLightbox`/`MomentImage`/`buildParentTimeline` KHÔNG đụng → 0 runtime/UI. C4 nhãn "2 ảnh" SKIP (V79 = data-shape sprint). Agent commit `94ca942d`, `get_diff` 1 file sạch (KHÔNG `routeTree.gen.ts`), typecheck pass, deploy 1 lần → `demenart.lovable.app` (deployment `6f3b2d5b`).
+- **DB:** +1 migration (get_child_journal CREATE OR REPLACE) → **mig 001→105**. 63 bảng · 105 definer (replace, không +) · 155 policy · Edge 14 · cron 1 · 3 tenant KHÔNG đổi. **Guard giữ:** summary V69(→6/2/4) · /kid lightbox V70 · Parent Lightbox V71 · consent V72 · badge dedup V73 · adapter V74 · compact spine V75 · detail V76 · home V77 · data foundation V78. Routes: SỬA `_authenticated/parent.journal.tsx` (type-only).
+- **Nghiệm thu PASS 3 ảnh** (PH Nguyễn Văn Hùng, con An): `/parent` summary **6/2/4** + hero/hint/selector nguyên; `/parent/journal` timeline y hệt V78, `f51039be` 1-cover "Khoảnh khắc ở lớp"/"Ảnh chung nhiều bé"/caption null, "MỐC HÀNH TRÌNH"/"Riêng gia đình" nguyên; lightbox mở như cũ (1 cover, 0 thumbnail rail/gallery nav), ảnh ký OK. **15/15 acceptance PASS.**
+- **Rollback:** C2 CREATE OR REPLACE về body cũ (moments chỉ `media_id`/`tagged_count`) + REVOKE/GRANT; C3 revert type block (additive, vô hại).
+- **Backlog:** 🟠 lưu repo V79 · 🟠 V79-next UI gallery THẬT trong `ParentJournalLightbox` (thumbnail rail + ký TỪNG item khi mở, giữ D203/D204/D206) khi CTO duyệt · 🟠 (tùy) migration `cover_media_id`/`sort_order` nếu cần chọn cover thủ công/sắp thứ tự · 🟠 (tùy) Edge batch-sign nếu gallery waterfall · (kế thừa) 🟠 Parent Dashboard/Radar/AI Review THẬT · 🟠 Phương án B RPC `get_child_journey_service` · 🟠 rename `kidJourneyModel.ts` · 🟠 enrichment `child_journey` · 🔴 Coloring schema · 🔴 Moment media taxonomy. Cập nhật "tới đâu ghi tới đó" (KỶ LUẬT VÀNG).*
+
+
+
+**Cập nhật 2026-07-09 19:43 GMT+7 (v80 · SYSTEM_MAP v0.73): ⭐ PARENT LIGHTBOX MULTI-MEDIA GALLERY UI — frontend-only, 1 file `parent.journal.tsx`, 0 DB/RPC/Edge/Auth/RLS/migration/npm.** Tiêu thụ `galleryItems[]` (data V79) dựng gallery THẬT CHỈ trong `ParentJournalLightbox` (Lối A: dots/pills + counter "1/2", KHÔNG thumbnail rail ảnh).
+- **UI gallery (`ParentJournalLightbox`, `parent.journal.tsx`):** nhận `galleryItems?` optional. `hasGallery = items.length>1` là switch DUY NHẤT. ≤1 (hoặc thiếu) → nhánh `<img src={signedUrl}>` **byte-identical V79** (single/creation/no-media không đổi). >1 → state `selected` + cache `Record<mediaId, GallerySign>` (`ok|loading|error`), main image = item đang chọn, counter "N / total" + dots/pills (active = pill dài amber-500). `CompactMomentLeaf` truyền `galleryItems={moment.galleryItems}`.
+- **Ký gallery (0 pre-sign · 0 adapter/RPC/Edge mới):** cover ký sẵn ở `MomentImage.onReady`→`signedUrl` TRƯỚC khi mở, cover=`galleryItems[0]` (verified `f51039be` cover=`3ca6c3dd`=media_id=item[0]) → seed cache index0 = `signedUrl` (0 network). `knownRef:Set<mediaId>` chống ký trùng. Đổi dot → item CHƯA biết mới `functions.invoke("get_signed_media_url",{media_id})` on-demand → consent D204 per-media tự chạy; cache theo mediaId; back về item cũ = tức thì (cache). Item lỗi → soft fallback riêng ô ảnh, dialog không sập.
+- **Vá a11y (CTO duyệt, cùng scope):** +`DialogDescription` sr-only (`{caption||warmLine||title}`) dọn warning Radix `Missing Description` (từ V71). 0 visual. Import thêm `useRef` + `DialogDescription`.
+- **Build mode = PASTE** (Jean dán tay, credit-saving). Verify D3: `read_file` live source khớp 100% (import `useRef`/`DialogDescription` · `GallerySign` · `ParentJournalLightbox galleryItems?`+gallery state/counter/dots · `DialogDescription sr-only` · `CompactMomentLeaf` truyền `galleryItems`; đúng 1 file, 0 đụng component khác) + 8 ảnh smoke. Paste mode KHÔNG có agent commit SHA.
+- **DB:** KHÔNG ĐỔI. 63 bảng · 105 definer · 155 policy · mig 001→105 · Edge 14 · cron 1 · 3 tenant. **Guard giữ:** summary V69(6/2/4) · /kid lightbox V70 · Parent Lightbox V71 · consent V72 · badge dedup V73 · adapter V74 · compact V75 · detail V76 · home V77 · data foundation V78 · RPC enrich V79. Routes: SỬA `_authenticated/parent.journal.tsx`.
+- **Nghiệm thu PASS 18/18** (PH Nguyễn Văn Hùng `ph.hung.kidshouse@demo.demenart.com`/`Test@123`, con An, 8 ảnh): `/parent` summary 6/2/4 + home không đổi · `/parent/journal` timeline y hệt, `f51039be` 1-cover "Khoảnh khắc ở lớp"/"Ảnh chung nhiều bé"/caption null, **0 badge số ảnh trên trục** · mở lightbox → counter "1/2" + 2 dots, ảnh 1 trước · switch 1→2 (ký on-demand) → 2→1 **tức thì** (cache) · chip/badge/warmLine/"Gợi ý trò chuyện"/Đóng giữ · single-media (tranh) y hệt cũ · no-media không sập · Console sạch (chỉ favicon 404 pre-existing) · 0 raw Bunny (signed URL `media.demenart.com`).
+- **Rollback:** revert block gallery + `DialogDescription` về V79 (frontend additive, gỡ vô hại, 0 DB/Edge/migration).
+- **Backlog:** 🟠 lưu repo V80 · 🟠 smoke mobile viewport hẹp · 🟠 favicon 404 (nợ vặt pre-existing) · 🟠 (tùy) migration `cover_media_id`/`sort_order` nếu cần chọn cover thủ công/sắp thứ tự · 🟠 (tùy) Edge batch-sign nếu gallery nhiều ảnh waterfall · (kế thừa) 🟠 Parent Dashboard/Radar/AI Review THẬT · 🟠 Phương án B RPC `get_child_journey_service` · 🟠 rename `kidJourneyModel.ts` · 🟠 enrichment `child_journey` · 🔴 Coloring schema · 🔴 Moment media taxonomy. Cập nhật "tới đâu ghi tới đó" (KỶ LUẬT VÀNG).*
+
+
+**Cập nhật 2026-07-09 20:15 GMT+7 (v81 · SYSTEM_MAP v0.74): ⭐ GALLERY UX POLISH + MULTI-MEDIA AFFORDANCE AUDIT — frontend-only, 1 file `parent.journal.tsx` (3 hunk trong `ParentJournalLightbox`), 0 DB/RPC/Edge/Auth/RLS/migration/npm.** Polish/audit sprint (KHÔNG kiến trúc). CTO chốt Lối 1 (Polish A robustness+a11y); Lối B chip "2 ảnh" trên trục BỊ BÁC (toàn hệ chỉ 1 moment gallery `f51039be` → hoãn tới khi có nhiều moment ≥2 ảnh).
+- **4 polish (`ParentJournalLightbox`):** (1) guard `safeSelected` = `items.length===0?0:Math.min(Math.max(selected,0),items.length-1)` → `currentItem`+counter dùng `safeSelected` (derived, clamp mọi render, 0 effect mới; reopen về cover-0 qua `useEffect([open])`); (2) counter `aria-live="polite"`+`aria-atomic="true"`+`tabular-nums`; (3) tap-target dots bọc `<button className="group flex h-8 items-center justify-center px-1">` quanh `<span>` chấm — span GIỮ NGUYÊN `h-2.5`/`w-5` active `bg-amber-500`/`w-2.5` inactive (visual y hệt), +`aria-label`/`aria-current`/`title`, strip `pb-3 pt-1`→`pb-2 pt-0.5`/`gap-1.5`→`gap-0.5`; (4) loading pill "Đang tải ảnh…" (dot `animate-pulse`) trên Skeleton `absolute inset-0`, giữ `h-[45vh]` → 0 layout shift.
+- **An toàn:** chỉ nhánh `hasGallery` (>1 item) đụng; ≤1 item **byte-identical V80** (single/no-media). Engine ký/consent (cover seed từ `signedUrl` leaf · `selectItem` on-demand Edge `get_signed_media_url` · `knownRef` chống ký trùng · cache mediaId · D204 per-media) KHÔNG đụng. 0 signed_url RPC · 0 ký adapter · 0 Edge batch-sign · 0 raw Bunny · 0 hardcode `f51039be` · 0 timeline affordance/badge · 0 đổi summary/signing architecture.
+- **Build mode = AGENT ("auto-áp"):** 1 commit `f6b78c2a`, `get_diff` sạch (đúng 1 file, đúng 3 hunk, KHÔNG `routeTree.gen.ts`), typecheck pass, deploy 1 lần → `demenart.lovable.app` (deployment `06c46138`).
+- **DB:** KHÔNG ĐỔI. 63 bảng · 105 definer · 155 policy · mig 001→105 · Edge 14 · cron 1 · 3 tenant. **Guard giữ:** summary V69(6/2/4) · /kid lightbox V70 · Parent Lightbox V71 · consent V72 · badge dedup V73 · adapter V74 · compact V75 · detail V76 · home V77 · data V78 · RPC enrich V79 · gallery UI V80. Routes: SỬA `_authenticated/parent.journal.tsx`.
+- **Nghiệm thu PASS 17/17** (PH Nguyễn Văn Hùng `ph.hung.kidshouse@demo.demenart.com`/`Test@123`, con An, 7 ảnh): `/parent` summary 6/2/4 + home không đổi · `/parent/journal` timeline y hệt, **0 chip "2 ảnh"** trên trục · lightbox `f51039be` counter "1/2" → switch "2/2" (ký on-demand) + `aria-live` + dots dễ chạm (chấm y hệt) · single-media (group "Bé chăm chú xem" 29/6) 0 counter/dots y hệt · badge "Riêng gia đình"/"Ảnh chung nhiều bé" đúng · Console chỉ favicon 404 pre-existing.
+- **⚠️ DRIFT (D112):** topic V81 mới đĩa chỉ có v79/D211/v0.72; audit live confirm V80; CTO Lối A up lại 3 file v80 thật (D212/v0.73/v80) trước khi đóng. Re-upload project library từng làm mất `DMA_RULES.md`/`DMA_SYSTEM_MAP.md` → re-up qua chat attachments; **treo: re-sync 2 file governance vào project library**.
+- **Rollback:** revert 3 hunk (hoặc restore về commit V80); frontend additive, 0 DB/Edge.
+- **Backlog:** 🟠 re-sync project library (RULES D213 + SYSTEM_MAP v0.74) · 🟠 lưu repo V81 · 🟠 smoke mobile viewport hẹp · 🟠 favicon 404 (nợ vặt) · 🟠 (hoãn) timeline affordance "X ảnh" khi có nhiều moment ≥2 ảnh · 🟠 (tùy) migration `cover_media_id`/`sort_order` · 🟠 (tùy) Edge batch-sign nếu waterfall · (kế thừa) 🟠 Parent Dashboard/Radar/AI Review THẬT · 🟠 Phương án B RPC `get_child_journey_service` · 🟠 rename `kidJourneyModel.ts` · 🟠 enrichment `child_journey` · 🔴 Coloring schema · 🔴 Moment media taxonomy. Cập nhật "tới đâu ghi tới đó" (KỶ LUẬT VÀNG).*
+
+
+
+**Cập nhật 2026-07-09 21:51 GMT+7 (v82 · SYSTEM_MAP v0.75): ⭐ GALLERY STABILITY AUDIT + MEDIA COUNT AFFORDANCE DECISION — AUDIT-ONLY, 0 code, 0 DB.** Sprint ổn định/quyết định (KHÔNG kiến trúc) nối V81/D213. **CTO chốt Lối A (audit-only)** — KHÔNG chip "X ảnh" trên trục, KHÔNG đổi copy counter lightbox, giữ UX gallery V81 (D214).
+- **C1 audit LIVE (read-only):** endpoint D213/v0.74/v81 khớp · DB sống + code sống confirm gallery V80/V81 đúng & sạch, **0 drift**.
+- **Bằng chứng DB (`xcvhacymrbhdhohyylyq`):** An summary **6/2/4** · `f51039be` state=approved/caption=null/tagged 3 (An/Bình/Chi)/**mediaCount=2·hasGallery=true·galleryItems.len=2** (2 media active `image/jpeg`: cover `3ca6c3dd…e909` 29/6 → `b2d5d20a…b22c` 30/6) · `get_child_journal` SECURITY DEFINER `search_path=""`, **0 signed_url field** (1 match = comment) · grants **authenticated + service_role + postgres** (0 anon/PUBLIC, D15) · inventory **63 bảng · 105 definer · 155 policy · 1 cron** KHÔNG đổi.
+- **Bằng chứng code `parent.journal.tsx` (live):** chứa ĐỦ 4 polish V81 — `safeSelected` clamp · counter `aria-live="polite"`+`aria-atomic`+`tabular-nums` · tap-target `<button h-8 px-1>` bọc chấm span y hệt · loading pill "Đang tải ảnh…" trên skeleton `absolute inset-0`; `CompactMomentLeaf` **0 chip "X ảnh"** trên trục (badge chỉ `MomentPrivacyBadge`).
+- **C2 quyết định:** bác chip vì n=1 moment gallery (`f51039be`) → giá trị thấp + đua chỗ badge privacy; gallery đã tự lộ (cover "Xem" → dots+counter a11y V81). **Revisit chỉ khi** n moment ≥2 ảnh tăng HOẶC user testing PH miss gallery.
+- **Nghiệm thu PASS audit-only:** 0 DB/RPC/Edge/migration · 0 frontend code · 0 chip "2 ảnh" · 0 timeline visual change · UX gallery V81 đủ dùng. KHÔNG có commit/diff/rollback (0 thay đổi). Guard chuỗi giữ nguyên tới V81.
+- **Endpoint sau V82:** RULES **D214** · SYSTEM_MAP **v0.75** · Handoff **v82**. Backlog: 🟠 re-sync project library (RULES D214 + SYSTEM_MAP v0.75) · 🟠 (hoãn) timeline affordance "X ảnh" khi n≥2 moment gallery / user-testing · 🟠 (tùy) migration `cover_media_id`/`sort_order` · 🟠 (tùy) Edge batch-sign nếu waterfall · nợ cũ (Parent Dashboard/Radar/AI Review THẬT · Phương án B RPC `get_child_journey_service` · rename `kidJourneyModel.ts` · enrichment `child_journey` · Coloring schema · Moment media taxonomy).*
+*Skeleton V1 · v0.77 — cập nhật "tới đâu ghi tới đó" (KỶ LUẬT VÀNG).*
+
+
+**Cập nhật 2026-07-09 22:23 GMT+7 (v83 · SYSTEM_MAP v0.76): ⭐ PARENT MOMENT DETAIL WARMTH — copy-only, frontend-only, 1 file `parent.journal.tsx`, 0 DB/RPC/Edge/Auth/RLS/migration/npm.** Sprint UX copy polish (KHÔNG kiến trúc, KHÔNG data) nối V82/D214. CTO chốt Lối A (RULES **D215**): warm microcopy lightbox/detail, GIỮ title.
+- **3 helper thuần (`ParentJournalLightbox` scope):** `getMomentWarmLine(taggedCount)` · `getMomentConversationPrompt(taggedCount)` · hằng `MOMENT_GALLERY_HINT`. Dùng CHỈ field sẵn có (`tagged_count`, `galleryItems.length`, `caption`) — 0 backend field mới.
+- **Copy nhóm (`(tagged_count??1)>1`):** warmLine "Một lát cắt nhỏ trong giờ học — nơi con cùng các bạn khám phá và tạo nên kỷ niệm chung." · prompt "Con nhớ lúc này đang làm gì cùng các bạn không? Con thích khoảnh khắc nào nhất hôm đó?". **Copy riêng (else):** warmLine "Một khoảnh khắc nhỏ ghi lại cách con quan sát, thử sức và lớn lên ở lớp nghệ thuật." · prompt "Con muốn kể cho ba mẹ nghe điều gì đang diễn ra trong bức ảnh này không?". Ngưỡng KHỚP `MomentPrivacyBadge` (1 nguồn sự thật).
+- **Hint đa-ảnh:** "Khoảnh khắc này có nhiều ảnh — ba mẹ chạm vào các chấm để xem thêm." render trong lightbox dưới warmLine, gate `hasGallery` (>1 item) — ĐỘC LẬP nhóm/riêng, CHỈ trong lightbox, KHÔNG lên timeline.
+- **GIỮ nguyên:** title timeline & lightbox = "Khoảnh khắc ở lớp" (KHÔNG type-aware title V83) · gallery dots/counter · privacy badge · consent V72 · badge dedup V73 · signing engine (cover seed + ký on-demand từng item). Creation (Tác phẩm/Âm thanh) KHÔNG đụng.
+- **Build mode = AGENT ("auto-app"):** 1 commit `f16a7f8c`, `get_diff` sạch (đúng 1 file, 3 hunk, KHÔNG `routeTree.gen.ts`), typecheck pass, deploy 1 lần → `demenart.lovable.app` (deployment `a3c99f58`), credit 1.9.
+- **DB:** KHÔNG ĐỔI. 63 bảng · 105 definer · 155 policy · mig 001→105 · Edge 14 · cron 1 · 3 tenant. **Guard chuỗi giữ:** summary V69(6/2/4) · /kid V70 · Lightbox V71 · consent V72 · badge V73 · adapter V74 · compact V75 · detail V76 · home V77 · data V78 · RPC enrich V79 · gallery UI V80 · polish V81 · stability V82. Routes: SỬA `_authenticated/parent.journal.tsx` (copy-only).
+- **Nghiệm thu PASS 21/21** (PH Nguyễn Văn Hùng `ph.hung.kidshouse@demo.demenart.com`/`Test@123`, con An, ảnh thật): `/parent` 6/2/4 + home không đổi · `/parent/journal` timeline y hệt + 0 chip "2 ảnh" · `f51039be` (nhóm-đa) title "Khoảnh khắc ở lớp" + warmLine nhóm + hint 🖼️ + prompt nhóm + counter 1/2→2/2 (ký on-demand) · "Bé chăm chú xem" 29/6 & "Hình ảnh thử nghiệm" 28/6 (nhóm-1-ảnh) copy nhóm + 0 hint · "An chăm chú lắng nghe…" 26/6 (Riêng gia đình) warmLine riêng + prompt riêng + 0 hint · Console No Issues · 0 raw Bunny.
+- **Rollback:** revert commit `f16a7f8c` (hoặc gỡ 3 hunk); frontend additive/copy-only, 0 DB/Edge/migration.
+- **Backlog:** 🟠 re-sync project library (RULES D215 + SYSTEM_MAP v0.76) · 🟠 lưu repo V83 · 🟠 (tùy) type-aware title lightbox nhóm/riêng nếu muốn ấm hơn (defer V83) · 🟠 (hoãn) timeline affordance "X ảnh" khi n≥2 moment gallery / user-testing · 🟠 (tùy) migration `cover_media_id`/`sort_order` · 🟠 (tùy) Edge batch-sign nếu waterfall · (kế thừa) 🟠 Parent Dashboard/Radar/AI Review THẬT · 🟠 Phương án B RPC `get_child_journey_service` · 🟠 rename `kidJourneyModel.ts` · 🟠 enrichment `child_journey` · 🔴 Coloring schema · 🔴 Moment media taxonomy. Cập nhật "tới đâu ghi tới đó" (KỶ LUẬT VÀNG).*
+
+---
+
+**Cập nhật 2026-07-10 00:17 GMT+7 (v84 · SYSTEM_MAP v0.77): ⭐ PARENT JOURNAL FILTER & MONTH NAVIGATION AUDIT — AUDIT-ONLY, 0 code, 0 DB.** Sprint audit/quyết-định-thiết-kế (KHÔNG kiến trúc, KHÔNG data) nối V83/D215. CTO chốt Lối A (RULES **D216**): KHÔNG filter chip type, KHÔNG month-jump nav, giữ nguyên timeline V74–V83.
+- **Câu hỏi sprint:** `/parent/journal` có cần filter/month-nav khi data lớn dần? → **Chưa.** Data còn nhỏ.
+- **Audit LIVE (bằng chứng, `xcvhacymrbhdhohyylyq`):** An summary **6/2/4** · timeline An = **16 item / 2 tháng** (6 drawing 2026-07 · 2 recording 2026-07 · 4 moment 2026-06 · 4 journey/session 2026-06) · `f51039be` mediaCount=2/hasGallery=true/2 media active · `get_child_journal` 0 signed_url field (1 match=comment) · grants authenticated+service_role+postgres (0 anon/PUBLIC) · inventory **63 bảng · 105 definer · 155 policy · 1 cron** (khớp V82/V83).
+- **Kiến trúc timeline (đã có, KHÔNG đổi):** `buildParentTimeline` gộp journey(session)+creation+moment (badge/skills → sidebar) → 4 loại leaf trên trục (🎨 Tác phẩm · 🎵 Âm thanh · 📸 Khoảnh khắc · 🚌 Mốc hành trình/Buổi học). `groupTimelineByMonth` + section header "Tháng N, 2026" **ĐÃ render live từ V74** → phần lõi "điều hướng theo tháng" đã tồn tại; chỉ thiếu month-jump selector (chưa cần, 2 tháng).
+- **Lý do bác chip/nav:** 16 item/2 tháng đã group → dễ đọc; chip lọc *chạy được* (đủ 4 type thật, "Buổi học"=4 session) nhưng thêm control kiểu dashboard quá sớm + vụn narrative (Âm thanh=2) + chật mobile 5 chip → nghịch LINH HỒN (album ấm). Đúng D216 (grouping đã có ≠ nav; "không làm" hợp lệ khi data chưa đủ).
+- **Nghiệm thu PASS audit-only:** 0 frontend code · 0 DB/RPC/Edge/migration · 0 filter chip · 0 month nav · 0 timeline visual change. **Guard chuỗi giữ:** summary V69(6/2/4) · /kid V70 · Lightbox V71 · consent V72 · badge V73 · adapter V74 · compact V75 · detail V76 · home V77 · data V78 · RPC enrich V79 · gallery UI V80 · polish V81 · stability V82 · warmth V83. Routes: **KHÔNG SỬA** (0 code).
+- **Revisit filter/month-nav CHỈ khi ≥1:** (1) một trẻ có timeline ~25–30+ item; (2) trải 4–5+ tháng; (3) user testing PH khó tìm 1 loại/1 giai đoạn.
+- **Endpoint sau V84:** RULES **D216** · SYSTEM_MAP **v0.77** · Handoff **v84**. Backlog: 🟠 re-sync project library (RULES D216 + SYSTEM_MAP v0.77) · 🟠 (hoãn) filter chip / month-jump nav khi đạt ngưỡng revisit · 🟠 (hoãn) timeline affordance "X ảnh" khi n≥2 moment gallery / user-testing · 🟠 (tùy) migration `cover_media_id`/`sort_order` · 🟠 (tùy) Edge batch-sign nếu waterfall · nợ cũ (Parent Dashboard/Radar/AI Review THẬT · Phương án B RPC `get_child_journey_service` · rename `kidJourneyModel.ts` · enrichment `child_journey` · Coloring schema · Moment media taxonomy).*
+
+**Cập nhật 2026-07-10 00:41 GMT+7 (v85 · SYSTEM_MAP v0.78): ⭐ TEACHER MULTI-MEDIA MOMENT CREATION WORKFLOW AUDIT — AUDIT-ONLY, 0 code, 0 DB.** Sprint audit workflow/data-source (KHÔNG kiến trúc, KHÔNG code) nối V84/D216. CTO chốt **C3 = B (Partially operational)** (RULES **D217**): luồng Teacher 1-ảnh operational + Parent gallery multi-media operational downstream, NHƯNG Teacher UI thiếu workflow first-class tạo 1 `learning_moment` nhiều media.
+- **Bằng chứng LIVE (`xcvhacymrbhdhohyylyq`):** inventory **63 bảng · 105 definer · 155 policy · 1 cron** (khớp V84) · An **6/2/4** · `f51039be` approved/caption=null/tagged 3 (An/Bình/Chi `group_moment_in_class` granted)/**2 media active**/**n=1 toàn hệ** · phân bố media/moment **0→3 · 1→7 · 2→1** · `get_child_journal` **0 signed_url field** + gallery fields đủ + grants authenticated/service_role/postgres (0 anon) · `get_session_moments` **aggregate mọi media** (jsonb_agg, KHÔNG LIMIT 1).
+- **Luồng tạo (code sống):** moment = client INSERT `learning_moments` RLS `same_school`, default `draft`, nhân sự trường tạo (PH/admin chặn) → tag `moment_children` same_school → upload Edge `upload_media` nhánh A (1 file/lần, `/moments/{id}/`, set `linked_moment_id`) → publish `submit_session_journal` (draft→approved) → PH xem downstream (state+consent+media).
+- **⭐ GAP (B):** `teacher.session.$id.tsx` **PhotoTab** = mỗi ảnh tạo 1 moment mới (1:1, input KHÔNG `multiple`, render `media[0]`); `MomentsView` upload lặp được vào moment có sẵn nhưng KHÔNG tạo moment. `f51039be` 2 media = tạo bằng upload lặp (~26h, 2 người) — data/display chạy, KHÔNG phải UI multi-media first-class. KHÔNG UI xoá-1-media/đổi-cover/sắp-thứ-tự (cover = created_at ASC; schema KHÔNG có cover_media_id/sort_order).
+- **Quyết định:** KHÔNG build V85 · đóng audit-only · **V86 = Teacher Multi-media Upload MVP** (frontend-only · target PhotoTab · Flow A: multi-select → 1 draft moment → tag 1 lần → loop `upload_media` cùng moment_id · state draft tới submit · Parent/DB/RPC/Edge KHÔNG đổi · cover created_at ASC · consent downstream).
+- **Nghiệm thu PASS audit-only:** 0 code · 0 DB/RPC/Edge/migration · Parent/summary/timeline KHÔNG đụng. **Guard chuỗi giữ:** summary V69(6/2/4) · /kid V70 · Lightbox V71 · consent V72 · badge V73 · adapter V74 · compact V75 · detail V76 · home V77 · data V78 · RPC enrich V79 · gallery UI V80 · polish V81 · stability V82 · warmth V83 · filter/month-nav audit V84.
+- **Endpoint sau V85:** RULES **D217** · SYSTEM_MAP **v0.78** · Handoff **v85**. Backlog: 🟠 re-sync project library (RULES D217 + SYSTEM_MAP v0.78) · 🔵 V86 Teacher Multi-media Upload MVP (Flow A, frontend-only) · 🟠 (nợ) `upload_media` nhánh A KHÔNG set cột `source` mig068 · 🟠 (hoãn) filter/month-nav · 🟠 (hoãn) timeline affordance "X ảnh" khi n≥2 moment gallery · 🟠 (tùy) migration `cover_media_id`/`sort_order` · 🟠 (tùy) Edge batch-sign nếu waterfall · nợ cũ (Parent Dashboard/Radar/AI Review THẬT · Phương án B RPC `get_child_journey_service` · rename `kidJourneyModel.ts` · enrichment `child_journey` · Coloring schema · Moment media taxonomy).*
+
+**Cập nhật 2026-07-10 07:21 GMT+7 (v86 · SYSTEM_MAP v0.79): ⭐ TEACHER MULTI-MEDIA MOMENT UPLOAD MVP — IMPLEMENTATION PASS, frontend-only 1 file, 0 DB/RPC/Edge/migration.** Build V86 (Flow A + no-cleanup) nối V85/D217. Cho GV tạo **1 `learning_moment` nhiều ảnh** qua UI thật → Parent gallery (V80/V81) có nội dung từ workflow GV sạch. RULES **D218**.
+- **File đổi:** duy nhất `src/routes/_authenticated/teacher.session.$id.tsx`, chỉ trong component **`PhotoTab`** (Bước 3 "Ảnh gắn bé"). Commit `8a18994` · deploy `demenart.lovable.app` · `get_diff` = 1 file (`routeTree.gen.ts` vắng) · typecheck sạch.
+- **Thay đổi (5 điểm):** (1) input ảnh thêm `multiple`; (2) state `progress`; (3) `onFile` viết lại: `Array.from(files)` → validate hết (type/size) → INSERT **đúng 1** moment draft → **loop tuần tự `upload_media` cùng `moment_id`** → `failCount`, giữ moment + media đã lên nếu lỗi một phần ("Một số ảnh chưa tải lên được. Vui lòng thử lại."), **no-cleanup** → `loadMoments()`; (4) nút `Đang tải k/N ảnh…`; (5) card chip **"N ảnh"** overlay khi `media.length>1` (**chỉ PhotoTab**).
+- **Plumbing (KHÔNG đổi, tự tiêu thụ):** `upload_media` nhánh A (1 file/lần, nhận `moment_id`, set `linked_moment_id`) gọi N lần → `get_session_moments` (jsonb_agg, KHÔNG LIMIT 1) aggregate → `submit_session_journal` publish draft→approved → `get_child_journal` gallery enrich (V79) → Parent lightbox (V80/V81). Cover vẫn `created_at ASC`; consent vẫn downstream MIN-multi-child.
+- **C4 smoke PASS 22/22 (ảnh thật + DB):** GV Mỹ Linh upload 3 ảnh → 1 card + chip "3 ảnh" → tag 3 bé + caption → draft → submit → PH (bé An) thấy timeline + **lightbox 1/3**. DB: moment **`c6fc98e8-5d5f-4e65-9c2a-0234c4a6e9de`** = 1 moment · **3 media active cùng moment_id** (`distinct_moment_link=1`) · tag 3 bé **1 lần/bé** (`max_tag_per_child=1`) · **approved** · uploaded_by …011. `f51039be` giữ **2 media**; tổng multi-media moment **1→2** (f51039be legacy + c6fc98e8 = moment multi-media ĐẦU TIÊN từ UI GV sạch).
+- **⭐ BASELINE ĐỔI — CTO chốt GIỮ, KHÔNG rollback:** An summary **6/2/4 → 6/2/5** do publish moment thật `c6fc98e8` (gắn An) — **mong đợi, chấp nhận, KHÔNG regression; 6/2/4 lỗi thời sau V86, phiên sau audit kỳ vọng 6/2/5.** Rollback SQL chỉ **archival, KHÔNG chạy**.
+- **Guard chuỗi giữ:** summary V69→(V86 baseline **6/2/5**) · /kid V70 · Lightbox V71 · consent V72 · badge V73 · adapter V74 · compact V75 · detail V76 · home V77 · data V78 · RPC enrich V79 · gallery UI V80 · polish V81 · stability V82 · warmth V83 · filter/month-nav audit V84 · workflow audit V85. Routes: chỉ `teacher.session.$id.tsx` (frontend-only). 0 Parent code · 0 signed_url RPC/adapter/batch-sign/raw Bunny.
+- **Endpoint sau V86:** RULES **D218** · SYSTEM_MAP **v0.79** · Handoff **v86**. Backlog: 🟠 re-sync project library (RULES D218 + SYSTEM_MAP v0.79) · 🟠 lưu repo V86 · 🔵 (V87 gợi ý) audit PhotoTab post-upload cleanup/retry UX HOẶC Teacher card preview polish (thumbnail nhiều-ảnh) — KHÔNG cover/sort/per-asset delete/media manager trừ khi duyệt riêng · 🟠 (nợ) `upload_media` nhánh A KHÔNG set cột `source` (mig068) · 🟠 (hoãn) filter/month-nav · 🟠 (hoãn) timeline affordance "X ảnh" khi n≥2 moment gallery · 🟠 (tùy) migration `cover_media_id`/`sort_order` · 🟠 (tùy) Edge batch-sign nếu waterfall · nợ cũ (Parent Dashboard/Radar/AI Review THẬT · Phương án B RPC `get_child_journey_service` · rename `kidJourneyModel.ts` · enrichment `child_journey` · Coloring schema · Moment media taxonomy).*
+
+**Cập nhật 2026-07-10 12:45 GMT+7 (v86 · ĐÓNG — bổ sung V86B + V86C):** Sau V86 core, hai vòng polish UI-only cho card PhotoTab (cùng file `teacher.session.$id.tsx`, 0 DB).
+- **V86B — compact multi-media card (commit `0924b9e`):** cover compact `h-48 sm:h-64 object-cover overflow-hidden` (bỏ `aspect-video` full) + subcomponent `MomentCover` (spinner / `onError`→"Ảnh chưa xem được" / ảnh) + dải **thumbnail 14×14** khi `media.length>1` (4 ảnh, hoặc 3 + "+N" khi >4, hoặc text "N ảnh đã tải lên") + chip "N ảnh" (chỉ PhotoTab). **1 card = 1 moment**; caption/tag/status giữ nguyên.
+- **V86C — responsive grid (commit `e6534a66`):** wrapper card `space-y-4` → **`grid grid-cols-1 gap-4 lg:grid-cols-2 items-start`** → rộng **2/hàng**, hẹp **1/hàng**. get_diff tổng V86core→HEAD = 1 file sạch.
+- **C1 audit đường xoá media → V87 blocker:** `media_assets` RLS bật + **0 policy** (frontend không chạm trực tiếp); state `active`/`deleted`/`trashed`; teacher chỉ gọi được `drive_trash` (folder-scoped, không hiểu `linked_moment_id`); KHÔNG có RPC moment-scoped. → Per-image **delete = BLOCKER → V87**.
+- **🟢 V87 — Teacher Media Soft Delete (backlog):** RPC SECURITY DEFINER `remove_moment_media_service(p_moment_id, p_media_id)` — school-scoped, **draft-only**, soft-delete `media_assets.state='deleted'`, **KHÔNG hard-delete Bunny**, KHÔNG xoá learning_moment, ảnh cuối → giữ draft + "Chưa có ảnh"; migration D92; UI icon thùng rác + confirm; Parent UI bất biến.
+- **Endpoint đóng V86:** RULES **D218** · SYSTEM_MAP **v0.79** · Handoff **v86**. Commits `8a18994`→`0924b9e`→`e6534a66`. Baseline **6/2/5**. Frontend: chỉ `teacher.session.$id.tsx`. 0 DB/RPC/Edge/migration · 0 Parent code.*
+
+### v0.80 — TEACHER MEDIA SOFT DELETE (phiên v87)
+**Cập nhật 2026-07-10 14:16 GMT+7 (v87 · SYSTEM_MAP v0.80): ⭐ TEACHER MEDIA SOFT DELETE — RPC SECURITY DEFINER `remove_moment_media_service` + UI PhotoTab. Cho GV gỡ 1 ảnh khỏi khoảnh khắc NHÁP an toàn (soft-delete, KHÔNG đụng Bunny/moment/Parent). RULES D219.**
+- **DB (+1 migration net, 2 lần `apply_migration` D92 3-block + harden grant tách khối D15):** `create_remove_moment_media_service` → `fix_remove_moment_media_service_session_lead`. Hàm `remove_moment_media_service(p_media_id uuid)` SECURITY DEFINER `search_path=''`: **AUTHORIZE trước khi lộ state** → `check_media_upload_access` (same-school) **AND** `is_school_admin() OR is_session_lead(session) OR is_session_teacher(session)` → mới lộ `not_active`/`moment_not_draft` → FOR UPDATE media+moment → guarded UPDATE `state='deleted'`+metadata audit, ROW_COUNT=1. KHÔNG hard-delete Bunny · KHÔNG xoá row/moment. Grants **authenticated/service_role/postgres** (0 anon/PUBLIC).
+- **Inventory:** 63 bảng · **106 hàm definer (+`remove_moment_media_service`)** · 155 policy · mig 001→106 · Edge 14 · cron 1 · 3 tenant. `media_assets.state` {active/deleted/trashed}; `get_session_moments`+`get_child_journal` lọc `state='active'` → media deleted tự ẩn (KHÔNG frontend hiding).
+- **UI (frontend-only, 1 file `_authenticated/teacher.session.$id.tsx` / `PhotoTab`, agent-mode, 3 commit `8af1e05`→`dff8cb4`→`8532f52`):** nút × gỡ ảnh CHỈ card draft (approved ẩn ×) + confirm → RPC → `loadMoments()`; card 1-ảnh × trên cover, card nhiều-ảnh × trên thumbnail; **card 0-ảnh ẩn** (`filter(media>0)`, moment nháp-rỗng inert nằm DB); chạm thumbnail đổi ảnh-lớn (`selected[moment_id]`); ×  to-đỏ; **newest-first** (`filter(...).reverse()`, KHÔNG đổi RPC). Parent/Kid/DB downstream KHÔNG đụng.
+- **Verify:** DB PASS (JWT-claims impersonation: lead=ok · same-school-không-buổi=`not_authorized_role` · wrong-school=`wrong_school` · parent/super=`not_school_member` · approved `c6fc98e8`=`moment_not_draft` không-mutate · already-deleted=`not_active` · non-moment=`not_moment_media` · bogus=`media_not_found`; get_session_moments 2→1; An **6/2/5** giữ; test moment `759bfdb8` hard-delete sạch). Teacher smoke PASS (Mỹ Linh). **Guard chuỗi V69→V86 giữ:** summary V69(→baseline V86 6/2/5) · /kid V70 · Lightbox V71 · consent V72 · badge V73 · adapter V74 · compact V75 · detail V76 · home V77 · data V78 · RPC enrich V79 · gallery UI V80 · polish V81 · stability V82 · warmth V83 · filter/nav audit V84 · workflow audit V85 · multi-media upload V86.
+- **Endpoint sau V87:** RULES **D219** · SYSTEM_MAP **v0.80** · Handoff **v87**. Routes: SỬA `_authenticated/teacher.session.$id.tsx` (chỉ `PhotoTab`).
+- **Backlog:** 🟠 re-sync project library (RULES D219 + SYSTEM_MAP v0.80 + HANDOFF v87) · 🟠 lưu repo V87 (2 mig + PhotoTab) · 🟢 **Kid gallery ảnh-thứ-2** (lightbox `/kid` chỉ hiện cover; ký-từng-item on-navigate; KHÔNG đụng Parent) · 🟢 **retire `/teacher/moments`+`/school/moments`** (MomentsView legacy v13; ⚠️ governance gap gắn ảnh vào moment approved không guard draft-only; gỡ nav+redirect/xoá sau audit link) · 🟡 **purge orphan draft moment** (0 active media+0 tag sau xoá ảnh cuối; inert) · 🟠 (nợ taxonomy) `upload_media` nhánh A không set `source` (mig068) · 🟠 (hoãn) filter/month-nav · 🟠 (hoãn) timeline affordance "X ảnh" · 🟠 (tùy) migration `cover_media_id`/`sort_order` · 🟠 (tùy) Edge batch-sign · nợ cũ (Parent Dashboard/Radar/AI Review THẬT · Phương án B RPC `get_child_journey_service` · rename `kidJourneyModel.ts` · enrichment `child_journey` · Coloring schema · Moment media taxonomy). Cập nhật "tới đâu ghi tới đó" (KỶ LUẬT VÀNG).*
+
+### v0.81 — KID GALLERY PIPELINE (phiên v88)
+**Cập nhật 2026-07-10 17:00 GMT+7 (v88 · SYSTEM_MAP v0.81): ⭐ KID GALLERY PIPELINE — RPC enrich `get_kid_album_service` + Edge `kid_gate` sign-on-navigate + UI `KidMomentLightbox`. Fix `/kid` moment nhiều-ảnh chỉ hiện cover. RULES D220.**
+- **⭐ Lỗ phát hiện:** Kid KHÔNG có gallery ở BẤT KỲ tầng nào — `get_kid_album_service` trả 1 `media_id`/moment · `kid_gate album` ký 1 cover · `kid.tsx` 1 `<img>` không dots. Enrichment V79 (galleryItems…) chỉ vá `get_child_journal` (Parent), chưa chạm đường Kid (hai đường đọc journey song song chưa hợp nhất). Symptom brief "chạm chấm fail" = ảo.
+- **Kid ≠ Parent về ký:** Parent ký client `get_signed_media_url` (có auth.uid); Kid không auth.uid (D174) → ký service-side qua Edge → shared-hook moot → fix buộc RPC+Edge (CTO gỡ chốt "no DB/Edge" cho pipeline Kid tối thiểu additive).
+- **A — RPC `get_kid_album_service` (mig `v88_enrich_kid_album_gallery_metadata`, D92, additive):** mỗi moment thêm `coverMediaId`/`mediaCount`/`hasGallery`/`galleryItems[{mediaId,fileType,createdAt}]` (metadata-only, **0 signed_url**), active-only, `created_at ASC, id ASC`; `media_id` (cover) backward-compat; `coverMediaId === media_id === galleryItems[0].mediaId`. Grants service_role-only (leaky=false), secdef + search_path='' giữ. **106 definer KHÔNG đổi** (CREATE OR REPLACE).
+- **B — Edge `kid_gate` v6→v8:** (1) **album consent-filter per-moment** — `viewerProfile = child_parents.parent_profile_id` (PH-của-bé) → `media_consent_check(moment, viewerProfile, 'view')`; fail → strip `media_id/coverMediaId=null, mediaCount=0, hasGallery=false, galleryItems=[]` + không ký cover → UI rớt (filter `!!signed_url`); PASS → ký cover; creations luôn ký (D178 no-consent). (2) action **`sign_moment_media(session_token, moment_id, media_id)`**: session→kid_access→authz(moment approved+bé tag)→media(active+linked)→consent→`signAsset` → `{ok, signed_url|reason}`. Reason generic (D219), `verify_jwt=false`. Vì consent moment-level → không bao giờ "1/3 với item ẩn".
+- **C — UI `kid.tsx` (frontend-only, commit `1a5af516`):** `Moment` type +gallery metadata (additive); component Kid-only **`KidMomentLightbox`** (cover seed từ `signed_url`; `selectItem` ký on-demand `callGate sign_moment_media` + cache theo mediaId + `knownRef` chống re-sign; `safeSelected` clamp; counter aria-live + dots; soft loading/error; `galleryItems<=1`→1 img cover + reactions y cũ); **cả 2 entry point** (`openMoment` grid + timeline moment `openItem` → recover Moment từ `album.moments` theo `moment:${id}` → `onOpenMoment`) route chung; creation/session/badge giữ dialog cũ. get_diff = 1 file (routeTree.gen.ts vắng), typecheck pass. Deploy production `demenart.com` (auto Lovable→GitHub→Cloudflare).
+- **⭐ BASELINE re-baseline: An 6/2/5 → 6/2/6** (nguồn moment `c7fe22f4` "Bé làm workshop", gallery thứ 3, 2 media, tạo 07-10 13:48; `summarizeChildJournal` đếm moment có `media_id` = 6). **KHÔNG regression, KHÔNG xoá** (CTO chốt, D220/D218).
+- **Verify:** A hàm deployed (mint session tạm) c6=3/f51=2/c7=2/đơn=1, 0 signed_url, cover=item0 · B gate ma trận SQL (allowed→SIGN, cross-moment/deleted→not_found, untagged/draft/random→not_authorized generic) · Kid smoke PASS (c7fe22f4 1→2 sign-on-navigate, c6fc98e8 3-ảnh, đơn y cũ, media.demenart.com 0 raw b-cdn, console=favicon) · Parent 6/2/6 + gallery/warm-copy y cũ (0 Parent code) · Teacher PhotoTab draft-delete y cũ (0 Teacher code). Inventory **63/106/155/1** giữ.
+- **Guard chuỗi V69→V87 giữ + Kid gallery pipeline V88:** summary V69(→baseline 6/2/6) · /kid V70 · Lightbox V71 · consent V72 · badge V73 · adapter V74 · compact V75 · detail V76 · home V77 · data V78 · RPC enrich V79 · gallery UI V80 · polish V81 · stability V82 · warmth V83 · filter/nav audit V84 · workflow audit V85 · multi-media upload V86 · media soft-delete V87 · **Kid gallery pipeline V88**.
+- **Endpoint sau V88:** RULES **D220** · SYSTEM_MAP **v0.81** · Handoff **v88**. Routes: SỬA `src/routes/kid.tsx` (duy nhất). DB: CREATE OR REPLACE `get_kid_album_service`. Edge: `kid_gate` v8.
+- **Backlog:** 🟠 re-sync project library (D220 + v0.81 + v88) · 🟠 lưu repo V88 · ✅ Kid gallery ảnh-thứ-2 ĐÓNG · 🟢 Kid/Parent shared gallery (deferred — khác mô hình ký) · 🟢 retire `/teacher/moments`+`/school/moments` · 🟡 purge orphan draft moment · 🟠 (theo dõi) consent-filter album Kid ẩn moment fail consent (privacy-correct, document khi pilot mở rộng) · 🟠 (nợ) `upload_media` source mig068 · 🟠 (hoãn) filter/month-nav · timeline "X ảnh" · `cover_media_id`/`sort_order` (ít cần nhờ galleryItems ASC) · KHÔNG Edge batch-sign · nợ cũ (Parent Dashboard/Radar/AI Review THẬT · Phương án B RPC `get_child_journey_service` · rename `kidJourneyModel.ts` · enrichment `child_journey` · Coloring schema · Moment media taxonomy). Cập nhật "tới đâu ghi tới đó" (KỶ LUẬT VÀNG).*
+### v0.82 — RETIRE LEGACY MOMENTS + DRAFT-ONLY HARDENING (phiên v89)
+**Cập nhật 2026-07-10 18:42 GMT+7 (v89 · SYSTEM_MAP v0.82): ⭐ RETIRE LEGACY MOMENTS ROUTES + BACKEND DRAFT-ONLY HARDENING — đóng governance bypass 2 tầng. RULES D221.**
+- **Canonical moment creation = SESSION-ONLY:** đường duy nhất tạo/gửi khoảnh khắc là Session → Bước 3 PhotoTab (tạo `learning_moments` draft + tag/caption/media) → Bước 4 review → `submit_session_journal` (draft→approved). Legacy `/teacher/moments`+`/school/moments` (`MomentsView`) **retired**.
+- **PART A (frontend):** `teacher.moments.tsx`+`school.moments.tsx` = redirect stub (toast + về `/teacher`|`/school`, không loop, giữ auth); `MomentsView.tsx` **xoá**; nav "Khoảnh khắc" gỡ ở `teacher.tsx`+`school.tsx`; dashboard link gỡ/đổi ở `teacher.index.tsx` (shortcut gỡ · empty-state→`/teacher/journal`) + `school.index.tsx` (MomentsSection giữ read-only, gỡ "Xem tất cả" · SuggestionsSection gỡ card moments). `teacher.session.$id.tsx` KHÔNG đụng.
+- **PART B (backend, Edge-only):** `upload_media` v13→v14 — nhánh A (ảnh trẻ) thêm guard `if moment_state!=='draft' → moment_not_editable` (reuse `moment_state` từ `check_media_upload_access`; RPC + nhánh C/D/B KHÔNG đổi). Moment `approved` KHÔNG nhận thêm media qua bất kỳ bề mặt nào. Authoritative vì `media_assets` RLS bật + 0 write-policy frontend (mọi write qua Edge). **0 migration.**
+- **Endpoint sau V89:** RULES **D221** · SYSTEM_MAP **v0.82** · Handoff **v89**. Routes: SỬA `teacher.moments.tsx`·`school.moments.tsx`·`teacher.tsx`·`school.tsx`·`teacher.index.tsx`·`school.index.tsx`; XOÁ `components/portal/MomentsView.tsx`. Edge: `upload_media` v14. DB: **KHÔNG đổi** (inventory 63/106/155/1 giữ · An 6/2/6 giữ).
+- **Backlog:** 🟠 re-sync project library (D221 + v0.82 + v89) · 🟠 lưu repo V89 (upload_media v14 + 7 file frontend) · ✅ retire legacy moments ĐÓNG · ✅ governance bypass ĐÓNG (2 tầng) · 🟠 (tùy, NGOÀI V89) siết tuyệt đối = thêm draft-guard vào RPC `check_media_upload_access` (migration D92) — hiện Edge-guard đủ · 🟡 purge orphan draft moment · 🟠 (nợ) `upload_media` source mig068 · 🟠 (theo dõi) consent-filter album Kid · 🟠 (hoãn) filter/month-nav · timeline "X ảnh" · `cover_media_id`/`sort_order` · KHÔNG Edge batch-sign · nợ cũ (Parent Dashboard/Radar/AI Review THẬT · Phương án B RPC `get_child_journey_service` · rename `kidJourneyModel.ts` · enrichment `child_journey` · Coloring schema · Moment media taxonomy). Cập nhật "tới đâu ghi tới đó" (KỶ LUẬT VÀNG).*
+
+---
+
+**Cập nhật 2026-07-10 GMT+7 (v90 · SYSTEM_MAP v0.83): ⭐ ARCHIVE EMPTY DRAFT POLICY — đóng root cause orphan draft tại nguồn. RULES D222.**
+- **Domain lifecycle `learning_moments`:** `draft → approved` (submit) · **`draft → archived` (V90 — mất ảnh active cuối)** · `archived` = terminal (vô hình mọi cổng, không publish, không editable, giữ provenance). Enum `moment_state`{draft·pending_approval·needs_revision·approved·rejected·hidden·archived}.
+- **RPC `remove_moment_media_service` (V87→V90):** sau guarded soft-delete, +bước 8 archive-on-empty — nếu ảnh active CUỐI của moment `draft` bị gỡ → `UPDATE state='archived' WHERE id=moment AND state='draft'` (recheck dưới FOR UPDATE lock bước 4). Return thêm `moment_archived boolean`. Giữ nguyên 7 bước authorize-trước-lộ-state (D219). Migration `v90_archive_empty_draft_on_last_media_removed` (D92 3-block; REVOKE/GRANT authenticated+service_role; VERIFY 0 anon/public). **Definer giữ 106** (REPLACE).
+- **⭐ FK trỏ `learning_moments`:** `moment_children`=CASCADE · `kid_reactions`=CASCADE · `media_assets.linked_moment_id`=**NO ACTION** → hard-delete moment row bị chặn nếu còn media row (kể cả `deleted`) → soft-archive là lối đúng (không delete). Trigger duy nhất `set_updated_at` (BEFORE UPDATE).
+- **Ma trận vô hình `archived`:** get_session_moments (media active-only + UI `filter(media>0)`) · submit_session_journal (promote chỉ draft/pending_approval/needs_revision) · get_child_journal/get_kid_album_service/get_school_moments (`state='approved'`) · upload_media PART B V89 (reject `state!=='draft'`). Toàn bộ approved/active-gated → archived tự rớt.
+- **Backfill data:** 4 deleted-media shell (`aefae8a7`/`2efc8c20`/`921974af`/`6cd00926`) draft→archived (guarded DO block đúng 4 rows; media/tag/caption/Bunny KHÔNG đụng). `ecb244b5` (2 active, live work) + `e1761056` (Category B seed caption+tag) GIỮ draft.
+- **Endpoint sau V90:** RULES **D222** · SYSTEM_MAP **v0.83** · Handoff **v90**. Routes: **0 file frontend.** Edge: **0**. DB: +1 mig (RPC replace) + 4 UPDATE data. **Inventory 63/106/155/1 giữ · An 6/2/6 giữ.**
+- **⭐ Nghiệm thu LIVE production (sau đóng sổ):** GV Mỹ Linh xoá 2 ảnh cuối draft `ecb244b5` qua PhotoTab thật (20:02 GMT+7) → policy archive-on-empty kích hoạt → draft→archived, card biến mất, provenance giữ, An 6/2/6 giữ. Baseline moment = 11 approved + 1 draft + 5 archived (split draft/archived ĐỘNG, dịch mỗi lần policy chạy — baseline cố định = An 6/2/6 + Inventory 63/106/155/1).
+- **Smoke PASS** (JWT-claims impersonation GV Mỹ Linh, `sub`=`profiles.user_id` KHÔNG profile id): delete 1/2→draft giữ; delete ảnh cuối→`moment_archived:true`+archived+provenance nguyên; test moment `dead0000…9090` replica-seed→hard-delete sạch.
+- **Backlog:** 🟠 re-sync project library (D222 + v0.83 + v90) · 🟠 lưu repo V90 (1 mig) · ✅ orphan deleted-media-shell ĐÓNG (nguồn + backfill) · 🟡 partial-fail 0-total-media draft (PhotoTab INSERT+0 upload → draft 0 media, không qua RPC này; inert; sprint riêng) · 🟢 lifecycle purge THẬT (archived+N ngày+admin+backup+no-litigation→hard-delete media→moment theo FK; tương lai, cần retention policy + CTO) · nợ cũ (upload_media source mig068 · consent-filter Kid · filter/month-nav · timeline "X ảnh" · cover_media_id/sort_order · KHÔNG Edge batch-sign · Parent Dashboard/Radar/AI Review THẬT · Phương án B RPC `get_child_journey_service` · rename `kidJourneyModel.ts` · enrichment `child_journey` · Coloring schema · Moment media taxonomy). Cập nhật "tới đâu ghi tới đó" (KỶ LUẬT VÀNG).*
+
+---
+
+## ⭐ V91 — Teacher Upload Failure Recovery & Zero-Empty-Draft Guarantee (D223 · v0.84)
+
+Đóng **đường sinh orphan THỨ 2** (D222 backlog): PhotoTab INSERT moment (draft) → loop `upload_media`; nếu MỌI upload fail → moment draft **0-total-media** bị bỏ lại (khác đường V90 = ĐÃ có media rồi soft-delete).
+
+- **⭐ Service MỚI `archive_empty_draft_moment_service(p_moment_id)`** — SECURITY DEFINER `search_path=''` (migration `v91_archive_empty_draft_moment_service`, D92, DDL + REVOKE/GRANT). Gate authorize-TRƯỚC-lộ-state: (1) `current_profile()` null→`not_authenticated`; (2) lock moment `FOR UPDATE`, not-found→`not_authorized` (KHÔNG leak existence); (3) `check_media_upload_access` same-school + `is_school_admin OR is_session_lead OR is_session_teacher` + **`uploaded_by=self` (CREATOR-ONLY, CTO siết)** → mọi fail = generic `not_authorized`; (4) predicate empty-draft (chỉ SAU authz): non-draft→`moment_not_draft`, EXISTS media→`moment_has_media`, EXISTS tag→`moment_has_tags`, caption non-blank→`moment_has_caption`; (5) guarded UPDATE draft→archived (recheck full predicate) ROW_COUNT<>1→`archive_conflict`; (6) audit `archive_empty_draft_moment` / `reason=all_uploads_failed` / `metadata.source=photo_tab_total_upload_failure`. Grants authenticated+service_role (0 anon/public). **Definer 106→107** (hàm MỚI).
+- **Tách khỏi V90:** `remove_moment_media_service(p_media_id)` cần media row (không xử được 0-total-media); predicate `media_total=0` tách tuyệt đối hai đường. V90 RPC **KHÔNG đụng** trong V91.
+- **`upload_media` v14 (KHÔNG đụng):** nhánh A INSERT `media_assets` chỉ SAU Bunny PUT thành công → mọi failure mode tạo 0 media row → total-failure = đúng 0 total media.
+- **Frontend `onFile` (`teacher.session.$id.tsx`, 1 hàm, commit `f9e1590b`):** thêm `successCount` (giữ `failCount`). Case A `successCount>0`→giữ draft + partial warning cũ. Case B `successCount===0`→gọi RPC archive; ok→"Không ảnh nào tải lên được. Khoảnh khắc chưa được tạo."; fail→báo lỗi thật + `console.error` (KHÔNG giả vờ dọn/hard-delete/auto-retry). Validation type/size GIỮ trước INSERT. `loadMoments()` cuối mọi case.
+- **⭐ Smoke đúng cách:** Offline-all SAI (fail INSERT trước nhánh archive → guard `mErr` cũ). ĐÚNG = giữ online + DevTools Request-blocking URLPattern `https://<ref>.supabase.co/functions/v1/upload_media` (URLPattern KHÔNG nhận `*wildcard*`). Chặn phải tầng network (supabase-js chốt `fetch` lúc init → Console patch không ăn).
+- **⭐ Nghiệm thu LIVE (Mỹ Linh 21:54 GMT+7):** INSERT `e5f93993` 200 OK + upload_media blocked → V91 message + 0 card rỗng → moment archived/0 media/0 tag/blank caption + audit source `photo_tab_total_upload_failure`.
+- **Cleanup:** b2ce6685 (An smoke debris, approved, ảnh screenshot) hard-delete scoped CTO-duyệt (FK-safe: media→tag→moment, guarded RAISE) → An về 6/2/6. Bunny 3-object orphan `/moments/b2ce6685/*` ghi backlog (V91 KHÔNG tạo storage-delete path).
+- **Endpoint sau V91:** RULES **D223** · SYSTEM_MAP **v0.84** · Handoff **v91**. DB: +1 mig (hàm mới). Frontend: 1 file (onFile). Edge: 0. **Inventory 63/107/155/1 · An 6/2/6 giữ · empty_draft_orphans=0.** State: 11 approved + 6 archived + 1 draft = 18 (archived ĐỘNG +1=e5f93993 inert).
+- **Rollback:** `DROP FUNCTION public.archive_empty_draft_moment_service(uuid)` (0 data đụng, definer 107→106) + revert onFile về sha trước `f9e1590b`.
+
+---
+
+## ⭐ V92 — Immersive Art Journey Viewer / Art Memory Player + Memory Objects (D224 · v0.85)
+
+Chế độ xem **thứ 2** trên `/parent/journal`. **"Dải hành trình" = PRIMARY/default** · **"Nhật ký" = secondary** (timeline dọc V74–V83 **byte-stable, KHÔNG thay thế**). Framing nội bộ: **Art Memory Player + Memory Objects** — *"Mỗi mốc là một kỷ vật trong phòng triển lãm của con."* (KHÔNG lộ "Blind Box"/"Hộp mù" ra UI.)
+
+### Bất biến lớn nhất: FRONTEND-ONLY
+- **0 migration · 0 RPC · 0 Edge · 0 policy · 0 cron · 0 data.** `get_child_journal` đã trả đủ từ V79 (`galleryItems`/`coverMediaId`/`mediaCount`/`hasGallery`) ⇒ viewer = **tầng đọc thêm** trên payload sẵn có.
+- **Inventory 63/107/155/1 GIỮ NGUYÊN · An 6/2/6 GIỮ NGUYÊN.**
+
+### Files (`src/features/journey/` — 7 mới) + 1 edit route
+| File | Vai trò |
+|---|---|
+| `parentJourneyModel.ts` | **Pure model** (0 React state · 0 Supabase · 0 signing · 0 signed URL). Trích từ `parent.journal.tsx`: types, `buildParentTimeline` (DESC, badge KHÔNG lên trục — D205), `groupTimelineByMonth`, `hcmYmd`/formatters, `getMomentWarmLine`/`getMomentConversationPrompt`, `cleanCaption`, `MOMENT_GALLERY_HINT`. Route giữ **re-export shim** → importer cũ (gallery V79–V81) không gãy. |
+| `useJourneySigning.ts` | Parent signing: `ensureSigned` · `getState` · **`resign`**. Cache **TTL 8 phút** (Bunny `expires_policy_minutes=10`) + `inflight: Set` dedup. Per-media on-demand qua Edge `get_signed_media_url`. |
+| `JourneyViewToggle.tsx` | `[Dải hành trình][Nhật ký]` — primary/secondary. |
+| `ParentJourneyViewer.tsx` | Orchestrator: items **ASC cũ→mới**, `selectedIndex` (mặc định = **mốc mới nhất**), keyboard ←/→/Home/End (guard input/textarea/contenteditable), ghép Stage + Rail. **Hook signing sống Ở ĐÂY** (không bị `key` remount). |
+| `JourneyStage.tsx` | 5 kỷ vật + reveal theo loại + ambient + vignette. |
+| `JourneyRail.tsx` | **Kệ kỷ vật** + dòng chỉ vàng + chapter tháng + viewport lazy-sign. |
+| `parent.journal.tsx` *(edit)* | Chỉ: đổi nguồn import (+shim) · `viewMode` state + localStorage · `<JourneyViewToggle/>` · wrap ternary. **Grid Nhật ký byte-stable.** |
+
+### Memory Objects — mapping (CHỈ data thật)
+| Loại | Kỷ vật (stage) | Kỷ vật (rail) |
+|---|---|---|
+| `creation.drawing` | **Khung tranh treo tường** — khung gỗ + mat + đinh treo/dây + bóng sâu; `object-contain` (không cắt tranh) | khung gỗ mini + mat + cover lazy-signed |
+| `moment` 1 ảnh | **Ảnh in / Polaroid** — viền đáy dày, caption viết tay TRÊN ảnh, nghiêng nhẹ | ảnh in nghiêng, viền đáy dày |
+| `moment` gallery | **Xấp ảnh chồng** (2 lớp lệch sau) + dots/counter; **VẪN 1 milestone** | xấp ảnh + badge số ảnh |
+| `creation.recording` | **Băng cassette** — nhãn viết tay = caption thật; **2 cuộn QUAY khi phát**, đứng khi pause; lõi trái nhả–phải cuốn theo `progress`; waveform CSS **deterministic từ hash mediaId = TRANG TRÍ**, không phải tín hiệu âm thật | cassette mini (thân tối + nhãn sáng + 2 cuộn) |
+| `journey.session` | **Sách mở 2 trang** — gáy + mép trang lồi; trang trái = **mốc TRƯỚC thật** (`prevItem`), trang phải = mốc đang chọn; program/date/teacher_note THẬT | **sách đóng** (gáy dọc) + **⭐ accent sao** |
+| `journey` khác | **Trang thư viết tay** — giấy kẻ dòng + lề đỏ + mép rách | thiệp gập (góc gập) |
+| `video` | **KHÔNG dựng** (0 data thật — không fake) | — |
+
+**Ngôn ngữ vật thể thống nhất (chống kitsch):** giấy ngà · gỗ ấm · kim loại ám vàng · ánh sáng chếch trên-trái · bóng đổ cùng hướng · gợi hình bằng bóng/mép/khung (KHÔNG cartoon) · **media LUÔN là hero**.
+
+### Kệ kỷ vật (rail)
+- Dòng **chỉ vàng SVG uốn** nối các kỷ vật; đoạn đã đi qua sáng, phía trước mờ (gradient theo `selectedIndex`). Không animation liên tục.
+- **Chapter tháng THẬT** (HCM tz): vạch chương + nhãn "Tháng N" + **khấc kệ**. `LEAD = 20px` đầu kệ để nhãn/vạch không bị cắt. **KHÔNG tên chapter AI.**
+- **Hierarchy 4 bậc:** selected `scale 1.06` + **lift −6px** + **đèn rọi bảo tàng** (radial) + ring; ±1 `1.0/.96`; ±2 `.975/.85`; xa `.95/.72`. **Scale KHÔNG phải tín hiệu chọn duy nhất** (có ring + `aria-current`).
+- Mobile: `scroll-snap x mandatory` + `scroll-snap-align: center` + auto-center (chỉ `scrollLeft` của rail, KHÔNG cuộn dọc trang).
+
+### Stage & Reveal
+- **KHÔNG còn "large app card"**: chrome kem đã gỡ khỏi `ParentJourneyViewer`; **mỗi renderer TỰ SỞ HỮU mặt trưng bày** (mặt tường/bàn + vignette) + **ambient theo loại** (tranh: tường gallery · ảnh: bàn ký ức ấm · audio: trầm/intimate · sách: giấy da · thư: giấy note). Giữ ivory DMA, không dark-mode.
+- **Chiều cao ổn định `min-h-[52vh]`** — không nhảy layout giữa các loại. Detail panel **hạ vai trò** (bỏ vạch ngăn, chữ nhỏ hơn, prompt nhạt hơn).
+- **Reveal theo loại** 250–380ms (fade + translate/scale nhỏ): `ANIM_FRAME` (khung nở) · `ANIM_PRINT` (ảnh đặt xuống) · `ANIM_TAPE` · `ANIM_BOOK` · `ANIM_NOTE`. **KHÔNG 3D/flip/bounce/spin.** `prefers-reduced-motion` → tắt (gồm cuộn cassette: `.dma-reel { animation: none !important }`).
+- **`key={current.id}` remount stage = ĐÚNG, GIỮ**: reset state sạch (dots/playing/retried) + đảm bảo audio dừng khi đổi mốc. An toàn vì hook signing ở cha ⇒ **remount KHÔNG xoá cache, KHÔNG ký lại**.
+
+### ⭐ Signing — CTO REVISED GUARD
+> Guard cũ: *"preserve selected ±2 progressive signing"* → **Guard mới: *"preserve progressive per-item VIEWPORT signing with cache"***.
+
+- **IntersectionObserver**: `root` = container rail · `rootMargin "0px 240px"` (≈2.9 item mỗi bên, tiết chế) · `threshold 0.01` · `data-idx` map element→index · fallback ±2 nếu không có IO.
+- Bất biến: **no batch · no adapter-sign · no RPC `signed_url` · no raw Bunny URL · no duplicate sign (cache/TTL) · denied/error giữ placeholder theo loại · remount/animation KHÔNG kích hoạt ký · stage & gallery dùng CHUNG cache**.
+- **Nghiệm thu Network THẬT:** desktop **24 entry** (12 fetch + 12 preflight = đúng 12 media có ảnh của An; audio/session/text `cover=null` → 0 request) · mobile 390px **4 entry** · đổi mốc / quay lại mốc cũ: **24→24→24→24 = 0 re-sign**. (Tổng request trang tăng là do DevTools ☑️ Disable cache ép tải lại ảnh Bunny — KHÔNG phải signing.)
+
+### Bug đã đóng trong V92
+| Bug | Gốc | Fix |
+|---|---|---|
+| Ảnh vỡ + giật + không cache | Bunny `expires_policy_minutes=10` + cache "known" cứng | TTL 8′ + `resign()` on `<img onError>` + `inflight` dedup |
+| Rail chỉ 3 card có ảnh | window ±2 | **viewport lazy-sign** (IO) |
+| Audio không phát trên iPhone | **`audio/webm`** (Kid ghi ra webm) — iOS Safari KHÔNG hỗ trợ | Lối A: `onError`/`play().catch()` → báo nhẹ + **link tải bản thu**; **KHÔNG sửa data** → **ticket riêng** cho pipeline |
+| Nhãn tháng bị cắt đầu kệ | offset âm sát mép | `LEAD = 20px` |
+
+### Extension point (GHI, KHÔNG BUILD)
+**Art Discovery Capsule** (Hộp Khám Phá 3/6/12 tháng): rail-object switch + `JourneyViewerItem` **đã chừa chỗ** cho một loại object đặc biệt. V92 **KHÔNG build**: 0 fake data · 0 hardcoded capsule · 0 locked box · 0 progress threshold · 0 scoring · 0 AI insight · 0 DB change. Cần policy + CTO duyệt sprint riêng. **Không loot-box · không randomization · không rarity · không khoá ký ức của trẻ.**
+
+### Endpoint & Rollback
+- **Endpoint sau V92:** RULES **D224** · SYSTEM_MAP **v0.85** · Handoff **v92**.
+- DB: **0**. Edge: **0**. Frontend: **7 file mới + 1 edit**. Deploy prod `demenart.lovable.app` (deployment `fc927714`, commit `1659d4dd`).
+- **Rollback:** xoá `src/features/journey/` + revert `parent.journal.tsx` về sha trước `8a6106bf` → về V91 chính xác. **0 DB đụng ⇒ rollback tuyệt đối sạch.**
+- **CTO verdict ĐẠT:** *"Phụ huynh không còn thấy mình đang lướt thẻ media. Họ đang mở và đi qua những kỷ vật tuổi thơ nghệ thuật của con."*
+
+---
+
+## ⭐ V92B.2 — Stable Memory Player + Gallery / Fullscreen polish (D224-B · v0.85)
+
+Pass ổn định UX **sau deploy đầu của V92** (CTO mở lại, không đóng sớm). Vẫn **FRONTEND-ONLY** — 0 DB/RPC/Edge. Inventory **63/107/155/1** · An **6/2/6** giữ.
+
+### Files (2 mới + 5 sửa)
+| File | Vai trò |
+|---|---|
+| `JourneyDetail.tsx` **(mới)** | Tầng story tách khỏi stage. `buildDetailModel(item)` + `MomentPrivacyBadge`. **Chỉ dữ liệu ĐÃ CÓ**: chip · ngày · caption · privacy badge · warm line · gợi ý trò chuyện · gallery hint · program · teacher_note. **0 comment/reply/reaction.** |
+| `JourneyFullscreen.tsx` **(mới)** | "Xem lớn". Dialog + `object-contain` + X/Esc + arrows + dots. **Đọc URL từ cache `useJourneySigning`** ⇒ mở ảnh đã ký = **0 request**. Drag-to-close tự viết (pinch-safe). |
+| `JourneyStage.tsx` | **Chỉ còn mặt kỷ vật.** Chiều cao **CỐ ĐỊNH**. Gallery arrows + swipe. Nút 🔍 Xem lớn (drawing/photo/gallery). |
+| `ParentJourneyViewer.tsx` | Bố cục shell: desktop `[stage \| detail bounded]` → rail; mobile **stage → rail → Sheet**. |
+| `JourneyRail.tsx` | Nhãn chương **year-aware**. |
+| `JourneyViewToggle.tsx` | **Icon-only trên mobile** (giữ aria-label/title/aria-pressed); chữ hiện từ `sm:`. |
+| `parent.journal.tsx` | Header nén (chip trẻ lên hàng tiêu đề · subtitle ẩn ở journey-mode/mobile · **bỏ `flex-wrap`** → toggle ghim phải-trên cả 2 chế độ). Nhật ký grid **byte-stable**. |
+
+### ⭐ Rail bất động — mô hình chiều cao
+- **Gốc bệnh:** `min-h` = chiều cao *tối thiểu* ⇒ cassette / khung tranh cao hơn thì đẩy stage phình ⇒ rail dịch.
+- **Fix:** `STAGE_MEDIA` = **`h-[46vh] max-h-[46vh]`** (mobile) / **`h-[56vh]`** (desktop), `overflow-hidden`. Mọi kỷ vật **co vừa khung**: tranh `max-h-[30vh]` mobile · polaroid `max-h-[26vh]` · **cassette thu gọn** (cuộn 76→56px · waveform `h-9→h-6` · padding nhỏ) · sách/thư giảm padding · `SignedFailPlaceholder` → `h-full`.
+- ⇒ **5 loại kỷ vật = cùng một chiều cao pixel** ⇒ rail **không thể nhảy**, kể cả khi mở/đóng story.
+- **KHÔNG** dùng `position: fixed/sticky` cho rail (giữ guard CTO: không đè thanh Safari, không phụ thuộc viewport iOS).
+
+### Bố cục (thứ tự DOM)
+```
+Desktop:  [ STAGE (h cố định) | DETAIL bounded max-h-[52vh] + overflow-y-auto ]
+          [ KỆ KỶ VẬT ]
+Mobile:   [ STAGE ] → [ KỆ KỶ VẬT ] → [ "Xem câu chuyện" → bottom Sheet max-h-[80vh] ]
+```
+Story **không bao giờ** nằm giữa stage và rail.
+
+### Gallery (multi-image moment)
+- **‹ ›** overlay mép ảnh · **non-cyclic** (ẩn ở ảnh đầu/cuối) · **44px** · desktop `opacity-0 → group-hover/focus` · mobile mờ nhẹ thường trực.
+- **Swipe ngang** trên bề mặt ảnh (ngưỡng 40px) — **chỉ đổi ảnh TRONG moment**. Swipe **rail** = đổi mốc. Stage **KHÔNG** là carousel hành trình.
+- **Giữ dots + counter** (mũi tên = hành động · dots = vị trí). 1 moment nhiều ảnh vẫn = **1 milestone**.
+- Signing: `ensureSigned(currentMediaId)` on-demand · cache reuse ⇒ bấm lại ảnh đã ký = **0 request**.
+
+### Fullscreen ("Xem lớn")
+- ⚠️ **KHÔNG tái dùng `ParentJournalLightbox`** — nó sở hữu **cache ký riêng** trong route ⇒ tái dùng sẽ **ký lại**. Viewer mới đọc thẳng cache `useJourneySigning`.
+- Mở ảnh đã ký ⇒ **0 signing request**. Gallery điều hướng trong fullscreen dùng **chung cache**; index gắn cùng `sel` ⇒ **đóng ra đúng ảnh đang xem**.
+- Đóng: **X** · **Esc** · **kéo xuống**. Drag-to-close **tự viết** (KHÔNG dùng Drawer/vaul — drawer sẽ độc chiếm gesture và **giết pinch-zoom**): chỉ nhận **1 ngón**; **≥2 ngón (pinch) → nhả gesture ngay**; khoá **trục dọc**; thả >110px = đóng; grab handle mờ ở đỉnh (mobile).
+- **Pinch/pan zoom = backlog** (đường đã chừa).
+
+### Multi-year readiness
+`multiYear = new Set(items.map(year)).size > 1` → 1 năm: **`Tháng 7`** · nhiều năm: **`Tháng 7 · 2026`**. **KHÔNG** year picker / zoom / paging. → extension point *"Context Navigator: Year → Month → Keepsakes"*.
+
+### Extension points (GHI, KHÔNG BUILD)
+- **Memory Conversation / "Câu chuyện quanh kỷ vật"** — chỗ chừa trong `JourneyDetail`. V92: **0 comment/reply/notification/unread/social reaction**.
+- **Context Navigator: Year → Month → Keepsakes**.
+- **Pinch/pan zoom** trong fullscreen.
+- **Art Discovery Capsule** (cần policy + CTO).
+- **Portal header/logo chung 4 portal** → **sprint riêng V93**.
+
+### Endpoint & Deploy
+- **Endpoint sau V92 (final):** RULES **D224** · SYSTEM_MAP **v0.85** · Handoff **v92**.
+- Commits: `cf955ee4` (A) · `998637bd` (B) · `4fefb769` (C) · `ffe56219` (E) · `a9d304a9` (F) · `5e256663` (H) · `d5537aee` (I) · `48c6ed4c` (J).
+- **Deploy prod** `demenart.com` — deployment **`d392fad7`**, commit **`48c6ed4c`**.
+- **CTO verdict: ĐẠT** (nghiệm thu iPhone thật: rail bất động · kệ lộ màn đầu · kéo-xuống-đóng mượt · pinch không bị nuốt · Nhật ký nguyên vẹn).
+
+
+---
+
+## 🆕 V93 — MEMORY CONVERSATION "Câu chuyện quanh kỷ vật" (v0.86)
+
+**Domain:** hội thoại riêng tư của GIA ĐÌNH quanh 1 kỷ vật journey — không phải comment/social/chat. Lời gia đình kể trở thành một phần của ký ức.
+
+### Bảng (65 tables — +2)
+```
+memory_threads
+  id · child_id NOT NULL→children
+  moment_id? → learning_moments   ┐  NO ACTION cả 3
+  creation_id? → kid_creations     ├  CHECK num_nonnulls = 1
+  journey_id? → child_journey      ┘
+  partial UNIQUE (source_col, child_id) ×3  ← ⭐ CHILD-SCOPED:
+     group moment tag N bé = N thread riêng tư từng gia đình
+memory_messages
+  thread_id → memory_threads (NO ACTION)
+  author_type parent|kid + CHECK identity (kid = chỗ chừa V93C)
+  body 1–1500 · created/updated/deleted_at (soft-delete, ẩn hoàn toàn)
+```
+RLS **bật + 0 policy** (deny-all, mirror media_assets) + REVOKE table privileges → mọi access qua RPC.
+
+### RPC (111 definer — +4, grants authenticated+service_role, 0 anon/PUBLIC)
+- `get_memory_conversation(source_type, source_id, child_id)` — **LAZY: 0 INSERT**, chưa thread → `{ok:true,[],0}`; messages ASC + `author_name/author_link_role/mine/editable/deletable` (server-side)
+- `post_memory_message(..., body)` — lazy thread `ON CONFLICT (partial-unique) DO NOTHING` race-safe
+- `edit_memory_message(id, body)` — author-only · window 30′ · re-run authz on source
+- `delete_memory_message(id)` — author-only · soft · re-run authz · KHÔNG delete-own bypass khi mất quyền xem source
+
+**⭐ SECURITY INVARIANT (D225):** predicate authz 4 RPC = surface keepsake thật:
+moment `tagged + approved` · creation `child khớp + media active` · journey `child khớp + entry_type ≠ badge (D205)`.
+Authorize-trước-lộ-state: mọi authz-fail → generic `not_authorized`; business-reason chỉ sau authz.
+`child_id` luôn derive+verify từ source — không trust client. Teacher/Admin/Kid: 0 đường vào (V93B).
+
+### Frontend (`src/features/journey/`)
+- `useMemoryConversation.ts` — 4 RPC, lazy theo `enabled`, refetch-after-mutation, stale-guard
+- `MemoryConversation.tsx` — trang sách ký ức (warm paper, không chat-bubble); link_role whitelist father/mother/guardian → Ba/Mẹ/Người giám hộ, lạ ('primary')/null → author_name → "Người thân"
+- `JourneyDetail` +nút "💬 Câu chuyện quanh kỷ vật · N" (cuối, sau Gợi ý trò chuyện; N chỉ sau fetch đầu — cache convCounts)
+- `ParentJourneyViewer` +`childId?` (thiếu → feature vắng lặng lẽ) + conversation Sheet **sibling portal** (desktop right max-w-md / mobile bottom 85vh) — 0 remount player, 0 re-sign (Network verified)
+- **Naming:** story layer V92 = "Xem câu chuyện" · conversation V93 = "Câu chuyện quanh kỷ vật" (không trùng nhãn)
+
+### Trạng thái đóng v93
+Endpoint: RULES **D225** · SYSTEM_MAP **v0.86** · Handoff **v93** · Inventory **65/111/155/1** · An **6/2/6** · memory 0/0 (debris dọn, 8 audit proof giữ).
+Chờ: V93C Kid reply (kid_gate) · V93D notification · fixture nợ (#19 2-parents, PH Chi user_id, creation-dead-media).
+
+---
+
+## 🆕 V94 — "THÊM KỶ VẬT NGOÀI DMA" / Parent Adds Memories (v0.87)
+
+**Domain:** PH tự đặt kỷ vật nghệ thuật xảy ra NGOÀI DMA vào hành trình của con — hiện thực hoá THÉP CHỜ #1 (`child_journey.source`) lần đầu với source='parent'. Kỷ vật PH là first-class citizen trong Dải hành trình + Nhật ký, thuộc về gia đình, trường/GV KHÔNG thấy.
+
+### Kiến trúc A′ Spine + Detail
+```
+parent_memories (content)          child_journey (spine)
+  id · child_id → children           source='parent'
+  memory_type: artwork|audio|        entry_type='parent_memory'
+    photo_moment|performance|        ref_id = pm.id
+    experience|note                  occurred_at MIRROR pm.occurred_at
+  artistic_domain? (6 domain)        UNIQUE partial (ref_id) WHERE exact-pair
+  title 1–120 · story ≤3000        ⇒ EXACT PAIR bắt buộc mọi nơi:
+  occurred_at (≤ now)                 (source='parent' AND entry_type='parent_memory')
+  state active|archived               — mixed pair KHÔNG BAO GIỜ surface
+  created_by → profiles
+parent_memory_media (mapping — KHÔNG cột mới trên media_assets)
+  memory_id → parent_memories · media_id → media_assets
+  UNIQUE(memory_id,media_id) · UNIQUE(media_id) · UNIQUE(memory_id,sort_order)
+  sort_order monotonic (MAX mọi mapping kể cả soft-deleted) · deleted_at
+```
+RLS **bật + 0 policy** cả 2 bảng mới (deny-all, mirror pattern) + REVOKE. **3 policy `child_journey` của TRƯỜNG replace**: thêm `source IS DISTINCT FROM 'parent' AND entry_type IS DISTINCT FROM 'parent_memory'` (cả USING + WITH CHECK) — trường không đọc/ghi được row parent. `media_assets.source` CHECK +'parent'; media PH: `access_level='private_child_media'` · `linked_child_id` · path `/family/{child_id}/` zone dma-private.
+
+### RPC (117 definer — +6 mới, 5 patch)
+- `create_parent_memory(child, type, title, story, occurred_at, domain)` — atomic pm + spine; immediate publish (KHÔNG draft); memory hợp lệ 0 media
+- `update_parent_memory` — creator-only + re-run linked-parent; mirror occurred_at sang spine
+- `archive_parent_memory` / `restore_parent_memory` — creator-only; archive GIỮ spine+media+conversation (khoá qua parity), restore hồi phục
+- `remove_parent_memory_media` — lock pm→media→mapping; soft-delete cả mapping+media; NO Bunny delete; bytes vẫn đếm quota; gỡ media cuối KHÔNG archive memory
+- `finalize_parent_memory_media_attachment` — **service_role-ONLY**: lock pm FOR UPDATE → authz → **lock children row (serialize quota per-child)** → validate EXACT pending media (`pending_attach='true'` text-compare) → limits (≤5 · ≤1 audio · ≤1 video) → quota retained → sort monotonic → insert mapping → clear pending
+- **5 patch:** `get_child_journal` (journey WHERE exact-pair; +field `parent_memory {memory_id, memory_type, artistic_domain, title, story, mine, galleryItems[]}`) + 4 RPC conversation V93 (nhánh journey: reserved marker → require exact pair + pm active + child khớp — conversation kỷ vật PH chạy trên FK V93 sẵn, **0 migration thêm**)
+
+**Quota:** 500MB/bé config-driven `app_settings.parent_memory_quota_mb_per_child`; accounting = retained bytes (`source='parent' AND linked_child_id AND metadata->>'bunny_purged' <> 'true'`, mọi state).
+
+### Edge (v15 / v21)
+- `upload_media` **v15** — NHÁNH E `memory_id`: gate creator+linked+active → type/size (ảnh 10MB · audio 50MB · **video CHỈ MP4** 100MB) → pre-check limits/quota → PUT `/family/{child}/` → INSERT `pending_attach='true'` → **attach atomic qua finalize** → fail: `deleted+attach_failed+pending_purge` → best-effort Bunny delete → `bunny_purged`
+- `get_signed_media_url` **v21** — nhánh parent parity 4 chân: link `child_parents` + mapping `deleted_at IS NULL` + `parent_memories.state='active'` + media `state='active'`; fail → generic; audit `parent_memory_media_view`
+
+### Frontend (`src/features/journey/` — 5 commit agent-mode D.1→D.5)
+- `parentJourneyModel.ts` +`ParentMemoryPayload`/`isParentMemory`/`DOMAIN_LABELS` VN/`parentMemoryRenderKind` (**renderer theo media THẬT**: audio→cassette · video→khung gỗ MP4 · ≥2 ảnh→gallery polaroid · 1 ảnh→artwork? khung tranh : ảnh in · 0 media→lá thư)
+- `JourneyStage.tsx` +5 renderer ParentMemory* (label "Kỷ vật gia đình"/"Ba mẹ lưu lại"; video `preload="metadata"` poster, NO autoplay) · `JourneyRail.tsx` +RailKind 'video' ObjVideo tile ▶ · `JourneyDetail.tsx` chip 🏡 "Ba mẹ lưu lại" + actions **Sửa · Lưu trữ** (chỉ `mine=true`)
+- `ParentMemoryComposer.tsx` + `useParentMemoryComposer.ts` (MỚI) — Sheet ivory 4 bước type→info→save-first→media-optional; partial success "Đã lưu kỷ vật. {done}/{total} tệp"; edit-mode prefill + "Tệp đang có" nút Gỡ; client-validate MP4-only qua `accept` (Finder tự chặn .MOV)
+- `parent.journal.tsx` +nút "+ Thêm một Kỷ vật" (hàng riêng dưới header, giữ layout guard V92) + `focusItemId` auto-select + TimelineParentMemoryLeaf (Nhật ký) + timelineNode 🏡
+- `ParentJourneyViewer.tsx` +`focusItemId`/`onEditMemory`/`onArchiveMemory` plumbing — 0 remount, signing viewport-lazy giữ
+
+**Summary guard:** kỷ vật PH vào Dải hành trình + Nhật ký nhưng **KHÔNG đếm vào 6/2/6** (`summarizeChildJournal` semantics không đổi V94). Unified Journey Summary = quyết định product tương lai.
+
+### Trạng thái đóng v94
+Endpoint: RULES **D226** · SYSTEM_MAP **v0.87** · Handoff **v94** · Inventory **67/117/155/1** · An **6/2/6** · spine parity pm=spine · 0 orphan pending_attach.
+Deploy prod deployment `247dedcd` (demenart.lovable.app → demenart.com). Nghiệm thu ảnh thật PH Hùng 9 case + DB cross-check khớp.
+Chờ: Media Compatibility Pipeline (MOV/HEVC/WebM → Bunny Stream) · sweep pending_attach>24h vào purge nightly · Archived Memories management surface (restore UI) · video poster thumbnail server-side.
+
+---
+
+## 🆕 V95 — ART EVIDENCE FRAMEWORK / "Khung Bằng Chứng Phát Triển Nghệ Thuật" (v0.88)
+
+**Domain:** Tầng EVIDENCE trước tầng JUDGMENT — hệ thống trả lời "có bằng chứng THẬT nào về hành trình nghệ thuật của bé?" trước khi (V96/V97) hỏi "bằng chứng gợi ý gì?". Mọi insight tương lai (Art Discovery Capsule) phải truy vết được về event/creation/observation/memory thật. **Evidence layer = INDEX/interpretation metadata, KHÔNG BAO GIỜ là source of truth** — content ownership ở nguyên domain tables (D228).
+
+### Ontology 5 class (CTO duyệt) + metadata trực giao
+```
+direct_creation   trẻ TỰ LÀM ra artifact       kid_creations (media active) ·
+                                                pm artwork+image · pm audio+audio · pm performance+video
+participation     trẻ THAM GIA                  spine session (attendance-gated tại nguồn) ·
+                                                pm experience · pm performance không video
+observation       người lớn QUAN SÁT            child_observations parent_visible (teacher) ·
+                                                learning_moments approved (teacher, media-doc) ·
+                                                pm note/photo_moment/artwork-audio thiếu artifact (parent)
+reflection        gia đình/bé PHẢN TƯ           memory_messages (visibility-parity V93:
+                                                keepsake gốc còn visible mới surface)
+achievement       milestone XÁC NHẬN            child_badges status='confirmed' (đọc thẳng,
+                                                KHÔNG qua spine — badge spine ref_id NULL = nợ)
+
+Trực giao: provenance (kid|parent|teacher|system) · media_documented ·
+artistic_domain · occurred_at ≠ created_at · group_key · metadata nhẹ
+```
+**Quy tắc bất biến:** 1 source event = 1 evidence event — **media KHÔNG BAO GIỜ nhân số** (5 ảnh trong 1 memory = 1 event). Coverage mô tả **DATA** ("hiện có bằng chứng ở 4 lĩnh vực"), KHÔNG BAO GIỜ mô tả năng lực ("bé yếu về múa" = CẤM). Không score/rank/so sánh/chẩn đoán/percent/unlock.
+
+### DB (2 migration: `v95_art_evidence_foundation` + `v95_patch_session_null_ref`)
+- **+1 cột** `programs.artistic_domain` (nullable, CHECK 6 domain) — seed CHỈ mapping chứng minh: `ctan→music` · `ballet→dance_movement`
+- **+1 RPC** `get_child_evidence(p_child_id, p_from?, p_to?)` — SECURITY DEFINER, **parent-scope ONLY** (`is_child_parent` → generic `not_authorized`), pure derived UNION ALL 7 nhánh (Option A — KHÔNG bảng `art_evidence`), filter `[from, to)` trên occurred_at, trả `{counts_by_class, evidence[]}` payload nhẹ (không copy story/media); grants authenticated+service_role (D182)
+- **Link 4 rows** `skill_catalog.program_id` → CTAN (điều kiện: 4 code đều prefix `ctan_`, program duy nhất)
+- **Patch NULL-ref:** 3 spine session legacy `ref_id=NULL` → `COALESCE(j.ref_id, j.id)` + cờ `metadata.ref_source ∈ {lesson_session, journey_row}` (D227)
+- Evidence identity deterministic: `source_type:<uuid>` · evidence layer đọc **code không label** — `child_skills` LOẠI khỏi nguồn (key label_vi, rogue value — D227)
+
+### Temporal + domain derivation
+`occurred_at` = cửa sổ lịch sử (pm backdate hợp lệ) · `created_at` = provenance, giữ cả hai. Domain: pm→cột riêng · session/obs/moment→program → `programs.artistic_domain` · kid drawing→`visual_art` (phân loại chất liệu artifact) · recording/badge/message→NULL (mơ hồ = để trống, không đoán). group_key tương quan tự nhiên qua `session_id` — V95 chỉ emit, dedupe là V96.
+
+### ⭐ V95 EVIDENCE BASELINE (An, live, JWT PH Hùng)
+**22 events · 16 group độc lập · 0 NULL id** — direct_creation **8** · observation **8** · participation **6** · reflection **0** · achievement **0** (badge duy nhất thuộc Bé Jenny — đúng chủ). Domain coverage: music 10 · visual_art 6 · theatre_performance 2 · dance_movement 1 · null 3. Span 19/6→10/7/2026. Provenance: kid 8 · teacher 7 · system 4 · parent 3. Session grouping chứng minh: 6 evidence chung `session:aaaa…a0001` = 1 buổi học thật (participation + observation + 4 moment).
+
+### Trạng thái đóng v95
+Endpoint: RULES **D228** · SYSTEM_MAP **v0.88** · Handoff **v95** · Inventory **67/118/155/1** · An **6/2/6** (summary không đổi) · V92/V93/V94 nguyên vẹn · 0 Edge · 0 frontend.
+Rollback: DROP FUNCTION + DROP COLUMN + UPDATE skill_catalog program_id=NULL (4 rows) → 67/117/155/1.
+Chờ: V95E "Dữ liệu hành trình của con" (optional, chưa duyệt) · V96 Readiness Engine (duration/quantity/diversity/independence — cần research sprint framework phát triển trước, không blind-map thành talent score) · V97 Art Discovery Capsule · Badge Journey Provenance Alignment · Spine Session ref_id Backfill · child_skills refactor code-based.
+
+---
+
+## 🆕 V96 — ART EVIDENCE READINESS ENGINE / "Khi nào dữ liệu đủ để bắt đầu Bản Khám Phá?" (v0.89)
+
+**Pipeline:** Evidence (V95) → **Readiness (V96)** → Discovery Capsule (V97). Readiness = thuộc tính của DATASET, không bao giờ của trẻ (D230). Backend-only: 2 migration, 0 bảng mới, 0 policy đổi, 0 Edge, 0 frontend.
+
+**Kiến trúc shared derivation (D229, C-2 approved):**
+```
+derive_child_evidence_internal(child_id)        ← canonical UNION 7 nhánh (semantics V95 nguyên vẹn)
+        ├── get_child_evidence(child, from, to)  ← authorize + derive; contract V95 giữ nguyên byte (md5 proof)
+        └── compute_child_evidence_readiness(child, as_of)  ← policy v1, service_role only
+                     ↑
+          get_child_evidence_readiness(child, as_of?)       ← authorize is_child_parent → generic not_authorized
+```
+Grants: derive + compute KHÔNG authenticated/anon (service_role only) · 2 public RPC authenticated+service_role · PUBLIC/anon leak = 0 (D231 audit cả anon+authenticated).
+
+**Policy v1 (D230):** two-layer — `dataset_maturity` (insufficient <6 groups · emerging ≥6g/≥1 occ-month · established ≥12g/≥3m/span≥60d · `longitudinal_observed` ≥20g/≥6m/span≥150d/**near_time_active_created_months≥4**) + `collection_profile` descriptor (contemporaneous ≤0.2 · mixed ≤0.6 · retrospective >0.6 theo retrospective_entry_ratio, lag>7d) + `eligibility` current-window 3m/6m/12m tại as_of (KHÔNG best-window) × general/domain-specific, mỗi node `{eligible, failed[]}`. Elapsed-span floors 45/100/210d + active-months 2/4/7 + weeks 5/8/14 + groups 8/14/24 + DC-groups 3/5/8 + core-classes 2/2/3 + provenance 2/2/3 + domains ≥2 + near-time continuity 2/3/5. Domain-specific: groups 6/10/18 · DC∪PART 3/5/8 · core≥2 · KHÔNG provenance/breadth gate. 8 gap codes context-aware · largest_group_share diagnostic-only · reproducibility `created_at<=as_of AND occurred_at<as_of` · timezone bucketing Asia/Ho_Chi_Minh · policy_version='v1' hằng trong function.
+
+**Migrations:** `v96c1_shared_evidence_derivation` (STOP GATE: payload An md5 byte-identical · 22/16 · DC8/OBS8/PART6 · An 6/2/6 · cross-family denied · grants unchanged) · `v96c2_readiness_engine` (VERIFY: 121 definer · leak 0 · smoke An emerging/22/16/v1). Lần apply đầu c1 bị VERIFY chặn leak authenticated (default privileges) → rollback sạch → D231.
+
+**⭐ V96 READINESS BASELINE (An, live):** `emerging` · `contemporaneous` · retrospective_entry_ratio 0 · nt_cre_months 2 · largest_group_share 0.318 · general current_3m NOT eligible failed=[too_short_duration, insufficient_longitudinal_spread]. Scenario B synthetic: 20 memories backdate 12 tháng (13 occ-months/363d) → established+retrospective, KHÔNG longitudinal_observed — anti-gaming V96-06 chứng minh live. as_of=25/6: 0 evidence/insufficient — có event occurred trước 25/6 (min 19/6) nhưng 0 row thỏa created_at<=as_of (min created 26/6): hệ thống chưa biết evidence đó tại thời điểm evaluation.
+
+### Trạng thái đóng v96
+Endpoint: RULES **D231** · SYSTEM_MAP **v0.89** · Handoff **v96** · Inventory **67/121/155/1** · An **6/2/6** · An evidence **22/16** DC8/OBS8/PART6/REF0/ACH0 · An readiness **emerging/contemporaneous/v1** · V92–V95 nguyên vẹn · 0 Edge · 0 frontend.
+Rollback: DROP get_child_evidence_readiness + compute_child_evidence_readiness → restore body V95 get_child_evidence → DROP derive_child_evidence_internal → 67/118/155/1.
+🔴 **VALIDATION DEBT GATE:** fixture A/C/E/F/G bắt buộc trước V97 production Capsule generation; **F bắt buộc trước domain-specific Capsule thật**.
+Chờ: V96D Parent UI "Hành trình đang dần rõ hơn" (chưa duyệt, cấm unlock meter) · V97 Art Discovery Capsule (sau validation gate) · V95E · Badge Journey Provenance Alignment · Spine Session ref_id Backfill · child_skills refactor code-based.
+
+
+---
+
+## 🆕 V97 — ART DISCOVERY CAPSULE d1 / "Bản Khám Phá Nghệ Thuật" — deterministic engine, KHÔNG AI (v0.90)
+
+**Pipeline:** Evidence (V95/D227-228) → Readiness (V96/D230, **policy v2** từ v97a1) → **Discovery Capsule d1** (V97/D234). North star: không claim nào mạnh hơn evidence supporting nó; capsule mô tả DATASET/pattern, không bao giờ mô tả năng lực trẻ.
+
+**Policy v2 (v97a1, D232):** giữ nguyên MỌI threshold v1; tách gap code thứ 9 `insufficient_collection_continuity` cho window continuity floor (`cont < cont_f`) ở wgen_eval + wdom_eval; `high_retrospective_concentration` CHỈ còn ratio-based (dataset gaps >0.6). Registry 9 stable codes.
+
+**Bảng (RLS bật · 0 policy · deny-all):**
+- `discovery_capsules` — child_id FK · scope general|domain (CHECK cặp domain) · window_code ∈ {current_3m,current_6m,current_12m} · window_start/end · as_of (exact, server-side) · evaluation_date (HCM date) · readiness_policy_version · discovery_version ('d1') · payload_hash (md5 canonical) · created_by. **Unique EXPRESSION index** `discovery_capsules_semantic_key (child_id, scope, COALESCE(domain,''), window_code, evaluation_date, readiness_policy_version, discovery_version)` = daily idempotency (ON CONFLICT race-safe → trả capsule cũ).
+- `discovery_capsule_items` — capsule_id CASCADE · taxonomy_code CHECK 4 giá trị · pattern_key · claim_strength CHECK 4 giá trị · support jsonb {group_count, occ_months, group_keys[], evidence_ids[], classes[], provenances[], human_prov_groups{}} (mảng sorted) · sort_order · UNIQUE (capsule_id, taxonomy_code, pattern_key).
+
+**Functions (121→125):**
+```
+derive_child_evidence_internal (D229, KHÔNG đổi)
+        └── build_discovery_candidates_internal  [service_role ONLY — single source of floors]
+              │   filter: reproducibility created<=as_of & occurred<as_of & window
+              │   + Case B consent filter (D233): learning_moment phải pass MIN-consent hiện hành
+              │   key = domain × family (creation|engagement) · tier + claim tính TẠI ĐÂY
+              ├── generate_discovery_capsule(child, scope, window_code, domain?)  [authenticated]
+              │     authorize is_child_parent → invalid_request → idempotency lookup
+              │     → compute_child_evidence_readiness(v2) gate eligibility node đúng scope/window
+              │     → not_eligible {failed codes} | select items (rank claim→grp→key, trần 6/2)
+              │     → canonical payload + md5 → INSERT ON CONFLICT → items → get()
+              ├── get_discovery_capsule(id)  [authenticated] — rebuild candidates tại (window_start, as_of gốc)
+              │     với visibility HIỆN TẠI → tier-compare: rebuilt < stored ⇒ item {status:'suppressed'}
+              │     (copy trung tính, không leak lý do/nguồn/số) · valid ⇒ payload đầy đủ
+              └── list_discovery_capsules(child)  [authenticated] — headers
+```
+
+**Taxonomy d1 + floors (D234):** convergence (grp≥3·mo≥2·≥2 human prov mỗi nguồn ≥2g cùng exact key — system không phải human) > creation_pattern|repeated_engagement (grp≥3·mo≥2) > observed_activity (item ≥2g; 1g = coverage-only) > none. Claim: multi_source_pattern / repeated_pattern / descriptive / longitudinal_pattern reserved. Reflection + achievement loại khỏi d1.
+
+**Validation debt gate (đóng, 5/5 trên v2, synthetic children riêng):** A 80ev/10d → emerging, ratio 0, có `insufficient_collection_continuity` KHÔNG có retro code · C 20 sessions/6mo → longitudinal_observed nhưng gen ✗4 codes + music ✗ core=1 (attendance ≠ depth) · E 12 DC backdate → established/retrospective 1.0, 2 code đúng tầng · F music sâu 6mo → music 3m+6m eligible failed=[], gen ✗ CHỈ narrow_domain_coverage · G 4 domain×1 → insufficient. Exact-key audit: F không convergence (teacher engagement-only, parent creation-only) — đúng semantics.
+
+**Acceptance V97C 10/10:** not_eligible+codes (An) · cross-family generic · fixture H capsule convergence/multi_source human {parent:3,teacher:2} · idempotent same-day · hash reproducible TRUE · Consent Support Test (derive bất biến, builder loại moment, suppressed↔valid theo consent) · degradation parent <2g → suppressed (pm state chỉ có active|archived) · cleanup 0 residue · regression An/inventory/leak.
+
+Endpoint: RULES **D234** · SYSTEM_MAP **v0.90** · Handoff **v97** · Inventory **69/125/155/1** · An **6/2/6** · evidence **22/16** · readiness **v2** emerging/contemporaneous · capsules **0** · V92–V96 nguyên vẹn · 0 Edge · 0 frontend.
+
+---
+
+## 🆕 V98 — ART DISCOVERY CAPSULE PARENT EXPERIENCE / "Bản Khám Phá Nghệ Thuật" trên `/parent/discovery` (v0.91)
+
+**Tầng:** frontend-only trên engine V97 (D234) — 0 migration schema, 0 policy, 0 Edge. North star: Parent hiểu "dữ liệu đang cho thấy gì trong phạm vi dữ liệu cho phép", KHÔNG phải "hệ thống chấm con".
+
+**IA (chốt B+D):** route MỚI `/parent/discovery` (`_authenticated/parent.discovery.tsx`, search param `?capsule={id}` — detail cùng route, D101) + Home card static trên `parent.index.tsx` + nav "Bản khám phá" (Sparkles) trong `parent.tsx`. `/parent/journal` KHÔNG đụng (byte-stable V74–V93 giữ nguyên).
+
+**4 tầng trong trang:** Readiness context (window chips 3/6/12 "tháng gần đây" — lát cắt ngang hàng, không level/lock/badge) → Capsule list (latest-per-`(scope,domain,window)` + "Các bản trước đó (n)" gấp; card KHÔNG item-count/suppression indicator) → Detail (boundary đầu/cuối · section "Điều dữ liệu đang dần cho thấy" [repeated+multi_source] / "Những dấu vết đã được ghi nhận" [descriptive] · 💬 prompts domain-aware ≤2) → Trust (support summary text-only; evidence drill-down hoãn V98.1).
+
+**`src/features/discovery/discoveryModel.ts` = SINGLE FRONTEND SOURCE OF TRUTH:** WINDOW/DOMAIN labels · provenance (parent="gia đình" · teacher="giáo viên" · kid="chính con"; system KHÔNG BAO GIỜ human) · GAP_COPY 9 codes + fallback + quy tắc max-2 + "…và một vài yếu tố khác trong dữ liệu hiện tại." + ANTI_PRESSURE_LINE · renderItem 4 taxonomy (convergence support KHÔNG breakdown nguồn; longitudinal/unknown → repeated template, không nâng claim) · SUPPRESSED_COPY 1 khối duy nhất "Một phần của bản khám phá này hiện không còn hiển thị." (all-suppressed giữ shell, 0 heading rỗng) · conversationPrompts · coverageNote semantics an toàn · groupLatestPerKey · formatDate HCM. Components (`ReadinessPanel`/`CapsuleCard`/`CapsuleDetail`) 0 copy tự chế.
+
+**Generate:** nút "Tạo Bản Khám Phá" chỉ khi eligible; idempotent same-day → mở lặng lẽ; not_eligible runtime → thay CTA bằng khối gap-copy; không chữ "AI".
+
+**Nghiệm thu V98D:** server 12/12 (fixture F/H synthetic `f8…`, thiết kế từ threshold live: domain 3m span≥45/mon≥2/grp≥6/dcp≥3/core≥2/cont≥2 · 6m 100/4/10/5/3) + UI trọn (E2E generate · convergence · all-suppressed live · restore · mobile 400px) + cleanup 10/10 scope-guard D236 + regression 69/125/155/1 · An 22/16 · leak 0.
+
+**Sự cố vận hành trong phiên:** D235 Bunny balance âm → media 2 zone chết cert-sai-tên → billing fix + auto-recharge (không đụng code). D237 deploy-lag giữa 2 deploy → bug UI không tái hiện, verify bằng Claude-in-Chrome tab sạch.
+
+Endpoint: RULES **D237** · SYSTEM_MAP **v0.91** · Handoff **v98** · Inventory **69/125/155/1** · An **6/2/6** · evidence **22/16** · readiness **v2** · capsules **0** · V92–V97 nguyên vẹn.
+
+
+---
+
+## §V99 — FULL CONTROL PLANE OVERHAUL (v0.92 · 12/07/2026)
+
+**Mục tiêu đạt được:** Admin = Control Plane + Observability + Configuration + Policy Visibility + Workflow Diagnostics. Admin trả lời được 7 câu North Star không cần SQL tay.
+
+**DB mới (69→73 tables · 125→133 definer · 155→159 policies · cron 1):**
+- 4 bảng registry (RLS is_admin): `policy_registry` (5 policies, read-only, cột `defined_in` = nguồn sự thật) · `admin_config_registry` (36 keys, 6-nhóm classification D240 + decision hard-code governance, admin ALL) · `edge_function_registry` (14 functions: name/version/purpose/auth_mechanism/verify_jwt — false = tự-gác, không public) · `route_registry` (44 routes: portal/module/status/nav_visible/role_requirement).
+- 8 hàm mới: `admin_lookup_search(text)` · `admin_lookup_user(uuid)` · `admin_lookup_child(uuid)` (journal 6/2/6 + media states + consents + parent-memory metadata-only D244 + memory-conv counts + kid devices + evidence total/by_class/groups + readiness passthrough compute + capsules metadata) · `admin_lookup_media(uuid)` (diagnostic checklist WF-01 + consent facts + denial audit) · `admin_lookup_capsule(uuid)` · `get_admin_system_health()` (db baseline/cron/policy versions/registry drift/denials 7d/config changes 7d/bunny=UNKNOWN theo D241) · `set_program_artistic_domain(uuid,text)` (Gate 7, validation 6-code + audit) · trigger fn `audit_config_change()` (D243, jsonb key extraction) gắn 5 bảng config.
+- Registry recovery (v99_1): group mới `journey-discovery` 🌱 · 6 ghost modules seeded (journey-viewer/parent-memory/memory-conversation/evidence-engine/readiness-engine/discovery-capsule) · 3 admin surfaces (admin-lookup/policy-registry/system-map) · mission-control fixed live · audit-log route /admin/audit-log · 10 dependency links · 10 workflow playbooks WF-01..WF-10 (46 steps) trong `admin_playbooks`.
+- Migrations: v99_1 registry recovery · v99_2 registries · v99_3 lookup+health · v99_4(+4b fix) config audit · v99_5 program domain · v99_6 live sync + regression · v99_7 fix admin_lookup_user (session_teachers.profile_id, bắt qua prod smoke). Mỗi cái D92 3-block + D15 hardening + VERIFY.
+
+**Frontend mới (Lovable agent, commits 147f66c4→58bec3ff, typecheck pass):**
+- `/admin/lookup` — Smart Lookup: search debounce 350ms → 4 nhóm kết quả → panel USER/CHILD/MEDIA/CAPSULE (SPA state), eligibility grid render failed codes dạng chip, diagnostic checklist ✓/✗.
+- `/admin/policies` — read-only, banner D242, render summary jsonb theo shape (array→chips, object→bảng con).
+- `/admin/audit-log` — filter ngày/action/entity/search + nhóm nhanh "Chỉ sự kiện từ chối"/"Config changes", expand metadata JSON, pagination 50, resolve tên actor.
+- `/admin/system-map` — 5 tab: Tính năng (admin_modules + group, filter search/status) · Routes · Edge Functions (verify_jwt=false ghi "tự-gác") · Config (classification badges) · Program→Domain (dropdown 6 code + RPC + toast).
+- admin.index.tsx: topbar search → Link /admin/lookup · Bunny tile đọc get_admin_system_health (UNKNOWN xám, không giả xanh) · nút "Xử lý" chỉ hiện khi có đích (→ /admin/lookup), bỏ dead controls.
+- NAV: +4 items (Tra cứu · Sổ Policy · Nhật ký audit · Bản đồ hệ thống).
+
+**Acceptance đã verify server-side (JWT impersonation admin):** search "Hùng" → 1 profile · admin_lookup_child(An) khớp baseline tuyệt đối (6/2/6 · evidence 22/16 · v2 emerging contemporaneous · gen 3m failed [too_short_duration, insufficient_longitudinal_spread] · capsules 0 · pm quota 6.2/500MB) · media diagnostic group 2 trẻ → group_moment_in_class all-granted · health {cron OK, bunny UNKNOWN, drift OK} · config_change audit row (actor set) · program no-op unchanged không tạo audit rác.
+
+**Nợ V99 để lại:** 🟡 Bunny health probe tự động (đang UNKNOWN by design) · 🟡 Hard-code scan full-repo mức file-by-file (registry 36 keys cover các nhóm chính; quét chi tiết constants FE còn lại → V99.x) · 🟡 pricing_config chưa có UI edit (registry ghi "CHƯA CÓ UI V1.5") · 🟡 health-score weights ADMIN_VIEW_ONLY chưa có card riêng trong /admin/policies (nằm trong config registry) · 🟡 domain labels FE trùng 4 nơi (NEEDS_FURTHER_DECISION) · nợ V95–V98 giữ nguyên.
+
+Endpoint: RULES **D244** · SYSTEM_MAP **v0.92** · Handoff **v99** · Inventory **73/133/159/1** · An **6/2/6** · evidence **22/16** · readiness **v2** · capsules **0** · V92–V98 nguyên vẹn.
+
+
+## §V99.8 — SMART LOOKUP UX COMPLETION (v0.92 · 12/07/2026)
+Frontend-only + 1 migration additive (v99_8: `children_count` per profile trong admin_lookup_search — definer giữ 133, leak 0). File mới `src/features/admin/lookup/adminLookupPresentation.ts` = mapping registry tập trung. `admin.lookup.tsx` viết lại: search results chỉ hiện nhóm có kết quả (hết "Trẻ: 0" gây hiểu nhầm) + "N trẻ liên kết" trên row PH · User panel: chips (Phụ huynh chính · Đang hoạt động · Có thể đăng nhập), section Gia đình clickable, GIẢNG DẠY ẩn khi 0/0, Chẩn đoán nhanh facts-only, Hoạt động = timeline gộp theo ngày giờ HCM (Đã xem N tác phẩm của trẻ...) + link Nhật ký kỹ thuật · Child panel: Hành trình nghệ thuật (N tác phẩm/âm thanh/khoảnh khắc), Dữ liệu hành trình (N dấu vết/sự kiện độc lập + class labels VN), Trạng thái dữ liệu bằng câu tiếng Việt (maturity/profile/gap codes dịch), khu "Kiểm tra vấn đề" (media → hướng dẫn + consent thật; Bản Khám Phá → readiness thật) · mọi raw values dồn vào `<details>` Chi tiết kỹ thuật. Commits 34028e90 (typecheck pass). Deploy 72c79a78.
+
+
+## §V99.8b — CHILD 360° READINESS UX (v0.92 · 12/07/2026)
+Frontend-only (2 file, commit 7df73ce0, typecheck pass, deploy fa3f3a6f). QA prod chỉ ra "bức tường eligibility" (15+ block "Chưa đủ điều kiện (scope)" lặp). Fix: presentation layer thêm `windowLabel` (current_3m→"3 tháng gần đây"...) · `scopeLabel` (general→"Nghệ thuật tổng quát", music→"Âm nhạc"...) · `buildReadinessSummary(readiness)` deterministic (headline=maturity, ≤2 dòng: collection profile + câu gộp chuẩn khi failed ⊇ {too_short_duration, insufficient_longitudinal_spread}) · `buildReadinessMatrix(eligibility)` (gom theo window 3m→6m→12m, DEDUPE các scope cùng failed-set thành 1 group nhiều nhãn, reasons ≤2 + "…và một vài yếu tố khác"). "Trạng thái dữ liệu" mặc định = summary ≤3 dòng; matrix nằm trong collapsed "Xem độ sẵn sàng theo từng lát thời gian"; accordion "Chưa có Bản Khám Phá" dùng cùng components. Copy: "dấu vết"→"lần ghi nhận"; diagnostics → "Hệ thống tổng hợp/phân tích dữ liệu đang hoạt động". flattenEligibility xoá sạch. Backend/policy/inventory không đổi.
+
+
+---
+
+## ⚠️ GHI CHÚ CANONICAL (12/07/2026 — V101)
+Bản SYSTEM_MAP trong Project Knowledge lúc mở phiên V101 **dừng ở §V99.8b (v0.92)** — thiếu phần V100 dù `DMA_HANDOFF_v100.md` khai báo SYSTEM_MAP **v0.93**. §V100 dưới đây được **khôi phục từ HANDOFF v100** (không bịa); §V101 là phần mới. Header đã bump **v0.92 → v0.94**.
+
+## §V100 — ADMIN AUDIT INTELLIGENCE (v0.93 · 12/07/2026 · khôi phục từ HANDOFF v100)
+- `/admin/audit-log` từ bảng log kỹ thuật → **công cụ điều tra vận hành**. Nén thật: 7.838 raw events → 1.122 mục hoạt động (7,0×).
+- **DB:** 4 migration · +3 btree index trên `audit_logs` (`created_at DESC` · `(actor_id, created_at DESC)` · `(action, created_at DESC)`) · `audit_action_category()` (SQL IMMUTABLE, 7 category) · `audit_event_child_ids()` (SQL STABLE, 5 nguồn child-linkage) · **+2 SECURITY DEFINER**: `admin_audit_investigation`, `admin_audit_group_events` (133 → **135**) · `audit_config_change()` + `metadata.actor_source`.
+- **Semantics:** D245 burst compression (media_access, gap ≤15s, actor-scoped) · D246 child attribution (singleton mới được nói "của [tên]") · D247 raw truth + actor_source.
+- **Inventory sau V100:** 73 tables · 135 definer · 159 policies · 1 cron · `admin_config_registry` 40 keys.
+
+---
+
+## §V101 — PARENT FIRST-VALUE (v0.94 · 12/07/2026)
+
+### Bất biến lớn nhất: FRONTEND-ONLY
+0 migration · 0 bảng · 0 policy · 0 SECURITY DEFINER · 0 Edge · 0 cron. Chỉ registry rows (data) được sync theo D238. Inventory **73 / 135 / 159 / 1** — drift = 0.
+
+### Parent IA (sau V101)
+| Route | Component | Vai trò | Nav |
+|---|---|---|---|
+| `/parent` | `parent.index.tsx` | **Trang chủ** — first-value screen | primary (desktop + bottom nav) |
+| `/parent/journal` | `parent.journal.tsx` | **Hành trình** — timeline + create | primary |
+| `/parent/settings` | `parent.settings.tsx` **(MỚI)** | **Cài đặt** — shell điều hướng | primary |
+| `/parent/consent` | `parent.consent.tsx` | Quyền riêng tư & chia sẻ | secondary (Settings + contextual "Vì sao?") |
+| `/parent/kid` | `parent.kid.tsx` | **Cổng của bé — PIN & thiết bị** (KHÔNG phải "Không gian của con") | secondary (Settings) |
+| `/parent/discovery` | `parent.discovery.tsx` | **"Nhìn lại"** | contextual (card Home khi có dữ liệu + Settings) |
+
+Layout `parent.tsx`: logo → `/parent` · header nav 3 mục (`Home`/`BookHeart`/`Settings` icon) · **bottom nav cố định `sm:hidden`** 3 mục, tap target ≥56px · `<main>` `pb-28 sm:pb-8` · chuông thông báo + Đăng xuất giữ nguyên.
+
+### Files mới
+- `src/features/parent/parentChildContext.tsx` — `ParentChildProvider` + `useParentChild()` + `childLabel()`. Fetch `child_parents` MỘT LẦN cho cả portal; persist `localStorage['dma-parent-child:{parentProfileId}']`; **validate**: id đã lưu chỉ được dùng nếu thuộc danh sách con vừa fetch (chống rò rỉ giữa tài khoản). 4 trang (index/journal/consent/kid) đã bỏ fetch riêng, dùng chung context.
+- `src/routes/_authenticated/parent.settings.tsx` — card-link: Quyền riêng tư & chia sẻ · Cổng của bé — PIN & thiết bị · Nhìn lại · Hỗ trợ + card **Hồ sơ con read-only** (PH KHÔNG có quyền `create_child_and_enroll` ⇒ không dựng nút "Thêm con" chết; lối ra thật = `/portal/support`).
+
+### Luật đếm (D254) — `src/lib/kidJourneyModel.ts`
+`ChildJournalSummary` + 2 field mới: `parentSaved` (journey `entry_type='parent_memory'`) và `hasAnyJourneyData` (= `visibleTotal + parentSaved > 0`). **`visibleTotal` = works + voice + moments — BẤT BIẾN** (dùng chung Kid Portal preview, không regression).
+Home 3 trạng thái: `hasData` (card 4 ô) · `hasOther` (buổi học / khoảnh khắc chưa có ảnh → *"Hành trình của [tên] đang bắt đầu"* + preview) · `trulyEmpty` (*"Bắt đầu hành trình của [tên] 💛"*).
+
+### Create flow (0 backend change)
+Entry duy nhất: **"+ Ghi lại một điều về [tên]"** (Home hero) / **"+ Ghi lại"** (Hành trình) → `ParentMemoryComposer` (Sheet 4 bước) → `create_parent_memory` → `{memory_id, journey_id}` → `upload_media` (Edge, **auto-upload ngay khi chọn tệp**; guard `window.confirm` nếu đóng lúc còn tệp pending/uploading) → done → **"Xem trong hành trình"** → `navigate('/parent/journal', {search:{focus:'journey:<id>'}})`.
+`parent.journal.tsx` có `validateSearch: {focus?: string}` → seed `focusItemId` ⇒ post-save deep-link tới đúng item, reload/back giữ đúng.
+Nhãn 6 loại (map 1:1 memory_type): 📸 Một khoảnh khắc (`photo_moment`) · 🎨 Tác phẩm của con (`artwork`) · 🎵 Âm thanh / giọng nói (`audio`) · 📝 Một điều muốn ghi nhớ (`note`) — và dưới **"Lựa chọn khác"**: 🎭 Con biểu diễn (`performance`) · ✨ Một trải nghiệm nghệ thuật (`experience`). `artistic_domain` nằm dưới **"＋ Thêm chi tiết (không bắt buộc)"**, nullable.
+
+### Thuật ngữ (thống nhất pilot)
+Hành trình (không còn "Album"/"Nhật ký của con"/"Hành trình nghệ thuật") · Ghi lại một điều về con · Ba mẹ lưu lại · Nhìn lại · Quyền riêng tư & chia sẻ · Cổng của bé — PIN & thiết bị. Toggle 2 chế độ xem journal **ẩn** (code cả 2 mode còn nguyên, `ParentJourneyViewer` là mặc định).
+
+### `__root.tsx`
++1 `links` entry `rel="icon"` (SVG data-URI) — đóng lỗi favicon 404, không đụng asset pipeline.
+
+### Registry (D238)
+`admin_modules`: +`parent-settings` (live, route `/parent/settings`) · usage_note V101 cho `journey-viewer` (title → "Hành trình (Parent)"), `parent-memory` (D253), `discovery-capsule` (D251).
+`route_registry`: +`/parent/settings` (live, nav_visible=true) · `nav_visible=false` cho `/parent/consent`, `/parent/discovery`, `/parent/kid` (còn live, còn deep-link, chỉ không còn primary nav).
+
+### Baseline mới (live 12/07/2026)
+An **6 Tác phẩm / 2 Âm thanh / 6 Khoảnh khắc / 4 Ba mẹ lưu lại** · Evidence **23 / 17 · DC9 OBS8 PART6** · Readiness **v2 · emerging · contemporaneous**, general current_3m failed `[too_short_duration, insufficient_longitudinal_spread]`.
+Khang (truth-state chuẩn để test): 0 creation · 0 pm · 1 moment approved **0 media row** · 2 buổi học ⇒ near-empty, KHÔNG phải empty.
+
+### Extension points (GHI, KHÔNG BUILD)
+Notification cho parent memory · lọc theo loại ở Hành trình khi timeline ≥25–30 item · copy "Nhìn lại" bên trong `/parent/discovery` · Hồ sơ con editable (cần capability backend mới).
+
+---
+
+## §V102 — PILOT OBSERVABILITY: PRODUCT TELEMETRY TÁCH KHỎI AUDIT (v0.95 · 12/07/2026)
+
+**Câu hỏi V102 trả lời:** *"Phụ huynh thật đang dừng ở đâu?"* — và câu trả lời trung thực đầu tiên là: **chúng ta chưa có phụ huynh thật nào để mà quan sát.** V102 vì thế **không** sửa UX; nó dựng giác quan trước khi người dùng đầu tiên bước vào.
+
+### 1. Hai stream, hai mục đích (D255/D256)
+| | `audit_logs` | `product_events` (MỚI) |
+|---|---|---|
+| Vai trò | forensic · security · mutation/access trace | product funnel · friction |
+| Ghi bởi | `write_audit_log()` — **service_role only** (D72) | `log_parent_event()` — **authenticated** (definer) |
+| Policy | 1 · `SELECT is_admin()` · 0 INSERT | 1 · `SELECT is_admin()` · 0 INSERT |
+| Nội dung | có `ip`, `user_agent`, `child_id`, `metadata` tự do | **enum-only**, KHÔNG `metadata`, KHÔNG free-text, KHÔNG IP/UA |
+| Semantics | D245 burst · D247 raw truth | clickstream tối thiểu, xoá được không đau |
+
+**Bất biến:** hai stream KHÔNG trộn. `audit_logs` không nhận clickstream; `product_events` không nhận nội dung.
+
+### 2. `product_events` — schema
+`id · actor_id(FK profiles) · event_type · route · child_id · school_id · session_id · memory_type · media_count · outcome · reason_code · duration_bucket · created_at`
+7 CHECK constraint (event_type whitelist · route regex · session regex · memory_type · media_count 0–50 · outcome · reason_code · duration_bucket). 3 index: `created_at DESC` · `(actor_id, created_at DESC)` · `(event_type, created_at DESC)` — gương index V100 trên `audit_logs`.
+**Cố ý KHÔNG có cột `metadata` jsonb** — không có túi tuỳ ý thì không có đường rò (D256.4).
+
+### 3. `log_parent_event()` — SECURITY DEFINER (135 → **136**)
+Cổng ghi duy nhất. Thứ tự gate: `current_profile()` → role ∈ {primary_parent, secondary_parent} → whitelist `event_type` → `is_child_parent()` (deny **generic**) → validate enum/regex → dedupe 3s cho `parent_home_view` → suy `school_id` từ enrollment → INSERT.
+**Không có tham số `actor_id`.** Không gọi `write_audit_log`. `search_path=''`.
+
+### 4. Event model
+| Event | Nguồn | Ghi chú |
+|---|---|---|
+| `parent_home_view` | product_events | dedupe 3s ở DB + ref-guard ở client (mount effect) |
+| `parent_create_start` | product_events | click CTA hero |
+| `parent_create_type_selected` | product_events | chỉ enum `memory_type` |
+| `parent_create_save_failure` | product_events | reason: rpc_error / validation / rejected / network |
+| `parent_media_upload_start` | product_events | chỉ `media_count` |
+| `parent_media_upload_failure` | product_events | reason: rejected (gate) / network / unknown |
+| `parent_journey_item_view` | product_events | debounce 800ms · **fire cho cả item text-only** (không proxy qua media) |
+| **save success** | **audit_logs** `create_parent_memory` | KHÔNG nhân đôi |
+| **upload success / denied** | **audit_logs** `media_upload` / `media_upload_denied` | KHÔNG nhân đôi |
+| **second entry · return session** | **suy ra** | derive, không tạo event riêng |
+
+### 5. Admin — `/admin/pilot-funnel` (module `pilot-funnel`)
+A Population · B Funnel F1 (Home → Create start → Save → Journey view + time-to-first-save) · C Thất bại (+ phân bố reason_code) · D Funnel F2 (return session · second entry · median gap) · E 50 event gần nhất + `<details>` chi tiết kỹ thuật + link sang `/admin/audit-log` (V100).
+**Mỗi chỉ số có chip provenance bắt buộc:** `product_events` / `audit_logs` / `suy ra`. Chỗ chưa đo được → **"Chưa có dữ liệu"**, không phải `0`.
+
+### 6. Pilot vs demo (data-only)
+`app_settings.pilot_exclude_email_domains = ["demo.demenart.com","demenart.com"]` (is_public=false). Loại mặc định · toggle bật lại cho QA · **không xoá lịch sử** — chỉ ảnh hưởng aggregation.
+
+### 7. Sự thật pilot tại thời điểm đóng V102
+13 profile `primary_parent`: **9 chưa có login** · 4 có login đều là demo · **0 phụ huynh thật** · actor duy nhất có hoạt động = PH Hùng (tài khoản QA). ⇒ **D257: friction fix bị gate bằng bằng chứng người dùng thật.**
+
+### 8. Human QA production (12/07/2026) — 2 lỗi bắt được sau khi "xong"
+- **P0 (D258):** funnel đếm giáo viên/admin thành phụ huynh pilot ⇒ banner sự thật bị tắt oan. Sửa: lọc **theo vai trò TRƯỚC**, theo demo SAU; actor không tra được ⇒ **LOẠI** (fail-closed).
+- **Deep-link focus:** `useState` initializer của `ParentJourneyViewer` không đọc `focusItemId` ⇒ vẽ kỷ vật cuối trước rồi mới nhảy. Sửa trong initializer.
+- Event sequence thật: 9 event đúng thứ tự, 0 storm, 0 nội dung bị log.
+
+Endpoint: RULES **D258** · SYSTEM_MAP **v0.95** · Handoff **v102** · Inventory **74/136/160/1** · An **6/2/6 + 4** · evidence **23/17** · DC9/OBS8/PART6 · readiness **v2/emerging/contemporaneous** · V92–V101 nguyên vẹn.
+
+---
+
+## 🆕 V103 — PARENT PILOT ACCESS & ONBOARDING · INVITE-ONLY, PARENT OWNS PASSWORD (v0.96 · 12/07/2026)
+
+**Cánh cửa an toàn để phụ huynh thật bước vào.** Trước V103, cách duy nhất để một phụ huynh có tài khoản là: nhà trường bấm "Mời" → hệ thống sinh **mật khẩu tạm** → hiển thị cho **nhà trường** → trường đọc lại cho phụ huynh. Không có UI đổi mật khẩu ở bất kỳ đâu. Nghĩa là **hiệu trưởng vĩnh viễn biết mật khẩu của gia đình** và đăng nhập được vào nhật ký riêng, kỷ vật, và "Câu chuyện quanh kỷ vật" (V93). Hệ thống **nói** rằng nhật ký thuộc về gia đình, nhưng **không thực thi** được điều đó.
+
+### Kiến trúc mới
+```
+Master/sub_admin chọn bé → nhập email PH
+  → RPC mint_parent_invitation()      (definer, gate trường, trả RAW TOKEN đúng 1 lần)
+  → UI hiện link copy được: demenart.com/invite#t=<token>     (fragment: KHÔNG tới web server)
+  → operator gửi qua Zalo (hệ thống KHÔNG tự gửi email — và nói thẳng như vậy)
+
+PH mở /invite
+  → Edge accept_parent_invitation (public, verify_jwt off)
+      action=peek   → validate token (hash), chỉ lộ tên bé SAU khi token hợp lệ
+      action=accept → PH TỰ NHẬP MẬT KHẨU → createUser → accept_parent_invitation_service
+  → PH đã có tài khoản: đăng nhập rồi gọi RPC accept_parent_invitation (authenticated)
+  → link đúng bé → /parent → V101 First-Value loop
+```
+
+### Bảng `parent_invitations` (74→75 tables)
+`token_hash` (CHECK `^[0-9a-f]{64}$` — **không có cột raw token**) · `child_id` · `invited_email` (CHECK tự normalize `lower(btrim)` + regex) · `school_id` · `link_role` · `status` (pending|accepted|revoked) · `expires_at` (7 ngày) · `created_by` · `accepted_at/by_user_id/profile_id` · `revoked_at/by`.
+**RLS ON · 0 policy** (deny-all) · grant bảng chỉ `postgres`+`service_role` — `authenticated`/`anon` **không có một quyền nào, kể cả TRUNCATE**.
+Index: unique `token_hash` · **partial unique `(child_id, invited_email) WHERE status='pending'`** (nền idempotency + resend = supersede).
+
+### 8 function (136→143 definer, tất cả `search_path=""`)
+| Hàm | Grant | Vai trò |
+|---|---|---|
+| `mint_parent_invitation` | authenticated | operator mint; gate master/sub cùng trường; **not-found và wrong-school cùng trả `not_authorized`** (0 enumeration) |
+| `revoke_parent_invitation` | authenticated | thu hồi, guarded UPDATE |
+| `list_parent_invitations` | authenticated | **không bao giờ SELECT `token_hash`**; derive `expired` lúc đọc |
+| `peek_parent_invitation` | **service_role** | Edge gọi; token sai-format và không-tồn-tại **cùng** `invalid_invitation` |
+| `accept_parent_invitation` | authenticated | nhánh đã-có-tài-khoản; email lấy từ **`auth.users`**, KHÔNG từ `profiles` |
+| `accept_parent_invitation_service` | **service_role** | Edge gọi sau createUser |
+| `_accept_parent_invitation_core` | **postgres** | lõi chung |
+| `provision_parent_and_link` | authenticated | (sửa) reuse profile — **scope theo trường** |
+
+### Invariant mới
+- **`profiles_user_id_uq`** — unique partial `profiles(user_id) WHERE user_id IS NOT NULL`. Trước V103, `current_profile()` là `select id ... where user_id=auth.uid() **limit 1**` **không ORDER BY** ⇒ nếu một auth user có 2 profile, phụ huynh nhiều con sẽ **thấy ngẫu nhiên một đứa**, im lặng. Giờ DB chặn ở tầng index, không dựa vào kỷ luật application.
+- **Lời mời chỉ authorize ĐÚNG một bé** (D262).
+- **Mọi cổng từ chối đứng TRƯỚC lệnh ghi đầu tiên** (D263).
+
+### Edge
+- `accept_parent_invitation` (mới, verify_jwt off): hash server-side · raw token/password **không bao giờ log** · lỗi thô nuốt thành `server_error` · `p_email` lấy từ **peek (DB)** chứ không từ client ⇒ binding email không bypass được · **compensating delete** auth user nếu DB accept fail (`createdHere=true`).
+- `invite_parent` **RETIRED → 410**, giữ lại (không xoá) để cú `fetch` thẳng bằng JWT master né UI cũng bị từ chối tường minh thay vì gặp cửa hậu còn sống.
+
+### Frontend
+`/invite` (9 phase: validating · invalid · expired · revoked · used · new_account · existing_account · logged_in_match · logged_in_mismatch) — token đọc từ `window.location.hash` rồi `history.replaceState` xoá khỏi thanh địa chỉ · S6 mismatch **chặn cứng**, không cho override.
+`/school` → tab Trẻ & Phụ huynh → `ParentsPanel`: mint · copy link · trạng thái 4 mức · thu hồi. Copy **trung thực**: "Hệ thống không tự gửi email", "Phụ huynh sẽ tự đặt mật khẩu — nhà trường không nhìn thấy mật khẩu đó."
+`/auth`: modal giả **"Tôi có mã mời"** (bấm Tiếp tục không làm gì) đã **gỡ sạch**.
+
+### Registry (D238)
+`admin_modules` 74→**75** (+`parent-invitations`) · `route_registry` 46→**47** (+`/invite`, portal `public`, `nav_visible=false`).
+
+Endpoint: RULES **D263** · SYSTEM_MAP **v0.96** · Handoff **v103** · Inventory **75/143/160/1** · An **6/2/6 + 5** · evidence **24/18** · DC9/OBS9/PART6 · readiness **v2/emerging/contemporaneous** · `parent_invitations` **0 row** · V92–V102 nguyên vẹn.
+
+---
+
+## 🆕 V104 — REAL PILOT FRICTION REMOVAL (v0.97 · 12/07/2026)
+
+**Sprint đầu tiên trong lịch sử DMA không có một dòng nào đến từ giả định nội bộ.** Mọi thay đổi đều truy được về một câu **phụ huynh thật** nói, hoặc một hàng dữ liệu chị ấy để lại.
+
+### Media pipeline (Edge `upload_media` **v16**)
+- `PARENT_VIDEO_TYPES = ["video/mp4", **"video/quicktime"**]` — iPhone quay mặc định ra `.mov`. Trước V104 nhánh phụ huynh **chỉ nhận MP4** trong khi nhánh GV **đã nhận** quicktime từ lâu (bất đối xứng phi lý, D265).
+- `normalizeType(ftype, name)` — iOS Files thường trả `file.type` **RỖNG** ⇒ suy MIME từ **đuôi tệp**, chỉ với đuôi **đã nằm trong whitelist**. Không nới lỏng bảo mật.
+- `videoExt()` giữ **đúng đuôi thật** khi PUT lên Bunny (`.mov` không bị đổi tên thành `.mp4`).
+- Client: `effectiveType()` + `accept` kèm **cả đuôi tệp** (iOS làm mờ file nếu `accept` chỉ có MIME).
+- **Sự thật phải nói ra:** upload được ≠ phát được. MOV/H.264 tốt trên Safari + hầu hết Chrome, **không cam kết 100% Android**. Transcoding = backlog riêng, không mở ở V104.
+
+### Telemetry — vá điểm mù (D264)
+Trước V104, `preValidateFile()` chặn tệp **trên máy người dùng** → không gọi Edge (`media_upload_denied = 0`) → không ghi `product_events`. **Funnel báo "9/9 thành công · 0 lỗi" trong khi phụ huynh thất bại 5 lần và ngồi im 6 phút.**
+Nay nhánh `pickerRejects` ghi `parent_media_upload_failure` / `reason_code = validation`. **0 migration** (event + reason đã có trong CHECK D256). Chỉ ghi enum — **0 tên tệp · 0 MIME · 0 nội dung**.
+
+### Composer (D266)
+Cũ: chọn loại → **"Lưu vào hành trình" (kỷ vật ĐƯỢC TẠO)** → *rồi mới* hiện chỗ chọn tệp ⇒ **5 thẻ rỗng** trong hành trình bé An.
+Mới: **một màn** — tệp được chọn **TRƯỚC** khi kỷ vật được tạo, rồi `create → uploadAll(memoryId)` trong một nhịp. Vùng upload nằm **trong màn hình đầu tiên** iPhone: **📷 Thêm ảnh · 🎥 Thêm video · 🎙️ Thêm âm thanh** (mỗi nút `accept` riêng). Nút Lưu **dính đáy** (`sticky` + `env(safe-area-inset-bottom)`).
+
+### Journey card
+- Nội dung **lên trên** media (cả desktop lẫn mobile). Sheet "Xem câu chuyện" cũ bị gỡ vì thừa (nội dung trước đây `hidden lg:block` nên mobile mới cần nó).
+- Nút **✏️ Sửa** + 🗄️ Lưu trữ ở **hàng header**, 44px (trước là chữ 12px nằm dưới media).
+- Lightbox: viết nốt nhánh `"h"` — trục ngang trước đây **được nhận diện rồi vứt đi** (`if (axis.current !== "v") return;`). Giữ nguyên: kéo dọc đóng, nhả gesture khi ≥2 ngón (chừa pinch-zoom).
+
+### Kỷ vật nhiều loại media (D268) — `ParentMemoryCarousel`
+**MỘT khung, vuốt qua từng tệp** (`galleryItems` sắp theo `sort_order`, mặc định tệp đầu):
+| Loại | Vật thể |
+|---|---|
+| `image/*` | **Polaroid** (⤢ mở `JourneyFullscreen`) |
+| `video/*` | **TV cổ** — ăng-ten râu chữ V (đế côn crôm), CRT 4:3 bezel đen bo tròn, scanline + vignette (`z-0`, **dưới** video `z-10` để không chặn controls), khe loa, 2 núm kim loại, 2 chân gỗ |
+| `audio/*` | **Radio Telefunken ngang** — lưới vải tổ ong, dải dò đài kính hổ phách (**kim đỏ = thanh tiến trình**), 2 núm vàng đồng (trái=Phát/Dừng, phải=Lặp) có vạch chỉ hướng **quay khi đang phát**, hàng phím ngà |
+
+Bắt buộc: remount theo `mediaId` khi đổi tệp (⇒ `<audio>`/`<video>` cũ unmount, **không có tiếng chạy ngầm**) · **chỉ ký URL tệp đang xem** (lazy, D224) · vuốt ngang chỉ ăn khi `|dx| > |dy|` · kỷ vật 1 tệp **y hệt cũ**.
+
+### Mật khẩu (Edge `accept_parent_invitation` **v2**)
+`MIN_PASSWORD` **8 → 6**, đồng bộ 3 tầng (client · Edge · Auth). **Supabase Auth vốn đã là 6** — rào 8 ký tự hoàn toàn do **code của chúng ta tự dựng**. Không hạ trước khi verify Dashboard (nếu Auth vẫn đòi 8 thì phụ huynh sẽ ăn lỗi `account_setup_failed` khó hiểu).
+
+### Open Graph / Zalo preview (D267)
+🔴 Gốc: `og:image` trong `__root.tsx` trỏ **ảnh chụp màn hình preview của Lovable trên R2** — DMA tự giới thiệu bằng ảnh một app trống.
+Nay: ảnh DMA 1200×630 JPG + OG riêng cho `/invite` (`og:title` = *"Bạn được mời đồng hành cùng hành trình của con"*), `twitter:card = summary_large_image`. Metadata **TĨNH**: **0 token · 0 tên trẻ · 0 ảnh trẻ**. Token ở fragment `#t=` — crawler không đọc được, **giữ nguyên kiến trúc đó**.
+
+> ⚠️ **CDN THẬT CỦA DMA LÀ `cdn.demenart.com`** (custom domain trước Bunny), **KHÔNG PHẢI** `dma-public.b-cdn.net`. Ghi lại vì Claude đã đoán sai cả host lẫn tên file và tốn một vòng debug (D267).
+
+### Banner trình duyệt in-app (`InAppBrowserNotice`)
+Chỉ hiện khi UA khớp `Zalo` / `FBAN|FBAV|FB_IAB|Instagram` (hẹp, không bắt nhầm Safari/Chrome). Mount ở `/invite` + `/parent`. Dismiss lưu **`sessionStorage`** (không localStorage).
+**Trung thực:** chỉ "Sao chép liên kết" + hướng dẫn bấm ⋯ → "Mở bằng trình duyệt". **KHÔNG** nút "Mở Safari" (iOS không ép được) · **KHÔNG** "Mở ứng dụng DMA" (chưa có app).
+
+### Share từ card — **DEFER có chủ đích**
+`create_private_share_link(p_moment_id, p_ttl_minutes)` **chỉ nhận `moment_id`** ⇒ **không tồn tại** đường share `parent_memories`. Nhưng blocker thật không phải hạ tầng: ảnh nhóm ≥2 bé → share = **phơi con nhà khác** (MIN-consent D71/D104); "chia sẻ lên TikTok" = đưa **mặt một đứa trẻ** lên nền tảng công khai **vĩnh viễn**, trong khi signed URL của DMA sống **10 phút**. **Không làm nút share giả.** V105 candidate.
+
+Endpoint: RULES **D268** · SYSTEM_MAP **v0.97** · Handoff **v104** · Inventory **75/143/160/1** (0 migration ở V104) · Registry: modules **75** · routes **47** · playbooks **12** · An **6/2/6** · readiness **v2/emerging/contemporaneous** · V100–V103 nguyên vẹn.
+
+---
+
+## 🔐 V105 — PRE-FMN HARDENING (13/07/2026 · v0.97 → v0.98)
+
+**Migrations 61 → 66:** `v105a_registry_hygiene` (data-only: upload_media v16 · +accept_parent_invitation v2 · invite_parent v8/retired) · `v105b_invitation_self_invite_guardrail` (CREATE OR REPLACE `mint_parent_invitation` + `_accept_parent_invitation_core`: gate `self_invite_not_allowed`/`self_accept_not_allowed` ở vùng read-only D263; grants re-harden D15 — core postgres-only, mint authenticated+service_role. D269) · `v105c_password_reset_telemetry` (+2 event `parent_password_reset_success/_failure` vào CHECK `product_events` + whitelist `log_parent_event`; invariant grant đo từ live: authenticated = CHỈ SELECT, anon = 0) · `v105d` (registry upload_media → 17) · `v105e_journal_gallery_label` (`get_child_journal` galleryItems parent_memory +field `label` = `media_assets.metadata->>'label'` — additive, authorization nguyên vẹn).
+
+**Edge:** `upload_media` **v17** — nhánh E nhận form field `label` (caption per-file, sanitize + cắt 80 ký tự) → `metadata.label`. KHÔNG đụng authorization/quota/whitelist. `edge_function_registry` = live truth (15 functions; invite_parent ghi đúng **retired-410** D260).
+
+**Auth/Email (MỚI — hạ tầng email đầu tiên của DMA):** Supabase Custom SMTP → **Resend** (host smtp.resend.com · 465 · user `resend` · key `dma-supabase-smtp`); domain `demenart.com` **Verified** trên Resend — DNS tại Cloudflare: MX+SPF trên `send.demenart.com`, DKIM `resend._domainkey` (Auto-configure, one-time authorization); MX gốc secureserver (hộp thư info@) **không đụng**. Sender: "DMA – Dế Mèn Art <no-reply@demenart.com>". Rate limit email 2/h → 30/h. ⚠️ **GoTrue chặn email không có MX** (`email_address_invalid`) ⇒ tài khoản `@demo.demenart.com` vĩnh viễn không dùng được recovery — QA email cần mailbox thật (D270). Family invitation tương lai thừa kế hạ tầng này.
+
+**Routes (47 → 48):** +`/reset-password` (public, top-level, pattern /invite) — PKCE recovery session, form mật khẩu mới min 6, invalid-link state, signOut → `/auth`. `/auth`: nút "Quên mật khẩu?" → dialog reset (response trung tính chống enumeration, hotline dự phòng); mailto thống nhất `info@demenart.com`.
+
+**Parent Portal:** `JourneyDetail` 3 trạng thái kỷ vật full/notes/empty (D271 — owner-controlled: Thêm tệp / Viết câu chuyện / Lưu trữ+Hoàn tác qua `archive_parent_memory`/`restore_parent_memory`); carousel D268 +nhãn per-file "Tệp X/Y · loại", ưu tiên caption `label`; composer +ô caption mỗi tệp trước upload.
+
+**Frontend commits:** `4fc9202` (B) · `d11c860` (E+F) · `bd2f02f` (A). **Inventory: 75 bảng / 143 definer / 160 policy / 1 cron — KHÔNG đổi.** Endpoint: RULES **D271** · HANDOFF **v105**.
+
+---
+
+## 👨‍👩‍👧 V106 — FAMILY NETWORK FOUNDATION (13/07/2026 · v0.98 → v0.99)
+
+> **Phiên FMN build đầu tiên.** Dựng tường/cửa/chìa khoá của Private Family Memory Network — CHƯA đặt kỷ niệm vào trong. Membership ≠ guardianship: `child_parents` vẫn là gốc authorization DUY NHẤT của Child Journey riêng tư (invariant 11 Foundation v3 — X2 chứng minh live).
+
+**Migrations 66 → 73:** `v106a` (+enum `profile_role='family_member'` — routing persona ONLY, D273) · `v106b` (+enum `consent_type='family_space_display'` — opt-in, 0 default grant) · `v106c` (5 bảng lõi + RLS + composite FK cùng-space, D272) · `v106d` (create/get/remove space RPCs) · `v106e` (6 invitation RPCs — D259–D263/D269 nguyên khối) · `v106f` (registry: vá drift `/reset-password` + edge + policy `family_space_access`) · `v106g` (3 route family).
+
+**Schema mới (75 → 80 bảng):**
+
+| Bảng | Vai | RLS |
+|---|---|---|
+| `family_spaces` | 1 không gian kỷ niệm gia đình (name ≤60, state active\|archived) | SELECT member (helper `is_family_space_member` — tránh self-recursion) |
+| `family_space_children` | bé ∈ space, UNIQUE(space,child) | SELECT guardian-only (fail-least-exposure) |
+| `family_members` | **membership**: profile · capabilities `<@ {view_space,invite_member,create_card,react,contribute}` · state · source `bootstrap_guardian\|invitation` · `display_label` nullable KHÔNG-authoritative · partial UNIQUE(space,profile) WHERE active | SELECT member |
+| `family_member_relationships` | **sự thật quan hệ theo NGỮ CẢNH TỪNG BÉ** (D272 — "Bà ngoại của An · Bà kế của Khang" trong 1 membership); composite FK `(member,space)`+`(space,child)` khoá cùng-space; chết theo membership | SELECT member (child_name resolve qua children RLS → non-guardian chỉ thấy nhãn) |
+| `family_invitations` | scope ĐÚNG 1 space · hash-only · one-pending partial UNIQUE · `intended_relationships` jsonb (validate mint → materialize accept) · KHÔNG school_id | **deny-all + 0 grant authenticated** (double lock) |
+
+**RPC (+10 definer, 143 → 153):** `is_family_space_member` · `create_family_space` (guardian-của-TẤT-CẢ-bé; pilot rule 1-bé↔1-space-active ở RPC gate — KHÔNG ontology; đồng-guardian auto-add P-C) · `get_family_space` (read-model 1-call: spaces/members/relationships/pending; tên bé chỉ trả cho guardian) · `remove_family_member` (guardian protected; self-leave; quan hệ chết theo) · `mint_family_invitation` (gate capability `invite_member` + self-invite auth.users + validate relationships ∈ space; token 256-bit trả ĐÚNG 1 lần) · `peek` (service-only, mirror parent) · `_accept_family_invitation_core` (postgres-only: email binding → self-accept gate → read-only zone → tạo profile `family_member` nếu chưa có [role hiện hữu giữ nguyên] → membership HARDCODE `{view_space}` → materialize relationships → **0 child_parents · 0 consents**) · `accept` (authenticated) · `accept_service` (service) · `revoke`.
+
+**Edge (15 → 16):** `accept_family_invitation` **v1** — clone parent v2 (peek/accept, MIN_PASSWORD 6, compensating delete, token/password không log). ⚠️ admin.createUser KHÔNG validate MX (D273f) ⇒ demo email accept được; recovery vẫn không (D270).
+
+**Routes (48 → 51):** `/parent/family` (guardian: tạo space · mời [dialog per-child relationship] · thu hồi · gỡ) · `/family-invite` (public, token fragment `#t=`, máy trạng thái 10 phase mirror `/invite`) · `/family` (shell FOREST tối giản cho `family_member`: space + member list + empty-state — 0 stream/card/composer). Nav Parent +tab "Gia đình" (grid-cols-4) · `/parent/consent` +group "Không gian Gia đình" · `homePathForRole(family_member) → /family`. Commits `49595da` + `b23fa70` (fix D274: silent refresh giữ màn link-một-lần sống).
+
+**Telemetry:** 6 action `audit_logs` (`family_space_created` · `family_invitation_created/accepted/revoked` · `family_member_removed` · `family_invitation_accept_failed`+reason) — 0 đụng `product_events`.
+
+**Security evidence:** X1 cross-family isolation · X2 membership≠guardianship (chặn từ tầng GRANT 42501, trước cả RLS) · X3 wrong-space/wrong-holder · X4 self-invite/self-accept (D269 re-verify) · X5 revocation (RLS+RPC+relationships đồng bộ) · X6 consent boundary (0 auto-grant) · X7 operator boundary (admin 0 đường vào) — **PASS toàn bộ**, chạy trong transaction tự rollback, 0 residue.
+
+**E2E production (demo Hùng + tài khoản bà ngoại thật-tạo-mới):** 7 bước PASS — vết DB đủ 10 audit event; relationship per-child lưu đúng; consent granted→withdrawn; remove đồng bộ. Space "Gia đình Hùng" (2 bé · 2 guardian · 1 removed member · 4 invitations) giữ lại = **baseline FMN sống đầu tiên**. Regression: An 22 (21+1) · child_parents 17 · dup 0 · media/auth/invite/reset nguyên vẹn.
+
+**Nợ/UX debt mang sang:** 🟡 parent shell mở được với `family_member` (DATA an toàn tuyệt đối — chỉ polish UI redirect) · 🟡 member list hiện nhãn trùng ("Ba · Ba") khi non-guardian không resolve được tên bé · 🟡 edit relationship label sau tạo · 🟡 space archive flow (state có, RPC chưa) · (cũ) Việt hoá email template · repo GitHub sync UNVERIFIED · caption-edit.
+
+Endpoint: RULES **D274** · SYSTEM_MAP **v0.99** · HANDOFF **v106** · Inventory **80/153/164/1** · migrations **73** · routes **51** · edge **16**.
+
+---
+
+## 🃏 V107 — MEMORY CARD & STREAM (13/07/2026 · v0.99 → v1.00)
+
+> **Kỷ niệm đầu tiên vào Family Space.** Memory Card = danh tính + lớp công bố; content thuộc về nguồn (D275 — card-as-reference). *Primary context = nơi Card sống như social object; Provenance = ký ức đến từ đâu. Native Card owns content; provenance-backed Card does not duplicate source content.*
+
+**Migrations 73 → 77:**
+- `v107a_memory_card_core` — `memory_cards` (creator_profile_id nullable · primary_context_type/id [C1] · provenance_source/ref_id [C1] · title/story nullable · occurred_at + occurred_precision {day,month,season,year} · publication_scope {journal_only, family_space} [C2] default journal_only · state) + CHECK **content-ownership** (provenance-backed: ref NOT NULL + title/story NULL; native: title NOT NULL) + UNIQUE partial (source, ref) + `card_person_links` (exactly-one-of child/profile · relation {subject, participant, creator, mentioned} · UNIQUE per card+person). **Deny-all RLS cả 2 bảng** — mọi truy cập qua SECURITY DEFINER.
+- `v107b_card_rpcs` — `get_family_memory_stream(p_space_id)` · `get_family_card(p_card_id)` (đọc-xuyên content từ `parent_memories`/`parent_memory_media`, **0 signed URL trong payload**, MIN-consent re-check tại read, nguồn archive ⇒ ẩn — D276) · `publish_memory_card` / `unpublish_memory_card` (deny RETURN không RAISE để audit không rollback; publish cần guardian MỌI bé link + consent đủ; unpublish = guardian BẤT KỲ bé link).
+- `v107c_family_telemetry` — product_events +2 (`family_stream_opened` · `family_card_detail_opened`) + RPC `log_family_event` (2 lớp whitelist D256, gate active membership, dedup 3s — RPC riêng vì `log_parent_event` gate role parent).
+- `v107d_population_batch1` — 12 card journal_only rule-based (An active + có media sống, +note "điểm 10" theo chốt CTO; 9 thẻ chưa hoàn thiện LOẠI — guard verify 0 lọt). Publish sau đó = 12 lệnh `publish_memory_card` qua gate guardian Hùng (sau khi Hùng bật consent qua UI thật).
+
+**UI (routes 51 KHÔNG đổi):** `src/features/family/` — `FamilyMemoryStream.tsx` + `familyStreamModel.ts`, cắm vào `/family` (thay placeholder) và `/parent/family` (cùng RPC — một Family Space, các view được authorize khác nhau). Immersive 1-card snap dọc (media height min(52vh,480px)) · Overview lưới 2 cột · Detail = Dialog overlay. Ký media lazy per-media qua `useJourneySigning` (import từ journey, không sửa). **D277:** cover = ảnh đầu tiên hoặc tile Video/Âm thanh (không bao giờ `<video>` trong list); note 0-media = thẻ lá-thư giấy kẻ dòng; audio = hidden `<audio preload="none">` + Play/Pause custom + resign-once. Commits `a0c9ebe` + `2d47519`.
+
+**Vết sống lúc đóng:** 12 card published · telemetry 5 stream_opened + 12 detail_opened · audit 13 published/1 denied(consent_missing)/1 unpublished · consent An granted (Hùng, UI thật) · Khang 0 consent + 0 nội dung trong batch.
+**X1–X8 PASS 8/8.** Regression: Parent Journal/An 22/child_journey 36/child_parents 17/media/consent/invite/reset — 0 đụng.
+**Deferred giữ nguyên:** Family Creation (V108) · Contribution/Preserve (V109) · Relevance Engine · reactions · publish per-card UI.
+
+Endpoint: RULES **D277** · SYSTEM_MAP **v1.00** · HANDOFF **v107** · Inventory **82/158/164/1** · migrations **77** · routes **51** · edge **16**.
+
+---
+
+## ✍️ V108 — FAMILY CREATION (14/07/2026 · v1.00 → v1.01)
+
+> **Người thân TẠO ký ức, không chỉ xem.** *Family members are contributors by default. Family membership permits memory creation only through explicit capabilities and does not grant guardianship.* (D278)
+
+**Capability model (D278):** bootstrap-guardian `{view_space, invite_member, create_card}` · invited member `{view_space, create_card}` — hardcode tại `_accept_family_invitation_core`, lời mời vẫn 0 tham số chở quyền (D269/D273b). `create_card` KHÔNG kéo theo `invite_member`/guardianship/sửa-Card-người-khác. Revoke = remove member (0 capability editor UI ở V108). Gate duy nhất: `has_family_capability(space, profile, cap)` = membership **active** × capability ∈ mảng.
+
+**Migrations 77 → 84:**
+- `v108a_native_card_media` — bảng **`card_media`** (card_id CASCADE · media_id · sort_order · deleted_at · UNIQUE(card,media) · **deny-all RLS, 0 policy, 0 grant client**; service_role chỉ `SELECT` cho Edge pre-check ở `v108e` — đường GHI duy nhất là secdef) · `media_assets.linked_space_id` (FK family_spaces, quota + authorization per-space) · `media_assets_source_chk` **+`family`** · `app_settings.family_space_quota_mb` = 500. **D275 giữ nguyên:** provenance-backed card tiếp tục read-through nguồn; native card dùng `card_media`; **KHÔNG copy** source media vào `card_media`.
+- `v108b_card_creation_rpcs` — **7 secdef** (definer 158 → 165): `has_family_capability` (postgres-only) · `create_family_card` (PHASE resolve→gate→mutate D263; gates: space active × capability × title 1–120 × story ≤5000 × precision ∈ {day,month,season,year} × occurred_at ≤ now+1d × children ∈ `family_space_children` × participants = active member cùng space; deny **RETURN** + audit `family_card_create_denied` — D264/D276; tạo card `native`/`journal_only` + links child='subject' / participant / creator) · `update_family_card` (creator only) · `archive_family_card` (creator **HOẶC** space-guardian — governance D279; native only; idempotent) · `publish_family_card` (native only; creator_ok **hoặc** guardian-mọi-bé; gates `child_not_in_space` / `consent_missing` MIN `family_space_display`; **0-child hợp lệ**; deny RETURN + audit) · `finalize_family_card_media_attachment` (**service-only**; card native+active+**journal_only** ⇒ attach CHỈ pre-publish; creator=actor; lock `family_spaces` cho quota; media phải `source='family'` + `linked_space_id` khớp + metadata `pending_attach`; limits 5 tệp / 1 audio / 1 video) · `check_family_card_media_access` (**service-only**, STABLE — D281).
+- `v108c_capability_default` — UPDATE member active +`create_card` · REPLACE `create_family_space` (bootstrap +`create_card`) · REPLACE `_accept_family_invitation_core` (hardcode `{view_space, create_card}`, toàn bộ body V106 giữ nguyên).
+- `v108d_stream_native_readthrough` — REPLACE `get_family_memory_stream` + `get_family_card`: +nhánh `galleryItems` từ `card_media` khi `provenance_source='native'` · +field `creator_profile_id` trong payload. **Mọi gate consent/membership/state của V107 giữ TỪNG CHỮ** (D276); VERIFY 0 dấu vết signing (D224) + baseline 12 card.
+- `v108e_telemetry_registry` — `product_events` CHECK +3 (`family_create_opened/completed/failed`) + `log_family_event` whitelist +3 (2 lớp D256) · `grant select on card_media to service_role` · registry: `upload_media`→18, `get_signed_media_url`→22 (D238).
+- `v108f_access_level_family` — **`ALTER TYPE access_level ADD VALUE 'private_family_media'`** — **D280**: `source` là CHECK nhưng `access_level` là **ENUM**; Edge v18 đã deploy với label chưa tồn tại, lỗi chỉ lộ khi X-test insert media **thật** (`22P02`).
+- `v108g_space_children_for_members` — `get_family_space_children(space)` → `{child_id, full_name}` cho **member active** (exposure decision khai báo tường minh: nhất quán payload `people` của stream V107; **KHÔNG** DOB/ảnh/mã bé). Composer cần để tag bé.
+
+**Edge (16 — số lượng KHÔNG đổi, 2 bump version):**
+- **`upload_media` v18** — +**nhánh F `card_id`** (đặt TRƯỚC nhánh E): gate card native+active+journal_only+creator+`create_card` · types ảnh/audio/video (mp4 + **mov** — D265) · pre-check limits · quota **per-space** · label per-file (V105) · path `/family-space/{space_id}/{uuid}.{ext}` zone **dma-private** · insert `access_level='private_family_media'`, `source='family'`, `linked_space_id` · attach ATOMIC qua finalize RPC + **compensating delete** khi fail. Nhánh A/B/C/D/E nguyên vẹn.
+- **`get_signed_media_url` v22** — +nhánh `source='family'` → RPC gate; nhánh parent: guardian path **giữ nguyên**, khi không phải guardian → **fallback đường family** (⇒ **vá nợ V107**: active non-guardian member ký được media provenance của Card đã publish). Consent withdraw / membership removal **chặn ngay tại tầng ký** (D281). `auditAction = family_card_media_view`.
+
+**UI (routes 51 — KHÔNG đổi, composer = Sheet):** `src/features/family/` +`useFamilyCardComposer.ts` (mirror khuôn D266: media chọn **TRƯỚC** create, client limits 5/1/1, `effectiveType` suy MIME từ đuôi — D265) +`FamilyCardComposer.tsx` (Sheet "Bạn muốn giữ lại điều gì?" · 5 template chip · title/story/date/precision · **tag bé** + dòng nhắc consent D279 · 3 nút 📷🎥🎙️ + caption per-file · flow `create → uploadAll(card_id) → publish`; publish fail ⇒ **giữ draft**, không mất dữ liệu; telemetry `family_create_opened/completed/failed`; **0 chữ "đăng"/"post"**). `FamilyMemoryStream` +`creator_profile_id` +nút **Sửa / Lưu trữ** (chỉ creator của native card) +**`reloadKey`/`selfReload`** (D282). Cắm vào cả `/family` và `/parent/family` (nút "＋ Tạo kỷ niệm" chỉ hiện khi `my_capabilities` chứa `create_card`).
+
+**Security evidence — X1–X10 + L1–L4 PASS toàn bộ:** X1 no-capability · X2 cross-space · X3 bé ngoài space · X4 consent_missing · X5 **MIN-consent** (An granted + Khang missing ⇒ vẫn chặn) · X6 **`child_journey` = 36 không đổi sau create VÀ sau publish** · X7 media metadata mismatch / foreign media · X8 removed member (create/edit/sign đều chặn) · X9 **family-level 0-child publish OK, consents không đổi** · **X10 (blocker CTO): draft chỉ creator · published mọi member · non-member chặn · provenance non-guardian ALLOWED · withdraw chặn cả provenance lẫn native tại tầng ký** · L1–L4 lifecycle. Residue 0, audit trace giữ (D247).
+
+**E2E production thật (guardian Hùng + bà ngoại = active non-guardian THẬT):** mint invitation mới → accept qua đường **account-existing** (0 identity trùng, 0 đổi mật khẩu) → 14/14 mục PASS. `family_card_media_view` **×31** (ảnh/video/audio provenance ký được — **X6 của V107 nay có bằng chứng người thật**). 4 media thật upload qua Edge v18. **[11] bằng chứng sắc nhất:** withdraw consent An → stream bà ngoại **14 → 1** (12 kỷ vật provenance + Card native tag An biến mất; **Card native 0-child nguyên vẹn, ảnh vẫn ký được**); re-grant → về đủ; remove member → mất sạch quyền; cross-space `space_not_found`.
+
+**Regression PASS:** 12 card V107 nguyên · **`child_journey` 36** · consents **37** (0 row sinh) · `child_parents` **17** · **9 thẻ chưa hoàn thiện của An = 9, 0 đụng** · Parent Journal/media playback/auth/invite/reset nguyên vẹn.
+
+**Nợ/UX debt mang sang:** 🟡 empty-state cho family_member không-guardian ở `/parent/family` (hiện mời "Tạo không gian gia đình") · 🟡 restore UI cho Card archived · 🟡 gỡ/sắp xếp media **sau** publish · 🟡 Media Compatibility Pipeline (MOV/HEVC/WebM) · 🟡 nightly sweep pending attachment mồ côi · (cũ) Việt hoá email template · repo GitHub sync UNVERIFIED · caption-edit · 🔴 Share từ card — DEFER.
+
+**Deferred giữ nguyên:** Contribution · Preserve · Adult/Life Journey · Events/Circles · Relevance Engine · reactions · capability editor UI.
+
+Endpoint: RULES **D282** · SYSTEM_MAP **v1.01** · HANDOFF **v108** · Inventory **83/166/164/1** · migrations **84** · routes **51** · edge **16**.
+
+---
+
+## 💛 V109B — CONTRIBUTION CORE (14/07/2026 · v1.01 → v1.02)
+
+**Ý nghĩa:** người thân để lại một phần ký ức của chính mình bên trong Memory Card — text hoặc voice — không phải "bình luận", không tự động thành Journey. Correction chính thức: Contribution KHÔNG extend `memory_threads` (D283).
+
+### Bảng mới (3 — tất cả deny-all RLS, 0 policy, 0 grant client/service)
+```
+card_acknowledgements   card_id→memory_cards CASCADE · profile_id→profiles · UNIQUE(card_id, profile_id)
+                        un-ack = DELETE row (ack không phải memory-bearing)
+card_contributions      card_id→memory_cards · contributor_profile_id→profiles
+                        kind CHECK ∈ {text, voice} · body CHECK (text: 1–2000 bắt buộc · voice: ≤300 optional)
+                        state CHECK ∈ {active, withdrawn} + withdrawn_at đồng bộ (owner lifecycle)
+                        hidden_at + hidden_by (guardian moderation — TRỤC TRỰC GIAO, D285)
+contribution_media      contribution_id→card_contributions CASCADE · media_id→media_assets
+                        UNIQUE(contribution_id) + UNIQUE(media_id) — 1 voice = 1 media = 1 mái nhà
+```
+
+### Secdef mới (11 — definers 166 → 177)
+```
+family_card_effective_access(card, profile)      ← MỘT NGUỒN SỰ THẬT Effective Access (D284) · postgres-only
+is_family_space_guardian(space, profile)         ← predicate guardian (child_parents × fsc × membership active) · postgres-only
+toggle_card_acknowledgement(card)                ← EA × capability 'react' · delete-first toggle · authenticated
+get_family_card_engagement(card)                 ← read model Card Detail: acks names/mine + contributions
+                                                    guardian thấy hidden kèm cờ · owner thấy hidden của mình
+                                                    withdrawn không ai thấy · 0 signed_url (X8) · authenticated
+create_card_contribution(card, body)             ← text · EA × 'contribute' · authenticated
+edit_card_contribution(id, body)                 ← owner × active × !hidden × EA · authenticated
+withdraw_card_contribution(id)                   ← OWNERSHIP-ONLY (D285): không membership, không EA,
+                                                    generic denial, terminal, idempotent · authenticated
+hide_card_contribution(id) / unhide_...(id)      ← is_family_space_guardian · audit cả 2 chiều · authenticated
+finalize_voice_contribution(card,media,actor,b)  ← service-only · contribution+junction ATOMIC (D286)
+check_family_contribution_media_access(m,v)      ← service-only tầng ký (D281): active bắt buộc ·
+                                                    withdrawn → deny ALL · hidden → contributor/guardian · × EA viewer
+```
+`get_family_memory_stream` + `get_family_card` REPLACE dùng helper EA — output contract giữ nguyên, X13 byte-identical.
+
+### Capability (D278 mở rộng)
+```
+bootstrap guardian:  {view_space, invite_member, create_card, react, contribute}
+invited member:      {view_space, create_card, react, contribute}
+```
+Hardcode tại `create_family_space` + `_accept_family_invitation_core`; backfill member active hiện hữu; lời mời vẫn 0 tham số quyền.
+
+### Edge (registry 19/23)
+```
+upload_media v19          +NHÁNH G contribution_card_id: audio-only (AUDIO_TYPES, ≤50MB),
+                          zone dma-private /family-space/{space}/, quota space chung 500MB,
+                          metadata.source='family_contribution', finalize atomic + compensating delete
+get_signed_media_url v23  nhánh family: thử check_family_card_media_access → deny →
+                          fallback check_family_contribution_media_access (mirror pattern parent v22)
+                          audit family_contribution_media_view
+```
+
+### Telemetry
+```
+product_events +4:  family_acknowledgement_toggled · family_contribution_opened/completed/failed
+audit actions:      family_contribution_created/edited/withdrawn/hidden/unhidden ·
+                    family_contribution_denied/edit_denied/withdraw_denied/hide_denied · family_acknowledgement_denied
+KHÔNG log: body · transcript · raw voice URL · token
+```
+
+### UI (1 commit `b20909f5` · 1 file `FamilyMemoryStream.tsx` · routes 51 không đổi)
+CardDetail +2 section: 💛 names-over-counts ("Bà ngoại và Ba đã gửi yêu thương") · "Góp một ký ức" 2 nút ngang hàng [Viết một lời][Thu giọng nói] · list chronological, không ranking · MediaRecorder ưu-tiên-audio/mp4 (D224) cap 3' + preview · AudioPlayer + lazy signing tái dùng · refetch sau mọi mutation (D282) · copy DNA: Gửi yêu thương / Góp một ký ức / Rút lại.
+
+### Trạng thái đóng
+Inventory **86 / 177 / 164 / 1** · migrations **89** · routes **51** · edge **16** (v19/v23) · `child_journey` **36** · X-suite 50/50 · E2E người thật 15/15 · FMN data sống: 16 cards · 2 acks · 4 contributions (2 text + 2 voice) · 2 contribution_media.
+
+### Nợ mở V109B
+🟡 governance archive (creator non-guardian làm biến mất card chung + lời góp người khác, chưa restore UI) · 🟡 `bg-black/8` cosmetic · 🟡 withdraw-sau-removal chưa có bề mặt UI (quyền sống ở RPC — support path). Non-actions: ❌ Preserve · ❌ V109C.
+
+---
+
+## 🏡 V109C — PRESERVE (14/07/2026 · v1.02 → v1.03)
+
+> **Guardian giữ một ký ức vào Hành trình của trẻ — bằng tham chiếu, đảo ngược được, không copy.** *Preserve does not steal a memory from its creator. It creates a durable relationship between a child's Journey and a living source of truth.* (D288–D290)
+
+### Prerequisite cứng — `v109c_a` (security migration, D288)
+`child_journey.source`/`entry_type` = **text trần, 0 CHECK, 0 ENUM** ⇒ mọi guard cũ viết theo **blacklist** ⇒ thêm `source='family'` mở 4 cửa. Vá **trước khi** row family tồn tại:
+```
+RLS child_journey (3 policy REPLACE)  → nhánh trường: source = 'demen' (whitelist)
+get_child_journal                     → demen: source='demen' AND entry_type IN (session,badge)
+get_kid_album_service                 → source IN ('demen','parent')   [giữ nguyên hành vi cũ]
+post_memory_message                   → journey branch: v_src IN ('demen','parent')  [D283]
+get_memory_conversation               → journey branch: v_src IN ('demen','parent')
++3 CHECK: child_journey_source_chk · child_journey_entry_type_chk · child_journey_source_pair_chk
+```
+
+### Bảng mới (1 — deny-all RLS, 0 policy, 0 grant kể cả service_role)
+```
+preserve_records  child_id→children · target_type CHECK {memory_card, card_contribution}
+                  target_card_id? / target_contribution_id?  (num_nonnulls = 1 + target_match)
+                  actor_profile_id · basis {guardian_steward} · state {active, reversed}
+                  journey_entry_id→child_journey ON DELETE SET NULL · reversed_at/reversed_by (đồng bộ CHECK)
+                  UNIQUE partial (child,card) WHERE active · (child,contribution) WHERE active
+                  UNIQUE journey_entry_id · + UNIQUE child_journey(ref_id) WHERE source='family'
+```
+
+### Reference model + lifecycle
+```
+child_journey (spine)          preserve_records (truth)        source (content)
+  source='family'                id ◄── ref_id                   memory_cards / card_contributions
+  entry_type=memory_card |       state active|reversed           → card_media / parent_memory_media
+             card_contribution   journey_entry_id ──►            → contribution_media
+  ref_id = preserve_records.id
+```
+- **Reverse** = DELETE spine row + `state='reversed'` (provenance ở lại) ⇒ visible count `36 → 37 → 36 → 37`; consumer khác của `child_journey` không phải học khái niệm "reversed".
+- **Orphan** = **derived, không lưu**: `preserve_source_live(id)` re-check source truth (card active · provenance pm active · contribution active **và** `hidden_at IS NULL`). Nguồn chết ⇒ entry không surface, **không tombstone, không bản sao ẩn**. Vết `family_preserve_orphaned` ghi từ **4 path**: `withdraw_card_contribution` · `hide_card_contribution` · `archive_family_card` · `archive_parent_memory` (chỉ thêm audit, 0 đổi gate).
+
+### Secdef mới (6 — definers 177 → 183)
+```
+is_child_guardian_profile(child, profile)   ← guardian của MỘT bé cụ thể (child_parents) · postgres-only
+preserve_source_live(preserve_id)           ← SINGLE TRUTH cho read + signing · postgres-only
+preserve_memory_card(child, card)           ← guardian × member active × EA × bé∈space × bé∈card_person_links
+preserve_card_contribution(child, contrib)  ← + contribution active × !hidden        (deny=RETURN+audit, D263/D264)
+reverse_preserve(preserve_id)               ← CHỈ guardian qua child_parents (KHÔNG membership/EA) · generic denial
+get_card_preserve_context(card)             ← UI: bé nào actor được giữ + preserve nào đang active
+```
+`get_child_journal` REPLACE: +nhánh `source='family'` **guardian-only** (`is_child_parent` × preserve thuộc đúng bé × `preserve_source_live`) → payload `family_preserve {preserve_id, target_type, card_id, card_title, card_story, card_creator_name, contribution_id, contribution_kind, contribution_body, contributor_name, contributed_at, preserved_by_name, preserved_at, voiceMediaId, galleryItems[]}` — **read-through nguồn, 0 copy, 0 signed_url**.
+
+### Tầng ký (D281 — journey-rooted)
+`check_family_card_media_access` + `check_family_contribution_media_access` REPLACE: nhánh V109B/V108 **giữ từng chữ**, thêm **fallback journey-rooted** = preserve active × `preserve_source_live` × `is_child_guardian_profile(preserve.child, viewer)` ⇒ guardian nghe/xem được media preserved **kể cả khi không còn là member Family Space**, **không** đòi consent/publication_scope. Hidden/withdrawn ⇒ chết ở cả 2 nhánh. Kind trả về: `family_card_journey` / `family_contribution_journey`. **0 Edge deploy** (v19/v23 gọi cùng signature).
+
+### Telemetry
+`product_events` +3: `family_preserve_opened` · `family_preserve_completed` · `family_preserve_failed` (+ `log_family_event` whitelist 2 lớp). Audit: `family_preserve_created` / `_reversed` / `_orphaned` / `_denied` / `_reverse_denied`. KHÔNG log body · transcript · signed URL.
+
+### UI (routes 51 KHÔNG đổi · 2 commit)
+- **Card Detail** (`FamilyMemoryStream.tsx`): `PreserveControl` guardian-only (ẩn hoàn toàn nếu `children[]` rỗng) ở Card **và** từng Lời góp; 1 bé → bấm thẳng, ≥2 bé → picker; "Giữ vào Hành trình" → "✓ Đã giữ vào Hành trình" + "Bỏ giữ"; refetch context sau mọi mutation (D282).
+- **Journey** (`parentJourneyModel` +`FamilyPreservePayload`/`isFamilyPreserve` · `JourneyStage` +`FamilyPreserveStage` · `JourneyRail` · `JourneyDetail` · `parent.journal.tsx`): chip 🏡 **"Từ Không gian gia đình"**, Card → Polaroid/TV/gallery, voice → Radio ký lazy ("LỜI CỦA NGƯỜI THÂN"), text → thẻ giấy; hành động duy nhất = **Bỏ giữ**.
+- **Commit 2 (D290):** `resolveConversationSource()` trả `null` cho entry family ⇒ ẩn nút "Câu chuyện quanh kỷ vật" + tắt prefetch; entry demen/parent không đổi.
+
+### Trạng thái đóng
+Inventory **87 / 183 / 164 / 1** · migrations **94** · routes **51** · edge **16** (không đổi) · `child_journey` **non-family = 36 byte-identical** (spine tổng 37: +1 row mồ côi giữ provenance) · `preserve_records` 3 (1 active / 2 reversed) · threads/messages **2/3** · X-suite **20/20** · E2E người thật PASS (bà thu voice → Hùng giữ → phát trong Hành trình An → bà rút → chết cho mọi actor → Hùng giữ Card → **Ngân bỏ giữ**).
+
+### Nợ mở V109C
+🟡 restore UI cho Card archived (X9 chỉ PASS ở X-suite — **cố ý không archive Card thật**) · 🟡 spine row mồ côi sau withdraw: giữ provenance nhưng nằm trong `child_journey` (chưa quyết định dọn/giữ) · 🟡 chưa có surface quản lý Preserve tập trung · (cũ) governance archive · Media Compatibility Pipeline · nightly sweep · Việt hoá email.
+**Non-actions:** ❌ Adult/Life Journey · ❌ self-preserve người lớn · ❌ auto-Preserve · ❌ snapshot · ❌ thread V93 cho family entry · ❌ V110.
+
+Endpoint: RULES **D290** · SYSTEM_MAP **v1.03** · HANDOFF **v109C**.
+
+---
+
+## 🧹 V110 — FMN LIFECYCLE HARDENING (14/07/2026 · v1.03 → v1.04)
+
+> **Không thêm phòng mới cho Family Memory Network — làm cho những căn phòng đã xây có thể dọn, khôi phục và đo được.** *Audit truth may remain. Consumption truth must remain clean.* (D291–D293)
+
+### Orphan lifecycle — `v110a` (D292)
+
+Hai loại "nguồn chết", **hai chính sách khác nhau**:
+
+```
+TERMINAL (chỉ 1 case)                       REVERSIBLE (giữ mô hình derived V109C)
+card_contributions.state='withdrawn'        card archived · contribution hidden
+   (D285: withdraw là terminal)             parent_memory archived · media tạm mất
+        │                                            │
+        ├─ DELETE child_journey row                  ├─ spine row Ở LẠI
+        ├─ preserve_records.state='orphaned'         ├─ preserve state KHÔNG đổi
+        │  + orphaned_at + orphaned_reason           ├─ read-through tạm ẩn (preserve_source_live)
+        ├─ GIỮ PreserveRecord (audit truth)          └─ restore/unhide ⇒ nội dung TỰ hiện lại
+        └─ audit: _orphaned + _swept                    (X7/X8 PASS bằng cấu trúc, 0 dòng code)
+```
+
+Schema: `preserve_records.state` CHECK `{active, reversed, orphaned}` · `preserve_orphaned_sync_chk` ((state='orphaned') = (orphaned_at IS NOT NULL)) và `orphaned_reason ∈ {contribution_withdrawn}`. `withdraw_card_contribution` REPLACE: loop preserve active → audit → DELETE spine → set orphaned. Backfill đúng **1 row** production.
+
+### Journey metric semantics (D292b · **0 migration**)
+
+```sql
+select count(*)                                              as journey_rows_total,        -- integrity ONLY
+       count(*) filter (where source <> 'family')            as journey_rows_non_family,   -- anchor = 36
+       count(*) filter (where source = 'family'
+                          and preserve_source_live(ref_id))  as journey_entries_effective
+from child_journey;
+-- journey_entries_visible: đo qua get_child_journal với JWT thật (read-through), KHÔNG đo qua bảng
+-- preserve_records_active / _reversed / _orphaned: đếm theo state
+```
+Audit 13 function đụng `child_journey`: **0 consumer đếm thô** (evidence lọc `demen/session`; journal + kid album whitelist source) ⇒ không cần sửa read-model. Chỗ hở: RLS SELECT `child_journey` = `is_child_parent()` **không lọc source** (guardian đọc thẳng bảng vẫn thấy row family) — chấp nhận, vì consumption đi qua RPC.
+
+### RPC mới (secdef 183 → 186)
+
+```
+restore_family_card(card)         ← mirror ĐÚNG archive: (creator × capability create_card × member active)
+                                     HOẶC (guardian của bé trong space × member active)
+                                     archived → active. KHÔNG auto-Preserve · KHÔNG tạo lại media đã xoá ·
+                                     KHÔNG hồi sinh contribution đã rút · publication_scope GIỮ NGUYÊN
+                                     ⇒ về Family Stream chỉ khi EA gate pass tại read. Audit family_card_restored.
+get_family_archived_cards(space)  ← chỉ trả Card mà CHÍNH caller được phép khôi phục (member active bắt buộc)
+get_family_space_role(space)      ← D293: {is_guardian, can_create_card, can_invite} · additive · fail-closed
+```
+Telemetry `product_events` +3: `family_restore_opened/_completed/_failed` (whitelist 2 lớp: CHECK + `log_family_event`).
+
+### UI (routes 51 KHÔNG đổi · 2 commit · 1 file `FamilyMemoryStream.tsx`)
+
+- `ArchivedCardsSection` — chip thu gọn **"Đã lưu trữ (n)"** ở cuối Stream + nút **"Khôi phục"** + confirm. **Render cả khi Stream rỗng** (nếu mọi Card đều archived thì đây là đường DUY NHẤT để khôi phục). **KHÔNG xây Trash/Archive Center.**
+- **D293:** tách `canEdit` (creator — vì `update_family_card` creator-only) khỏi `canArchive` (creator **hoặc** guardian — vì `archive_family_card` cho cả hai). Confirm đổi lời khi guardian lưu trữ Card của người khác.
+
+### Runtime contract (D291)
+
+`apply migration → verify pg_proc signature → notify pgrst, 'reload schema' → gọi qua client production → 1 hành động người-thật → mới PASS.` SQL-pass / X-suite-pass **không** chứng minh runtime availability.
+
+### Trạng thái đóng
+
+Inventory **87 / 186 / 164 / 1** · migrations **98** (`v110a`–`v110d`) · routes **51** · edge **16** (0 deploy) · `journey_rows_non_family` **36 byte-identical** · `journey_rows_total` **36** · `journey_entries_effective` **0** · `preserve_records` **4** (0 active / 3 reversed / 1 orphaned) · threads/messages **2/3** · cards 16 (1 archived) · X-suite **12/12** · E2E production PASS (archive bởi bà ngoại → Journey ẩn → **guardian khôi phục Card của người khác** → Journey + media trở lại → Bỏ giữ).
+
+### Nợ mở V110
+🟡 surface quản lý Preserve tập trung · 🟡 gỡ/sắp xếp media sau publish · 🟡 withdraw-sau-removal chưa có UI · 🟡 `bg-black/8` cosmetic · 🟡 Media Compatibility Pipeline · 🟡 nightly sweep pending attachment · 🟡 Việt hoá email · repo GitHub sync UNVERIFIED · 🔴 Share từ card (DEFER).
+**Non-actions:** ❌ social primitive mới · ❌ Preserve target type mới · ❌ Adult Journey · ❌ AI · ❌ Events/Circles · ❌ Relevance Engine · ❌ V111.
+
+Endpoint: RULES **D293** · SYSTEM_MAP **v1.04** · HANDOFF **v110**.
+
+---
+
+## 🎼 V111A/B — EXPERIENCE LAYER: BASELINE AUDIT + EXPERIENCE GRAMMAR (14/07/2026 · v1.04 → v1.05)
+
+**Phase 2 mở.** FMN Foundation (V106–V110) **đóng, không refactor**. North Star: *FMN không còn là nơi lưu dữ liệu — FMN phải là nơi mỗi thành viên muốn quay lại để sống lại ký ức của mình.* Direction: **LIVING ARCHIVE — CHAPTERED MEMORY STREAM**.
+
+### V111A — Experience Baseline Audit (audit-only · 0 file · 0 deploy)
+
+Bản đồ bề mặt sống (toàn bộ FMN experience nằm trong **1 component**):
+
+```
+/parent/family  (guardian)  → parent.family.tsx → SpaceView ─┐
+/family         (member)    → family.tsx        → FamilyPage ─┤→ FamilyMemoryStream (≈1.5k dòng)
+                                                              │    ├── PolaroidCard (1 variant · 4 nhánh cover)
+                                                              │    ├── CardDetail  ← <Dialog max-w-lg> + scrim black/80 + X
+                                                              │    │     ├── PreserveControl      (get_card_preserve_context)
+                                                              │    │     └── EngagementSection    (get_family_card_engagement)
+                                                              │    └── ArchivedCardsSection       (get_family_archived_cards)
+                                                              └── FamilyCardComposer (sheet · 0 route)
+Memory Detail: KHÔNG có route ⇒ 0 deep link · 0 nút back · F5 là mất.
+```
+
+**10 finding trọng yếu** (severity E0–E4):
+
+| ID | Vấn đề | Sev |
+|---|---|---|
+| F01 | **Lỗi được vẽ thành trống rỗng** (`catch → setCards([])`) ở 4 chỗ | **E4** |
+| F02 | Stream không có ack/contribution ⇒ **tiếng nói vô hình** | E3 |
+| F03 | `creator_profile_id` không bao giờ resolve ⇒ **không ai biết ai thêm ký ức** | E3 |
+| F04 | Detail = modal admin, không phải Memory Room | E3 |
+| F05 | 9 card trùng cả `occurred_at` **và** `created_at` ⇒ **thứ tự không ổn định** | E3 |
+| F06 | 2 quy ước `occurred_at` (native UTC-midnight vs parent local-midnight) | E2 |
+| F07 | Thời gian là metadata (`12 tháng 7, 2026` + nhãn IN HOA) | E2 |
+| F08/F09 | Text-only là nhánh `else`; audio-only là ô màu ⇒ mất phẩm giá | E2 |
+| F10/F11 | Layout shift khi video ký xong · nested snap-scroll = bẫy cuộn mobile | E2 |
+| F19 | FMN **chưa có token layer** (hex hardcode) | E1 |
+
+**Temporal readiness:** `occurred_at` **NOT NULL** + `occurred_precision` NOT NULL ⇒ **đủ để derive chapter ở presentation, 0 schema change**. Ràng buộc: derive theo **ICT**; thiếu tiebreak ổn định (`mc.id`); **không có long-text và không có preserved-active** trong baseline ⇒ 2 thứ này **không QA được bằng dữ liệu hiện có**.
+
+**Sequence sau audit (CTO duyệt):** `V111B Grammar → V111C Quiet & Truth States → V111C′ Stream Presence Payload → (V111D Stream Rhythm ∥ V111E Memory Room) → V111F Motion → V111G Closeout`. **CTO-B3:** Memory Room **sẽ có route thật** ở V111E (+1 route → 52).
+
+### V111B — Experience Grammar (2 commit · 4 file · 1 deploy · 0 backend)
+
+**File mới — `src/features/family/familyExperienceGrammar.ts` (pure, 0 React, 0 I/O):**
+
+```
+FAMILY_TZ = "Asia/Ho_Chi_Minh"          ← hard gate. KHÔNG bao giờ dùng TZ trình duyệt / UTC
+civilDateInFamilyTZ · epochDay · mondayIndex   ← so sánh NGÀY, không so sánh instant; tuần bắt đầu THỨ HAI
+chapterOf(occurredAt, now) → today | this_week | this_month | earlier | null(invalid)
+humanTime()    ← narrative: Hôm nay · Hôm qua · Thứ … · 12 tháng 7 · 12 tháng 7, 2025
+evidenceDate() ← provenance: tôn trọng occurred_precision (byte-identical formatOccurredAt cũ)
+memoryActorLine / contributionActorLine / acknowledgementLine  ← names-over-counts; KHÔNG suy diễn quan hệ từ tên
+deriveComposition(items) → text | image | gallery | video | audio | mixed   ← text & audio LÀ composition
+FamilyLoadState<T> = loading | ready | empty | error(retryable) | denied
+FAMILY_{EMPTY,ERROR,DENIED,LOADING,CONTRIBUTION_EMPTY}_COPY  ← Recognition→Meaning→Action / Truth→Reassurance→Retry
+provenanceLabel()  ← metadata hệ thống, KHÔNG phải tiêu đề, KHÔNG all-caps
+```
+`long_ago` **chưa mở** (baseline chỉ trải 7 ngày ⇒ chưa nghiệm thu được).
+
+**Token layer FMN — `src/styles.css` (oklch, FMN-only, light-only):**
+
+```
+Surfaces : --fmn-canvas · --fmn-surface-warm · --fmn-paper · --fmn-paper-raised · --fmn-rule(-strong)
+Ink      : --fmn-ink · --fmn-ink-soft · --fmn-ink-quiet · --fmn-ink-inverse
+Living   : --fmn-living (forest) · -wash · -tint · -line
+Material : letter-paper/-edge/-rule/-margin/-eyebrow/-ink/-ink-quiet/-frame · audio-surface/-ink/-track/-fill
+           film-1/2/3 · preserve-surface/-ink
+Depth    : --fmn-shadow-memory   ← ĐÚNG MỘT cấp. Không dựng 6 tầng shadow.
+Type     : --fmn-font-memory (memory voice) · --fmn-measure: 68ch (reading measure, CHỈ desktop)
+Classes  : .fmn-letter-paper · .fmn-letter-margin · .fmn-audio-surface · .fmn-audio-tile · .fmn-film-surface
+           .fmn-surface-warm · .fmn-preserve-chip · .fmn-badge-quiet · .fmn-memory-shadow · .fmn-measure
+@theme   : --color-fmn-* (utility bg-/text-fmn-*) · --font-memory (utility font-memory)
+Radius   : KHÔNG token hoá — chưa có nhu cầu semantic ở Phase 2.
+```
+
+**Typography grammar:** *memory voice* (`font-memory`) cho title/story/text-first/lời góp; *system voice* (sans mặc định) cho control/metadata/nav/state/lifecycle. Nhãn provenance **bỏ all-caps** (V111A D8).
+
+**Acceptance 39/39 PASS** (thực thi thật, trước khi UI đổi): `2026-07-13T17:00Z` = 14/07 ICT · `2026-07-14T00:00Z` = 14/07 ICT · CN 12/07 **không** thuộc tuần này · TZ trình duyệt không ảnh hưởng · invalid → `null` · `[]→text` · `[img]→image` · `[img,img]→gallery` · `[video]→video` · `[audio]→audio` · `[img,video,audio]→mixed`.
+
+**Hardcode audit:** FMN component = **0** (`#149A76` · `#FBF8F1` · `LETTER_BG` · `Georgia` · `bg-black/8` · amber/emerald/rose-of-letter đều sạch). **RETAINED có lý do:** record-red (`bg-rose-600/700`, affordance "đang ghi âm") · `FamilyCardComposer.tsx` + 2 route file (**ngoài allowlist V111B** → V111C).
+
+**Governance (D293) KHÔNG đổi:** `canEdit` = creator · `canArchive` = creator **hoặc** guardian · `isGuardian` fail-closed. Hùng thấy **Lưu trữ**, **không** thấy **Sửa**.
+
+### Trạng thái đóng
+
+Inventory **87 / 186 / 164 / 1** (không đổi) · migrations **98** (không đổi) · routes **51** (không đổi) · edge **16** (không đổi) · `journey_rows_non_family` **36** · `journey_rows_total` **36** · `journey_entries_effective` **0** · `preserve_records` **4** (0 active / 3 reversed / 1 orphaned) · threads/messages **2/3** · cards 16 (1 archived). **Backend: NONE · Route: NONE · SQL: NONE.**
+
+### Nợ chuyển V111C / V111C′
+🔴 **F01 — lắp error/denied state thật vào UI** (V111C) · 🟡 archive reachability (chip nằm dưới 15 snap toàn màn hình) · 🟡 hex trong Composer + 2 route file · **C′ (backend, đi qua D291):** `creator_name` + voices presence trong payload Stream · stable `mc.id DESC` tiebreak · (cũ) Media Compatibility Pipeline · nightly sweep · Việt hoá email · repo GitHub sync UNVERIFIED · 🔴 Share từ card (DEFER).
+
+**Non-actions:** ❌ chapter render · ❌ Stream grouping · ❌ Memory Room · ❌ route mới · ❌ RPC/schema · ❌ skeleton · ❌ motion/reduced-motion · ❌ bỏ mode toggle · ❌ social/AI/Events/Circles/Relevance Engine.
+
+Endpoint: RULES **D296** · SYSTEM_MAP **v1.05** · HANDOFF **v111B**.
+
+---
+
+## 🤫 V111C — QUIET & TRUTH STATES (14/07/2026 · v1.05 → v1.06)
+
+**Nguyên tắc:** *Một màn hình yên tĩnh là được. Một màn hình trống là được. **Một thất bại của hệ thống được vẽ thành một kho ký ức trống thì không.***
+
+### Failure-collapse matrix — trước → sau
+
+| Bề mặt | Request | TRƯỚC (lời nói dối) | SAU (sự thật) |
+|---|---|---|---|
+| Stream | `get_family_memory_stream` | `catch → setCards([])` ⇒ *"Kỷ niệm của gia đình sẽ xuất hiện ở đây"* | `loading / ready / empty / error+Thử lại 
+/ denied` |
+| Engagement | `get_family_card_engagement` | `setData(null)` ⇒ **cả khu 💛 + lời góp biến mất** | error hiện rõ + Thử lại; **không** vẽ nút Viết/Thu (quyền chưa biết ⇒ fail-closed) |
+| Preserve | `get_card_preserve_context` | `setPreserveCtx(null)` ⇒ nút "Giữ vào Hành trình" **biến mất y như khi không có quyền** (D289 tái sinh) | fail-closed **+ visible**: *"Chưa thể kiểm tra trạng thái lưu giữ"* + Thử lại |
+| Archive | `get_family_archived_cards` | `setCards([])` ⇒ chip biến mất ⇒ *"tôi không có gì đã lưu trữ"* | loading chip (không đếm) · empty ⇒ im lặng thật · error ⇒ nói + Thử lại |
+| **Family Space** | `get_family_space` (×2 route) | `setSpaces([])` ⇒ `/parent/family` render **form "Tạo không gian gia đình"** | error ⇒ *"Chưa mở được không gian gia đình. Không gian và ký ức của gia đình vẫn còn nguyên."* + Thử lại |
+
+> ⚠️ Đường thứ 5 **không** có trong V111A — bắt được nhờ trace lại code sống ở D2 của V111C. Đây là lỗi nguy hiểm nhất từng thấy trong FMN: **mạng chập ⇒ hệ mời gia đình tạo lại một không gian mới trong khi không gian cũ vẫn tồn tại.**
+
+### Cơ chế (grammar, không phải if/else rải rác)
+
+```
+classifyRpcOutcome(error, data, pick) → ok | denied | error
+   · error?.message chứa marker  → denied   (RAISE 'not_authorized' | 'not_found_or_not_authorized')
+   · data.ok === false + reason marker → denied  (RETURN-style RPC)
+   · data == null / ok !== true / pick ném → error
+   · còn lại → ok
+outcomeToLoadState(outcome, isEmpty) → loading | ready | empty | error(retryable) | denied
+   · empty CHỈ khi ok && isEmpty(value)
+FAMILY_DENIED_REASONS = not_authorized · not_found_or_not_authorized · not_authenticated · space_not_found
+```
+**Không phân biệt được `denied` ⇒ để `error`.** Cấm bịa ranh giới riêng tư từ một mảng rỗng.
+
+### UI (`FamilyStateBlock.tsx` — mới)
+
+- `FamilyLoadingBlock` — `role="status"`, `aria-live`, có nhãn cho screen-reader (icon **không** phải thông điệp duy nhất).
+- `FamilyEmptyPlace` — **chất liệu giấy thư** (`.fmn-letter-paper`): một chỗ trống đang chờ, không phải trang lỗi. CTA chỉ hiện khi actor **thật sự** có `can_create_card`.
+- `FamilyQuietNotice` — error/denied: khung trung tính, **khác hẳn empty**; error có `role="alert"` + **Thử lại**; denied không có nút hành động, không đổ lỗi.
+
+### Copy canonical (một câu cho một trạng thái)
+
+- **Empty:** *"Ngôi nhà này còn rất yên"* / *"Một câu chuyện, một tấm ảnh, hay chỉ vài dòng nhớ lại cũng có thể trở thành ký ức đầu tiên ở đây."* / CTA **"Giữ lại một ký ức"**
+- **Error (stream):** *"Chưa tải được dòng ký ức lúc này"* / *"Những ký ức của gia đình vẫn được giữ nguyên. Chỉ là lần này chúng chưa đến được màn hình."* / **Thử lại**
+- **Denied:** *"Kỷ niệm này thuộc về một không gian khác"* / *"Gia đình quyết định ai được nhìn thấy điều gì…"*
+- **Contribution empty:** *"Chưa ai để lại lời ở đây"* — bỏ *"hãy là người đầu tiên"*.
+
+### Archive reachability
+
+Chip **"Đã lưu trữ (n)"**: đáy Stream → **ngay dưới header**. `className` prop điều khiển vị trí (`mb-3` ở ready · `mt-4` ở empty/error). **0 route mới · 0 Archive page · 0 redesign nội dung thẻ archived.**
+
+### Trạng thái đóng
+
+Inventory **87 / 186 / 164 / 1** · migrations **98** · routes **51** · edge **16** · journey **36 / 36 / 0** · preserve **4 = 0 active / 3 reversed / 1 orphaned** · threads/messages **2/3** · cards 16 (1 archived). **Backend NONE · Route NONE · SQL NONE.** 3 commit · 5 file (`FamilyStateBlock.tsx` mới · grammar mở rộng · `FamilyMemoryStream.tsx` · 2 route) · 1 deploy.
+
+**Bằng chứng:** 18/18 acceptance thuần (error vs denied vs empty). **QA thất bại-đường bằng ảnh: NOT VISUALLY REACHABLE SAFELY** (không trình duyệt; cấm mutate DB / deploy RPC hỏng để tạo bằng chứng).
+
+### Nợ chuyển V111C′ (backend, đi qua D291 đủ 6 bước)
+`creator_name` payload · voices presence payload · stable `mc.id DESC` tiebreak · **một call/space, cấm N+1**. (cũ) hex trong `FamilyCardComposer.tsx` · Media Compatibility Pipeline · nightly sweep · Việt hoá email · repo GitHub sync UNVERIFIED · 🔴 Share từ card (DEFER).
+
+Endpoint: RULES **D298** · SYSTEM_MAP **v1.06** · HANDOFF **v111C**.
+
+---
+
+## 🗣️ V111C′ — STREAM PRESENCE PAYLOAD (14/07/2026 · v1.06 → v1.07)
+
+**Mục tiêu:** *Một ký ức gia đình không có người là một bản ghi cơ sở dữ liệu.* Stream phải thừa nhận rằng có **người thật** đứng quanh mỗi ký ức — bằng **tên**, không bằng **số**.
+
+### Migration `v111ca_stream_presence` (98 → 99) — 0 bảng · 0 cột · 0 index · 0 data mutation
+
+```
+family_contribution_visible(state, hidden_at, contributor, actor, is_guardian) → boolean
+    ← predicate hiển thị lời góp, RÚT NGUYÊN VĂN từ get_family_card_engagement.
+      IMMUTABLE, KHÔNG secdef, KHÔNG grant cho authenticated/anon/public.
+      Detail và Presence CÙNG gọi nó ⇒ "tiếng nói tắt ở Detail thì tên không rò ra Stream" bằng CẤU TRÚC.
+
+family_display_name(space, profile) → text  (secdef · postgres-only)
+    ← nguồn TÊN duy nhất: family_members.display_label → profiles.full_name → NULL.
+      Nullable. KHÔNG bịa "Người thân"/"Ba"/"Mẹ". KHÔNG suy diễn quan hệ. KHÔNG lộ UUID.
+
+get_family_card_engagement   REPLACE ← dùng chung family_contribution_visible (0 đổi hành vi)
+get_family_memory_stream     REPLACE ← +creator_name (additive) · ORDER BY … , mc.id DESC
+                                        gate D284 + mọi field khác: KHÔNG đổi một ký tự
+get_family_stream_presence(space)  NEW ← 1 call/Space · EXHAUSTIVE · gate = family_card_effective_access
+```
+
+### Hợp đồng presence
+
+```jsonc
+{ "ok": true, "space_id": "…", "presence": [
+  { "card_id": "…",
+    "contribution_people":    [ { "profile_id": "…", "display_name": "Bà ngoại" } ],
+    "acknowledgement_people": [ { "profile_id": "…", "display_name": "Ba" } ] }
+]}
+```
+**EXHAUSTIVE (Option A):** một entry cho **mọi** thẻ nhìn thấy được.
+· entry có + mảng rỗng ⇒ **thật sự không có tiếng nói** · request lỗi ⇒ **KHÔNG BIẾT** (cấm sụp thành "chưa ai nói gì").
+**Không có count trong hợp đồng** — nếu trả số, V111D buộc phải vẽ badge số, và badge số **là** engagement metric.
+
+### Bằng chứng (VERIFY in-migration 9/9, RAISE ⇒ rollback)
+
+| # | Kiểm | Kết quả |
+|---|---|---|
+| V1 | truth-table predicate (withdrawn / hidden / owner / guardian / bình thường) | 6/6 ✓ |
+| V2 | **visibility matrix byte-identical** — Hùng · Ngân · Bà ngoại | 15 thẻ · `set_md5 = ffd66ed5…` **trước = sau** ✓ |
+| V3 | order tất định (2 lần gọi + khớp `occurred_at DESC, created_at DESC, id DESC`) | ✓ (`ord_md5` đổi `4c11c163…` → `92fbbfa1…` — đúng: 9 thẻ hoà giờ đã có thứ tự) |
+| V4 | outsider (PH Bé Jenny) — stream **và** presence | `not_authorized`, 0 enumerate ✓ |
+| V5 | presence exhaustive | 15/15 entry cho cả 3 member ✓ |
+| V6 | presence thật trên **"Ảnh 2 có bé An"** | góp = `Ba \| Bà ngoại` · 💛 = `Ba \| Bà ngoại` · **2 lời đã rút (1 bị ẩn) KHÔNG rò** ✓ |
+| V7 | Detail engagement sau REPLACE | 3 lời góp active + 2 ack — không đổi ✓ |
+| V8 | grants | helper: **không** public/anon/authenticated · RPC: **không** public/anon · presence: authenticated ✓ |
+| V9 | invariants | journey 36 · preserve 4/orphaned 1 ✓ |
+
+### Frontend (4 file · **0 JSX** — presentation thuộc V111D)
+
+`useFamilyStreamPresence.ts` (**mới**) — **1 request/Space**, `FamilyLoadState<FamilyPresenceMap>`; presence lỗi ⇒ `error`, Stream **vẫn sống**. Grammar §7: `FamilyPresencePerson` · `FamilyCardPresence` · `presenceByCardId` · `presenceNames` · `hasVisibleVoices` (chỉ hỏi được khi `ready`). `FamilyCard.creator_name` — **dữ liệu trình bày, KHÔNG phải quyền**.
+**N+1 audit:** tối đa **2 request/Stream** (cards + presence). `get_family_card_engagement` vẫn **chỉ** gọi khi mở Detail.
+
+### Trạng thái đóng
+
+Inventory **87 / 188 / 164 / 1** (secdef +2: `family_display_name`, `get_family_stream_presence`; `family_contribution_visible` là hàm **thuần**, không secdef) · migrations **99** · routes **51** · edge **16** · journey **36 / 36 / 0** · preserve **4 = 0/3/1** · threads/messages **2/3** · cards 16.
+
+✅ **D291 ĐỦ 10 BƯỚC — PASS (2 actor, 2 route).** ① `/family` · **Bà Ngoại Test** (non-guardian): **200 · fetch · 1.3 kB** · **1/165 request** ⇒ **0 N+1** trên hiện trường, không `PGRST202`. ② `/parent/family` · **Hùng** (guardian): **200 · payload 15 entries** (khớp EXHAUSTIVE 15 thẻ). Stream sống bình thường ở cả hai. **V111C′ ĐÓNG FORMALLY.**
+
+Endpoint: RULES **D300** · SYSTEM_MAP **v1.07** · HANDOFF **v111C′**.
+
+---
+
+## 📖 V111D — STREAM RHYTHM: LIVING ARCHIVE (14/07/2026 · v1.07 → v1.08)
+
+**Từ** *một danh sách bản ghi ký ức* **thành** *đi xuyên qua khoảng thời gian gần đây của một gia đình*.
+
+### Kiến trúc Stream — trước / sau
+
+```
+TRƯỚC                                     SAU
+─────────────────────────────────────     ─────────────────────────────────────
+toggle icon (LayoutGrid / Rows3)          (xoá — CTO-D1, không có toggle thay thế)
+├── immersive: snap-y snap-mandatory      MỘT bề mặt cuộn: chính trang
+│   overflow-y-auto, height 78vh          không snap · không cuộn lồng · không viewport cố định
+│   → bẫy cuộn trên mobile
+└── overview: grid 2 cột, aspect-[9/16]   chương hoá:  Hôm nay → Tuần này → Tháng này → Trước đó
+    → cắt phũ ảnh ngang                   (chương rỗng KHÔNG render)
+
+PolaroidCard (1 vỏ, 4 nhánh cover)        MemoryItem (1 vỏ, thân theo COMPOSITION)
+├── rotate theo index % 2                 (xoá — xoay theo vị trí = trang trí giả làm nhịp)
+├── "+2" badge                            "Kèm video và giọng nói"  ← CHỮ, không phải SỐ
+├── LetterCover = nhánh `else`            text = composition hạng nhất (giấy thư + memory voice + 68ch)
+└── audio = ô amber 🎵                    audio = "một giọng nói được giữ lại ở đây", NGHE ĐƯỢC trong Stream
+```
+
+### Chapter sống (14/07/2026, Thứ Ba · tuần bắt đầu Thứ Hai 13/07)
+
+| Chương | Thẻ | Ghi chú |
+|---|---|---|
+| **Hôm nay** | **3** — Kỷ niệm 03 · Ảnh 2 có bé An · Ảnh 1 | |
+| **Tuần này** | **0** | không thẻ nào ngày 13/07 ⇒ **không render** |
+| **Tháng này** | **12** — 12/07 ×9 · 11/07 · 10/07 · 08/07 | |
+| **Trước đó** | **0** | ⇒ **không render** |
+
+⇒ Live chỉ hiện **2 chương**. Chương rỗng biến mất — đúng luật, và dữ liệu thật đã tự chứng minh cái gap đó.
+
+### Grammar mới (§8, thuần · 24/24 PASS)
+
+```
+groupIntoChapters(cards, now)   ← ICT · Thứ Hai · giữ nguyên chronology D299 · bỏ chương rỗng
+                                  occurred_at rác ⇒ `earlier`, KHÔNG BAO GIỜ giả vờ "hôm nay"
+voicesLine(contributors, acks)  ← NGƯỜI, không phải SỐ. Tối đa 2 tên (MAX_VISIBLE_VOICE_NAMES).
+                                  cùng một nhóm người ⇒ gộp 1 câu; hai nhóm khác nhau ⇒ 2 mệnh đề,
+                                  KHÔNG trộn thành một hành động giả. ≥3 người ⇒ "và những người khác".
+memberSubtitleFrom(rels, label) ← dedupe CHUỖI TRÙNG KHÍT; nhãn KHÁC NHAU giữ cả hai (D303)
+leadMediumIndex(items)          ← ảnh → video → media đầu. Tất định. Không xếp hạng.
+supportingKinds(items, lead)    ← "Kèm ảnh, video và giọng nói" — CHỮ, không phải "+2"
+storyExcerpt(story, max)        ← cắt ở ranh giới CÂU + "Đọc tiếp câu chuyện" (không "Xem thêm")
+FAMILY_CHAPTER_NOTE             ← chỉ `earlier` có một câu chuyển đoạn. Tối đa MỘT câu.
+```
+
+### Trật tự đọc trong một ký ức (EP1)
+
+```
+ký ức (media hoặc CHỮ)  →  "Bà Ngoại Test đã thêm ký ức này"  →  "Ba và Bà ngoại đã để lại lời và gửi yêu thương"
+                        →  "Kèm video và giọng nói"           →  12 tháng 7, 2026 · Kỷ vật của ba mẹ  (nhỏ, cuối)
+```
+Provenance **không còn** đứng trước câu chuyện. Thời gian **không vang ba lần** (chương = điều hướng; thẻ = evidence date).
+
+### Nhãn quan hệ (CTO-D4 · D303)
+
+| Sự thật (DB) | Người xem | Trước | **Sau** |
+|---|---|---|---|
+| Hùng: `Ba`(An) + `Ba`(Khang) | non-guardian (tên bé bị giấu) | `Ba · Ba` | **`Ba`** |
+| Hùng: như trên | guardian của cả hai bé | `Ba của An · Ba của Khang` | **`Ba của An · Ba của Khang`** (không đổi) |
+| Bà ngoại: `Bà ngoại`(An) + `Bà kế`(Khang) | non-guardian | `Bà ngoại · Bà kế` | **`Bà ngoại · Bà kế`** (GIỮ — hai nhãn thật) |
+| Ngân: `Phụ huynh`(An) | — | `Phụ huynh` | `Phụ huynh` |
+
+**Sự trùng lặp là hệ quả của privacy đang làm việc đúng, không phải dữ liệu bẩn.** 0 mutation.
+
+### Trạng thái đóng
+
+Inventory **87 / 188 / 164 / 1** · migrations **99** · routes **51** · edge **16** · journey **36 / 36 / 0** · preserve **4 = 0/3/1** · threads/messages **2/3** · cards 16. **Backend NONE · Route NONE · SQL NONE.** Request/Stream: **1 stream + 1 presence**, 0 RPC theo thẻ.
+
+✅ **LIVE ACCEPTANCE PASS (15/07/2026)** — CTO test production 2 actor (Hùng guardian · Bà ngoại non-guardian). EP4: thẻ text-only "Hôm nay con được điểm 10" render **trang thư giấy kem + serif**, không vỡ. Audio-only phát trong Stream. Voices = tên người, 0 số. Nhãn quan hệ hết "Ba · Ba". **Governance D293 hiện trường:** Lưu-trữ-thẻ-người-khác ✅ · Sửa-thẻ-người-khác ❌ · Sửa-lời-người-khác ❌ · Ẩn-lời-người-khác (guardian) ✅.
+
+### Nợ chuyển V111E (Memory Room)
+route thật cho một ký ức (51 → 52) · deep link · nút back · F5 sống · media hierarchy trong Room · trình bày contribution/acknowledgement · lifecycle controls trong Room · (cũ) hex trong `FamilyCardComposer.tsx` · Media Compatibility Pipeline (MOV) · nightly sweep · Việt hoá email · repo GitHub sync UNVERIFIED · 🔴 Share từ card (DEFER).
+
+Endpoint: RULES **D303** · SYSTEM_MAP **v1.08** · HANDOFF **v111D**.
+
+---
+
+## 🎛️ HOTFIX — TEACHER REMOTE STATE GATE (14/07/2026 · v1.08 → v1.09)
+
+**Triệu chứng:** cô bấm *"Kết nối điều khiển"* → *"Chưa tạo được mã."* (không QR, không mã).
+
+**Truy gốc (không đoán):**
+
+```
+mint_session_remote_code(session)
+  ├─ not_authenticated / not_found / forbidden
+  ├─ state ∉ {scheduled, prep_ready, makeup, in_progress}  → { ok:false, reason:"bad_state" }   ← TRÚNG
+  └─ ok → { channel_key, code }
+
+Tiết "Tiếng mưa rơi" (aaaa0000-…-0a0001):  state = taught_report_pending   (đã dạy xong)
+Impersonate cô giáo (taught_by) → { ok:false, reason:"bad_state", state:"taught_report_pending" }
+M� cũ (5351) + channel_key VẪN CÒN trong DB — nhưng cổng chạy TRƯỚC khi đọc mã ⇒ không lấy lại được.
+```
+
+**Backend ĐÚNG. Hai lỗi ở UI:**
+
+| # | Lỗi | Bản chất |
+|---|---|---|
+| 1 | Vẫn vẽ *Chiếu lên TV* / *Mở điều khiển* / *Kết nối điều khiển* trên tiết đã dạy xong; `ensureRemoteCode()` còn **tự chạy lúc mount** | **Cửa được vẽ khi cổng đã đóng** — đối ngẫu vòng-đời của D290 |
+| 2 | `setRemoteErr(true)` nuốt 6 lý do thành 1 câu, kèm nút **Thử lại** bấm mãi vô ích | **Lỗi không nói thật** — họ D297 |
+
+**Sửa (phương án A — CTO chọn · frontend-only):**
+
+```
+REMOTE_STATES = ["scheduled","prep_ready","makeup","in_progress"]   ← GƯƠNG của backend, có comment trỏ về đúng tên function
+remoteAllowed = REMOTE_STATES.includes(session.state)
+  · !remoteAllowed ⇒ KHÔNG vẽ 3 nút · KHÔNG gọi RPC · hiện một dòng nói thật
+mapRemoteReason(reason) → { msg, retry }
+  · bad_state / forbidden / not_found / not_authenticated ⇒ retry: FALSE  (không mời bấm vô vọng)
+  · code_pool_exhausted / network                          ⇒ retry: TRUE
+```
+
+Copy mới: *"Buổi học này đã dạy xong — mã điều khiển chỉ dùng khi buổi đang chuẩn bị hoặc đang diễn ra. Cô mở một buổi đang diễn ra để dùng Màn chiếu và Điều khiển."*
+Chuỗi *"Chưa tạo được mã."* đã bị xoá khỏi codebase.
+
+**Trạng thái:** 1 file · 1 deploy · **0 backend · 0 SQL · 0 migration · 0 route**. Inventory **87 / 188 / 164 / 1** · migrations **99** · routes **51** · edge **16** — không đổi.
+
+**Để test Remote ngay:** hai tiết cùng lớp đang `in_progress` — *"Vương quốc âm thanh"* (mã `4880`) và *"Chú Vịt Con"* (mã `5222`).
+
+Endpoint: RULES **D304** · SYSTEM_MAP **v1.09** · HANDOFF **v111D** (không bump — hotfix ngoài sprint).
+
+---
+
+## 🏠 V111E — MEMORY ROOM: route-backed detail (16/07/2026 · v1.09 → v1.10)
+
+Memory Detail đổi từ shadcn `Dialog` sang **route thật** `/family/memory/:cardId` (route 51 → **52**). File route: `src/routes/_authenticated/family_.memory.$cardId.tsx` (TanStack suffix `_` giữ leaf, KHÔNG biến `family.tsx` thành layout). **Một** Room domain component dùng chung cho cả `/family` và `/parent/family`; authorization do backend (`get_family_card` → `family_card_effective_access` = D284) quyết, KHÔNG do URL.
+
+**Backend (mig 100 — NARROW):** `get_family_card(p_card_id)` thêm **một** field nullable `creator_name` = `family_display_name(v_space, mc.creator_profile_id)`. 0 function mới · 0 schema · 0 governance. Ba khối D92 + VERIFY rollback-guard. D291 production-client gate PASS (guardian / creator / outsider / non-existent). Engagement/preserve/role vẫn là RPC ĐỘC LẬP — KHÔNG gộp vào detail RPC (giữ V111C failure semantics: auxiliary fail không xoá primary memory).
+
+**Frontend:**
+- `FamilyMemoryRoom.tsx` — page shell: back affordance "Quay lại", tự `get_family_card(cardId)` khi mount (direct entry độc lập, không nhận card từ Stream state), `get_family_space_role` cho isGuardian (fail-closed), states loading/ready/denied+error dùng MỘT copy generic *"Không thể mở ký ức này."* (anti-existence-leak §29). Back: `__TSR_index>0` → history.back; else fallback `navOriginHint ∈ {/family,/parent/family}` else `/family`. navOriginHint chỉ UX, KHÔNG authorization.
+- `memoryRoomShared.tsx` — MOVE verbatim từ FamilyMemoryStream: CardDetail, MediaTile, AudioPlayer, Video/AudioPlaceholder, EngagementSection, ContributionItem, Write/Edit/RecordContributionDialog, PreserveControl, pickAudioMime, relativeVi, fireLog, types. Đổi DUY NHẤT: CardDetail heading `<h1>` thay `DialogHeader/DialogTitle` (để render trong page, không cần Dialog context). Governance byte-for-byte.
+- `FamilyMemoryStream.tsx` — bỏ Detail Dialog + state `detail`; `openDetail(card)` → `navigate({to:'/family/memory/$cardId', params:{cardId}, search:{origin}})` với origin = pathname hiện tại. Import CardDetail/MediaTile/fireLog/SigningApi từ shared. Stream KHÔNG redesign (CTO-E2).
+
+**Room grammar (memory-first, CTO-E3):** back affordance quiet → tiêu đề (`<h1>` font-memory) → provenance quiet (hiện dùng `peopleLine` "Kỷ niệm của: …"; `creator_name` có trong payload nhưng Room chưa surface dòng "… đã thêm ký ức này" — polish V111F) → media dẫn (ảnh intrinsic ratio object-contain, không crop; video không autoplay) → story → preserve "Giữ vào Hành trình" → voices ("Gửi/Đã gửi yêu thương" + tên, 0 số; "Những lời để lại") → lifecycle quiet (Sửa creator-only / Lưu trữ creator-or-guardian).
+
+**Nghiệm thu (16/07, 8 ảnh, production):** Image Room · Mixed Room (ảnh+video 0:08) · Voices 3 lời · Governance button-level (Bà ngoại contribution → Hùng chỉ "Ẩn") · F5 · Back→/parent/family · Mobile 390 · Denied generic không leak. Request discipline: 1 card + 1 engagement + 1 preserve + 1 role + signed-media on-demand; 0 N+1.
+
+**Anomaly:** QA cards V111D (`Con nói hay` audio, `Test khoảnh khắc 2` mixed, text-first) không còn trong production; space duy nhất "Gia đình Hùng" có 0 audio-only/0 text-only ⇒ Text Room & Audio Room §41 chưa nghiệm thu được (không tạo synthetic). Outsider dùng admin non-member. HANDOFF v111D không có trên đĩa (không chặn — D304/v1.09 + live khớp).
+
+**Invariants:** 87/188/164/1 · mig **100** · routes **52** · edge **16** · journey 36/36/0 · preserve 4=0/3/1 · threads 2/3 · cards 16. Endpoint: RULES **D305** · SYSTEM_MAP **v1.10** · HANDOFF **v111E**.
+
+**Deferred → V111F (Motion & Sensory):** Stream→Room semantic transition · card enter motion · preserve/archive/restore motion · reduced-motion audit · dòng creator "… đã thêm ký ức này" trong Room · (nếu cần) QA cards text-only/audio-only mới cho §41.
+
+---
+
+## 🎞️ V111F — MOTION & SENSORY QA (16/07/2026 · v1.10 → v1.11)
+
+FMN motion layer semantic, frontend-only. **0 backend · 0 route · 0 migration · 0 edge · 0 dependency** (KHÔNG Framer Motion; chỉ CSS + `tw-animate-css` sẵn có).
+
+**Motion token (styles.css, FMN-only):** `--fmn-motion-micro:140ms` · `--fmn-motion-nav:260ms` · `--fmn-motion-state:320ms` · `--fmn-ease-enter` · `--fmn-ease-settle`.
+
+**5 họ chuyển động semantic (M1–M5):**
+- **M1 Appear** — `fmn-media-fade` (media resolve opacity, onLoad, không re-sign) + `fmn-appear` (contribution). Stream card **GIỮ TĨNH** (không enter-stagger).
+- **M2 Approach** — `fmn-room-enter` (Stream→Room fade+translateY 260ms, Option B thuần CSS; không shared-element/View-Transition/scrim/zoom).
+- **M3 Settle** — `fmn-settle` (preserve chip scale 140ms; không heart-burst/flash/counter).
+- **M4 Recede** — `fmn-recede` (archive opacity+max-height collapse 320ms SAU mutation success; không delete metaphor). Archive từ Room → recede → navigate origin.
+- **M5 Return** — `fmn-return` (restore quiet; không bounce/glow).
+
+**Reduced-motion HARD GATE:** `@media (prefers-reduced-motion: reduce)` tắt 6 animation, media visible tức thời, recede→ẩn tức thời, scroll-behavior auto; GIỮ `animate-spin`+text/toast; functionality nguyên.
+
+**Creator line §22 (PHƯƠNG ÁN A):** Room hiện "[Tên] đã thêm ký ức này" (`memoryActorLine`, mig-100 `creator_name`) + giữ "Kỷ niệm của: …" (subject). Dedup so-string ẩn people-line khi subject≡creator; hạn chế: creator=display-name projected vs people=full_name raw ⇒ card cùng người hiện cả hai (S-level, giữ nguyên: hai truth khác semantics; dedup-theo-ID cần backend, xét V111G+).
+
+**Files:** `styles.css` (motion layer) · `FamilyMemoryRoom.tsx` (fmn-room-enter+tabIndex) · `memoryRoomShared.tsx` (fade/creator/recede/settle/appear) · `FamilyMemoryStream.tsx` KHÔNG đổi.
+
+**Sensory acceptance (16/07, 11 ảnh, production):** Stream→Room · media fade · creator line · archive recede→origin · restore · mixed Room + voices + governance · **live preserve thật** (bé An, guardian_steward, Hùng) · mobile 400px · request discipline 0 duplicate. D293 nguyên.
+
+**Live-acceptance lifecycle (human action, KHÔNG drift):** archive→restore (cards về 15/1); preserve card `5125a540`→An `guardian_steward` actor Hùng + journey_entry ⇒ **preserve 4→5 (1 active/3 reversed/1 orphaned)**, **journey 36→37**. Orphaned vẫn 1.
+
+**Invariants:** 87/188/164/1 · mig **100** · routes **52** · edge **16** · journey **37** · preserve **5=1/3/1** · threads **2/3** · cards **16** (15/1). Endpoint: RULES **D306** · SYSTEM_MAP **v1.11** · HANDOFF **v111F**.
+
+**Deferred → V111G (Experience Regression Closeout):** full Phase 2 regression · governance replay · dead-code/stale-modal audit · mobile/desktop final smoke · journey/preserve invariants · canonical inventory audit · Phase 2 closeout · (cân nhắc) creator/subject dedup-theo-ID nếu mở backend.
+
+---
+
+## V111G — FMN PHASE 2 EXPERIENCE LAYER · ĐÓNG CHÍNH THỨC (16/07/2026 · v1.11 → v1.12)
+
+**Regression closeout thuần đo — 0 code · 0 backend · 0 migration · 0 route · 0 edge · 0 deploy · 0 dependency.** Kiến trúc KHÔNG đổi; đây là dấu mốc đóng Phase 2, không phải thay đổi bản đồ.
+
+**Live inventory tái xác nhận (đo trực tiếp, không tin handoff):** 87 / 188 / 164 / 1 · migrations **100** · routes **52** · edge **16** · journey **37 = 36 non-family + 1 family** · preserve **5 = 1 active / 3 reversed / 1 orphaned** · threads/messages **2 / 3** · cards **16 = 15 active / 1 archived**.
+
+**Governance D293/D305 replay LIVE (JWT impersonation, actor resolve live):** Hùng guardian `can_moderate=true`/`is_guardian=true`; Bà ngoại creator-non-guardian `can_moderate=false`; outsider (admin non-member) `effective_access=false` + generic `not_found_or_not_authorized` identical (0 enumeration). PASS.
+
+**Bản đồ Experience Layer (tổng kết Phase 2, frontend + grammar thuần + 1 route + 2 secdef + mig 100):**
+- Grammar thuần: `src/features/family/familyExperienceGrammar.ts` (thời gian ICT Monday-first · truth-state 5-trạng thái · presence people-not-counts · composition · actor language).
+- Token + motion layer: `src/styles.css` (FMN token oklch light-only · 6 motion class semantic + reduced-motion hard gate).
+- State components: `FamilyStateBlock.tsx` (loading/empty/error/denied).
+- Stream: `FamilyMemoryStream.tsx` (single-scroll chaptered · composition-driven `MemoryItem`) + `useFamilyStreamPresence.ts`.
+- Room: route `/_authenticated/family_/memory/$cardId` → `FamilyMemoryRoom.tsx` + `memoryRoomShared.tsx` (CardDetail route-backed = `<div>`+`<h1>`, không modal).
+- Backend Phase 2: +2 secdef (`family_display_name` · `get_family_stream_presence`, V111C′) + mig 100 REPLACE `get_family_card` (+`creator_name` nullable). Helper thuần `family_contribution_visible` (Detail+Presence dùng chung).
+
+**Findings (cấp tài liệu, KHÔNG phải system regression):** F-G1 spec journey-wording "37/37/1" (đúng: 37/36/1) · F-G2 route convention 52 vs raw fullPaths 57 (pre-existing). Nợ deferred backend: S-level creator/subject dedup-theo-`profile_id`.
+
+**Invariants:** 87/188/164/1 · mig **100** · routes **52** · edge **16** · journey **37** · preserve **5=1/3/1** · threads **2/3** · cards **16** (15/1). Endpoint: RULES **D307** · SYSTEM_MAP **v1.12** · HANDOFF **v111G**.
+
+**FINAL: ✅ PHASE 2 CLOSED WITH MINOR FINDINGS.**
+
+
+---
+
+## V112C — FMN PHASE 3 · LIVING ARCHIVE NAVIGATION (16/07/2026 · v1.12 → v1.13)
+
+**Memory Navigation Layer — sprint BUILD đầu tiên của Phase 3.** Additive backend (+2 secdef, mig 101) + frontend Timeline spine. Kiến trúc lõi KHÔNG đổi; đây là tầng wayfinding phủ TRÊN Stream/Room.
+
+**Backend contract (mig 101 · secdef 188→190 · 0 schema/policy/data change):**
+- `get_family_archive_index(p_space_id)` → `{ok, space_id, years:[{year, total, months:[{month,count}]}]}` — density metadata, active+accessible only, ICT bucket, year/month DESC, sparse omitted, no payload. secdef · search_path='' · grant authenticated only.
+- `get_family_memory_window(p_space_id, p_year, p_month, p_limit=20, p_before_occurred_at, p_before_created_at, p_before_id)` → `{ok, space_id, year, month, cards[], has_more, next_cursor}` — same card shape as Stream, keyset (no OFFSET), limit clamp 1..50, reuse `family_card_effective_access` (D284).
+- `get_family_memory_stream` **UNCHANGED, byte-stable** (legacy/Recent surface; hash `92fbbfa1…47d4` before=after).
+- ICT bucket contract: `(occurred_at AT TIME ZONE 'Asia/Ho_Chi_Minh')` — query/presentation only, 0 data mutation.
+
+**Frontend (commit `b28cd9b7` · Lovable project `d9d56000-…-651edc53d73f`):**
+- Data: `useFamilyArchive.ts` (index ×1/space) · `useFamilyMemoryWindow.ts` (window + keyset + token stale-guard + reset-on-period-change).
+- UI: `FamilyArchiveIndex.tsx` (rail desktop / Sheet mobile, aria-expanded year, aria-current month, quiet counts) · `FamilyMemoryPeriod.tsx` (period heading `Tháng M · YYYY` + `N ký ức` secondary + flat MemoryItem + keyset load-more) · `FamilyArchiveNavigation.tsx` (orchestrator: two-pane desktop / bottom Sheet mobile, newest-default ref-guard, openCard origin+y+m).
+- Grammar: `periodHeading(year,month)` (pure) added to `familyExperienceGrammar.ts`. `MemoryItem` + `ArchivedCardsSection` now exported from `FamilyMemoryStream.tsx` (full Stream component retained, no longer mounted).
+- Routes: `/family` + `/parent/family` gain `validateSearch {y,m}` and mount `FamilyArchiveNavigation` (base prop). `/family/memory/$cardId` gains optional y/m → Room fallback back-to-period. **Routes remain 52** (search-param only, `routeTree.gen.ts` untouched). Room `/family/memory/$cardId` authorization UNCHANGED.
+
+**Request discipline (design + live Network):** archive load = index ×1 + window ×1 + presence ×1/space (reused, space-wide) + role/space as existing; **0 `get_family_memory_stream` in archive nav**; month change = window ×1 (no index/presence refetch); Room = card×1/engagement×1/preserve×1/role×1/signed-media on-demand; no per-card engagement/profile; signed media on-demand.
+
+**Search-param behavior:** `?y=&m=` = UX navigation state, never authority. Invalid → Newest fallback (not Today). Back/Forward/F5 preserve period. Room origin period = UX hint only.
+
+**Deferred payload debt:** presence is space-wide one-call (not window-scoped) — acceptable now, revisit at large archive scale.
+
+**Visual acceptance (16/07, 10 ảnh production demenart.com): PASS** — Newest default · desktop two-pane rail · Room return-to-period (`origin+y+m`) · mobile 400px Sheet · Room request discipline (0 Stream RPC, mixed card video no-autoplay) · governance button-level (guardian Hùng thấy lời Bà ngoại chỉ "Ẩn") · outsider admin 0 leak (create-space empty state).
+
+**Invariants:** 87/**190**/164/1 · mig **101** · routes **52** · edge **16** · journey **37** · preserve **5=1/3/1** · threads **2/3** · cards **16** (15/1). Endpoint: RULES **D308** · SYSTEM_MAP **v1.13** · HANDOFF **v112C**.
+
+**Deferred → Phase 3+:** Memory Landscape / manual Chapters · Recall (Today in Our Family / On This Day — cần year-over-year data + hide/mute) · People Browse (cần identity payload + >1 subject; nợ S-level creator/subject dedup D306 §22) · window-scoped presence · Search (Vietnamese FTS) · Notification · AI.
+
+**FINAL: ✅ V112C EXPERIENCE PASS.**
+
+
+---
+
+## V113G-M1 — PARENT PORTAL EXPERIENCE SHELL (17–18/07/2026 · v1.13 → v1.14)
+
+**Milestone restyle Cổng ba mẹ — đóng PASS tại production HEAD `4014427d`.** Kiến trúc lõi/backend KHÔNG đổi; đây là tầng shell + route-chrome trên các surface Parent hiện có.
+
+**⚠️ PRODUCTION DEPLOYMENT TRUTH (mục mới, ghi vĩnh viễn):** `demenart.com` = **GitHub `main` → Cloudflare Pages auto-build & deploy MỌI commit** (propagation vài phút, có thể 404 assets tạm giữa chừng). `demenart.lovable.app` (Lovable hosting, điều khiển bởi `deploy_project`) KHÔNG phải nguồn production. ⇒ Mọi commit main = production-affecting; operating mode hiện hành = **direct-main approved** (chưa có external users) với kỷ luật re-pin + single-writer + contiguous range (D309.2–3); branch isolation = future option.
+
+**Parent shell (G.1 + Amendment 479 · files `src/features/parent/shell/*` + `parent.tsx` + `styles.css` DMA layer + `__root.tsx` font links):**
+- Grammar: mobile **≤479** (header + bottom nav 4 mục `Hôm nay/Hành trình/Gia đình/Của con`) · tablet **480–1023** (top bar + Sheet drawer, focus-restore) · desktop **≥1024** (identity rail 18rem). Token layer `--dma-*` + `@theme inline` scope `.dma-parent`; fonts Playfair Display + Be Vietnam Pro qua head links (Lightning-CSS không nhận remote @import). Utilities (Quyền riêng tư/Thông báo/Cài đặt/Hỗ trợ) KHÔNG nằm primary nav.
+- Shared child context: `ParentChildProvider` persisted + `ChildSwitcher` chung 4 surface; Correction-A sequencing; `prevChildRef` hydrate guard (D309.4).
+
+**Hôm nay (`parent.index.tsx`):** MemoryHero deterministic (pickHero) + deep-link `?focus={journey:|creation:|moment:}id` sang Journey; near-empty variant truthful + quiet metadata.
+
+**Hành trình (`parent.journal.tsx` rebuild + `ParentJourneyViewer/JourneyDetail` + `JourneyShareAction` mới):** mounted composition duy nhất (dead branch V74/75 + ShareMomentButton cũ ĐÃ GỠ — lint −163E); **Share re-home Option B**: eligible **moment-only**, contract nguyên (`create_private_share_link` TTL 1440 · `revoke_share_link` · `/share/{token}` private), secondary utility cạnh ngày trong Detail.
+
+**Nhìn lại (`parent.discovery.tsx`):** rebind provider + shared switcher; dual seq-guard + `capsuleParamRef`; drop `?capsule` khi đổi con; capsule RPC contracts nguyên; copy evidence-anchored, không AI implication.
+
+**Gia đình (`parent.family.tsx` V113G.3 · Owner Option A):** `PARENT SHELL OUTSIDE — FMN DESIGN SYSTEM INSIDE — MINIMUM BRIDGE`. Route chrome DMA (identity serif + switcher + TruthState loading + cards quản trị DMA-token + khung ivory-raised quanh stream); ruột FMN **byte-untouched** (15 file core, `--fmn-*`, Stream/Room/archive V111D-E/V112C, `FamilyQuietNotice` denied/error, CTA giữ `--fmn-living`); child↔space = family-level truth (`get_family_space` không nhận child param): sort space-chứa-con-trước + truthful notice khi con không thuộc space nào, KHÔNG invent relationship. **Token-leakage proof 2 chiều:** `/family` standalone không `.dma-parent`, h1 không serif. Memory Room round-trip qua `origin` hint giữ `?y&m` + switcher.
+
+**QA/patterns canonical:** matrix 9 mốc + iframe harness · diff-zero rationale cho core không sửa · mutation-test cần Owner authorize · `rpcUntyped` pattern · full lint M1: 4.937/32 → **4.762/25** (−175E/−7W).
+
+**Invariants:** 87/**190**/164/1 · mig **101** · routes **52** (raw fullPaths 57) · edge **16** · journey **37** · preserve **5=1/3/1** · threads **2/3** · cards **16** (15/1) — backend 0 đổi so V112C. Endpoint: RULES **D309** · SYSTEM_MAP **v1.14** · HANDOFF **v113G-M1**. Production HEAD **`4014427d`**.
+
+**Open debt carry-forward:** fixture-backed FMN E2E (voice/video/engagement-open/preserve/invited-member login — cần PO authorize) · favicon · Incognito console verify · media retry-backoff (nếu carrier/CDN tái diễn) · import-order cosmetic `parent.family.tsx` · repo lint debt.
+
+**FINAL: ✅ V113G-M1 MILESTONE PASS — CANONICALIZED.**
+
+---
+
+**Cập nhật 2026-07-24 GMT+7 (V114B-E3-WP4-S3A · SYSTEM_MAP v1.16 · AUTHORITY CUTOVER LIVE):** Migration **114** `v114b_e3_wp4_s3_authority_cutover` (apply 16:29:21 ICT) cutover quyền submit-journal từ class-lead sang **session responsibility hiện hành**. 3 hàm REPLACE (submit/start/detail — xem khối endpoint + D324). Inventory **88/210/199/166/33** · registry 114 · routes 52 · 16 Edge — **0 bảng/policy/trigger/Edge/route/frontend đổi** (backend function-only). STA 13/9/4 (db_proven 3/owner_attested 1) · runtime residue 0. **Skew window MỞ 16:29:21 ICT** (cấm đổi `class_distributions.lead_teacher_id` tới S4). Proof authority: lead-change counterfactual — Lê Thảo My `is_lead=true/is_responsible=false → forbidden`; Đặng Mỹ Linh `is_lead=false/is_responsible=true → allowed`. **Frontend vẫn legacy-lead + `session_reports` uncontained tới S4.** Ghi chú thực thi (KHÔNG phải rule): md5 canonical `get_session_detail` = `91a08743…` (bản compact đã rehearse; submit/start khớp byte pinned `29623e1c…`/`48e62a76…`); giá trị `37a3b4a1…` trong rehearsal report đầu là abbreviated/historical, byte không khôi phục được sau rollback — chi tiết serialization này chỉ là implementation evidence, KHÔNG nâng thành D-rule. E3 candidate rules D310–D323-cand + D-A2-1 vẫn treo trong file closeout WP tới E3 milestone closeout (sau S4). Cập nhật "tới đâu ghi tới đó" (KỶ LUẬT VÀNG).
+
+---
+
+**Cập nhật 2026-07-24 GMT+7 (V114B-E3-WP4-S4 · SYSTEM_MAP v1.17 · FRONTEND AUTHORITY ALIGNMENT LIVE):** Frontend teacher-session surface (`src/routes/_authenticated/teacher.session.$id.tsx`) cutover sang tiêu thụ server capability — commit `5d28ee67` (S4-3D). CTA gửi nhật ký CHỈ mở khi `detail.can_submit_journal===true`; blocked copy từ `submit_block_reason`; "Giáo viên phụ trách buổi" = `responsible_teacher.display_name`. Đã gỡ dẫn xuất `is_lead`/`get_teacher_classes` (xem D325). Coordination: `detailSeqRef`+`detailInflightRef` (superseded adopt-latest: applied/failed/cancelled) · start/submit synchronous locks (`startLockRef`/`submitLockRef`) · Strict-Mode-safe alive-refs (setup=true/cleanup=false) · `loadDetail` setErr(null) khi thành công. **Inventory 88/210/199/166/33 · registry 114 · routes 52 · 16 Edge — 0 bảng/policy/trigger/Edge/route/backend đổi** (frontend-only: 1 authored file + generated `routeTree.gen.ts` bỏ block type-only `@tanstack/react-start` Register — runtime routing PASS, đóng như P2). Production browser QA (Owner Cloud Browser 24/07): responsible=Đặng Mỹ Linh enabled · Master Nguyệt Thi forbidden · Start/Submit idempotent + canonical reload · responsive 4/4 (375/430/768/1440) · console 0 app error. Demo mutations: Start `3bfb9730…`, Submit `aaaa0000-…-0a0003` (KHÔNG lặp). **Skew window ĐÓNG tại S4-5** (mở 16:29:21 ICT 24/07 — governance disposition, không đổi production để đóng). Owner manual `7df9621c` (landing card + routeTree Register re-add) nằm dưới accepted tip `5d28ee67`, unrelated. E3 candidate D310–D323-cand + D-A2-1 vẫn treo tới E3 milestone closeout (riêng, sau WP4-S4). **WP4-S4 FINAL PASS.** Cập nhật "tới đâu ghi tới đó" (KỶ LUẬT VÀNG).
+
+---
+
+**Cập nhật 2026-07-25 GMT+7 (V114B-E3 · MILESTONE CLOSEOUT · SYSTEM_MAP v1.18 · E3 CANONICALIZED):** Track E3 (WP1→WP4 + RM1) đóng milestone — **documentation-only**: 0 code · 0 backend · 0 migration · 0 deploy · không rerun mutation QA · không regenerate `routeTree.gen.ts` · không mở lại WP4-S3A/S4. **Canonicalized D310–D323 + D-A2-1** (RULES khối "V114B-E3 — MILESTONE CLOSEOUT"): PROMOTE ×13 · PROMOTE WITH CORRECTION ×2 (D319 ID-normalization "D319-candidate"→D319 · D-A2-1 failure-path atomicity evidenced / success-path ordering unproven). Nguồn D314–D322 = recovered conversational source `DMA_V114B_E3_WP2_S1_S2_SOURCE_RECOVERY.md` (SHA-256 `dc1494b0fe3dd12f0439e972e403de812a618451756fdc8cf8383af83350aa49`, topic `189d86c6-…`, provenance qualifier: exact theo conversation_search excerpt, byte-exact whitespace không chứng nhận độc lập); D313 từ WP2-S0B (topic `6c688d80-…` §11); D310–D312 WP1 §8; D323/D-A2-1 WP3 §12. **Gates chốt:** E3-SG-01 `CLOSED BY CTO DECISION` (criteria WP1 §5) · E3-SG-02 `CONTAINED — NOT CLOSED` (service_role BYPASSRLS · pg_default_acl · REFERENCES/TRIGGER/MAINTAIN · TRUNCATE 62/88) · `session_reports` `CONTAINED FOR USER-JWT MUTATION PATHS` (RM1 mig 115; 2 dead-door policy = P3 debt; trusted tier object-specific: LM/CO qua INVOKER trigger guards, session_reports = operational trusted capability KHÔNG trigger-contained) · **R21 `OPEN RESIDUAL MONITORING — NON-BLOCKING; VERIFY AT FIRST RELEVANT OWNER/ORGANIC MUTATION`** (no unexplained 42501 observed · organic lesson-session mutation = 0 · zero organic traffic ≠ affirmative evidence risk eliminated · follow-up tại mutation `lesson_sessions` liên quan đầu tiên · không chặn closeout). **DB re-pin 25/07 14:54 ICT: 88/210/199/166/33 · registry 115 (latest `20260725011235 v114b_e3_rm1_session_reports_write_revoke`) · routes 52 · 16 Edge · frontend accepted tip `5d28ee67` — zero drift.** Residual carry-forward: responsibility-transfer RPC vắng · `pg_default_acl` remediation · TRUNCATE toàn nền tảng · P2-HARDEN-01 · sub_admin QA · Nam/Vy persona · session_reports dead-door P3 · recovery-error P2 · 768px nav P2 · routeTree P2 · safe-failure-injection non-blocking · CONSENT-NEGATIVE-FIXTURE. **V114B-E3 MILESTONE CLOSED.** Cập nhật "tới đâu ghi tới đó" (KỶ LUẬT VÀNG).
+
+---
+
+**Cập nhật 2026-07-27 GMT+7 (V117-M2 · SYSTEM_MAP v1.22 · SCHOOL DAILY OPERATIONS — PRINCIPAL "HÔM NAY" LIVE):** School portal có surface vận hành hằng ngày đầu tiên. **Backend:** RPC curated duy nhất `get_school_today_operations(p_date default null)` (secdef `search_path=''`, master/sub-only server-resolved, denial generic, ACL authenticated+service_role, aclexplode sạch) — migration `v117_school_today_operations` delta đúng expected (88/212/201/166/33/1 · registry 117 · 52 routes · 16 Edge). Nguồn canonical: điểm danh `child_observations.attendance` (KHÔNG `session_marks`), roster `enrollments active`, nhật ký EXISTS `session_reports` (không suy từ session_state), phụ trách STA `responsible` current-row-only. 4 reason codes + day_state 3 giá trị + payload whitelist đóng — chi tiết D334. **Frontend:** commit `f8a94d14`→`e20bffa4`; Principal "Hôm nay" sống trong DashboardView `/school/manage` (Route Contract A giữ — `/school` redirect pass-through cả `?session`): Welcome → khối Hôm nay nền forest đậm (Green `#22B586` ổn / Red `#E2574C` cần chú ý, số to — Owner directive) → ZoneHeading "Quản lý trường" → cumulative nguyên vẹn; GỠ ParentEngagementPreview (placeholder lock, sidebar LOCKED giữ); de-fake ClassProgress row (bỏ ảo giác drill per-class, giữ link "Quản lý lớp"); feature folder mới `src/features/school/today/` (model/hook/Overview/AttentionList/SessionList/DetailPanel); Today chỉ render cho role manage — GV read-only zero-RPC (đối xứng D290); `?session=` UX-thuần tự dọn khi invalid; 1 RPC/load seq-guard `rpcUntyped`; detail Sheet read-only, không CTA làm thay GV. **QA:** VERIFY 20 assertion atomic (proof mislabel-guard `3bfb9730`) · SQL actor 8/8 zero-mutation · browser production PASS (1 RPC, console 0, negative GV/PH) · Owner QA PASS desktop+iPhone ("ok ổn rồi!"). P2 mới: day-state semantics v2 khi có vận hành thật. Shell `school.tsx` zero diff (pill `today` vẫn available:false — Today sống trong manage, không route mới). Endpoint: RULES **D334** · SYSTEM_MAP **v1.22** · HANDOFF **V117-M2**. Cập nhật "tới đâu ghi tới đó" (KỶ LUẬT VÀNG).
+
+
+---
+
+**Cập nhật 2026-08-07 GMT+7 (V121-M1 · SYSTEM_MAP v1.27 · PARENT DAILY-VALUE HOME — HOME-CENTRIC CONTINUITY LIVE):** Parent Home tái tổ chức quanh **daily value**, **frontend-only tuyệt đối** (DB/migration/Edge/registry/route **0 delta** — re-verified: 89 tables · 215 functions · 204 SECURITY DEFINER · 166 policies · 33 triggers · 1 cron · registry 119 · routes 52 · 16 Edge; migration mới nhất vẫn `v118_m2_appreciation_acknowledgement` `20260727115750`). **Thứ tự Home mới:** Identity → ChildSwitcher → **Daily Focus** (session outcome "Sau buổi học" — nội dung CHÍNH, ngay sau child context, không hero phía trên) → **Journey continuation** (link nhẹ "Xem hành trình của {con}", tái dùng count sẵn, KHÔNG request mới) → **Memory demote + dedupe** (MemoryHero xuống dưới, ẩn khi trùng featured outcome theo STABLE identity moment_id/media_id — không heuristic; "pending" hold để không flash) + contextual create → family signal → "Nhìn lại". **GỠ khỏi Home:** "Gần đây", "Cùng con hôm nay", thẻ "Hành trình" riêng, thẻ "Thế giới của con". **"Những buổi gần đây" → "Những buổi trước"** (cap 2, **bỏ Home load-more** — hook capability giữ nguyên; chronology cũ thuộc `/parent/journal`). **Signing gate (D339.2):** hero ký media CHỈ khi settled+distinct → 0 request thừa (production: media.demenart 2/8 req, 200, không N+1). **2 file feature:** `parent.index.tsx` + `ParentSessionOutcomeSection.tsx`; bridge `onFeaturedIdentity`/`FeaturedOutcomeIdentity`. **Build/recovery:** commit tay `67280d72` gỡ generated Register block khỏi `routeTree.gen.ts` → `tsc` fail → "Build unsuccessful"; build regen khôi phục block (`085d4439`) nhưng sandbox non-frozen init float tooling `@lovable.dev/vite-tanstack-config` 2.8.5→2.9.1 (STOP-gate #10) → CTO revert → **`ed9ca9e5`** tooling về **2.8.5** (bun.lock verified). RouteTree Register block = **type-only generator-authoritative** (route membership 204 bất biến; D339.3). Cloudflare `SKIP_DEPENDENCY_INSTALL=1`+frozen-install → 2.8.5 deterministic (float không gate production; D339.4). **QA:** gates `ed9ca9e5` bun frozen-install 0 · tsc 0 · build 0 · RouteImport 204; **Owner Gate production PASS** (7 ảnh `demenart.com`: An 2-outcome + Khang, Bình appreciation — Daily Focus primary, surfaces gỡ đúng, dedupe đúng, ack còn nguyên, 479px không tràn, signing 2-req). **Nợ:** P2 Journey-continuation weight · P3 no-outcome copy · **P2 tooling-governance** (bỏ khỏi `minimumReleaseAgeExcludes` + pin exact để hết re-float — maintenance milestone riêng). Endpoint: RULES **D339** · SYSTEM_MAP **v1.27** · HANDOFF **V121-M1** · code HEAD **`ed9ca9e5`**. Cập nhật "tới đâu ghi tới đó" (KỶ LUẬT VÀNG).
+
+
+---
+
+**Cập nhật 2026-08-08 GMT+7 (V122-M1 · SYSTEM_MAP v1.28 · PARENT JOURNEY — SESSION-BUNDLE REGROUP LIVE):** `/parent/journal` chuyển từ museum single-artifact rời-rạc sang **artifact lookback có tính liên tục buổi-học**. **Một buổi học = MỘT unit chọn được:** gom mọi moment approved/child-tagged cùng `session_id` vào bundle (moment KHÔNG tạo vị trí timeline riêng — fan-out collapse §8); standalone = parent_memory · family-preserve · creation · moment-không-khớp-session. Grouping chính = lesson session; phụ (rail chapter) = calendar month. Session nhãn **"Buổi học"** (KHÔNG auto "Mốc hành trình") + dòng "📸 N khoảnh khắc"; session rail cover = first media-bearing moment (+⭐ marker); session-no-media = book (teacher note vẫn valid). Aggregate `child_skills` + badges **vẫn ẩn** khỏi Journal (LINH HỒN). Interpretive lookback thuộc `/parent/discovery` = "Nhìn lại" — V122 KHÔNG tái dựng. **DB additive tối thiểu (D340.1):** migration `v122_m1_child_journal_session_id` (`20260807130914`) — CREATE OR REPLACE `get_child_journal` thêm `session_id` 2 phía (journey session→`ref_id`, moments→`lm.session_id`, non-session→null); authz breadth/`search_path=''`/guards/keys bất biến; signature `uuid→jsonb` bất biến. Creations KHÔNG BAO GIỜ gán session (không `session_id`, không stable evidence). **Frontend minimal-ripple (D340.2):** `buildJourneyUnits`/`findUnitIndexForFocus`/`JourneyUnit` trong `parentJourneyModel.ts` (`buildParentTimeline` giữ cho Home); Viewer feed Rail collapsed one-event-per-unit + `coverOverrides`/`kindOverrides`/`sessionMoments`; `SessionBundleStage` reuse `MomentMedia` + moment-switcher + `MomentPrivacyBadge` (Option A); standalone rendering byte-untouched. **Deep-link (D340.3):** `moment:<id>`→bundle chứa nó; missing/malformed/wrong-child→banner honest không lộ data con khác; focus-move vào detail (`requestAnimationFrame`+`preventScroll`, guard) + `aria-live` announce "loại · ngày". Home Daily-Focus→journal CTA = optional §7, chưa wire M1. **QA:** 100-item deterministic model test PASS (0 moment lost, deterministic ordering, badges excluded, 2ms/100·11ms/600 — D340.5); **Owner Gate production PASS** (24 ảnh real-login `demenart.com`: An 45→38 units no-moment-lost + create 38→39, Bình 7→2 bundles cover-ảnh+switcher, Jenny badge/skill vắng, Khang seed-blank diagnosed; ①–⑮ pass). **Tooling (D340.4):** re-float 2.9.1 mỗi agent-install ×3, mỗi lần verify `read_file`@SHA + revert canonical **2.8.5** (production frozen-install không chạm). **Lineage:** `ed9ca9e5`→[mig `20260807130914`]→`6ef509af`(S1)→`9f7d1926`→`4bec89f2`(S2/S3)→`0994b079`→`c884ebbe`(S4)→**`2d33018b`**. **Nợ:** **P2 (RIÊNG) Bunny image optimization thiếu** (ảnh gốc 2–7MB/tấm, load nặng — media-pipeline, ngoài scope V122) · P3 restore-chỉ-toast (§11) · P3 moment-no-media empty-state (Khang) · OWNER GATE OBLIGATION consent-denied fixture · optional Daily-Focus CTA · P2 tooling-governance (three-times-proven). **Inventory bất biến 89/215/204/166/33/1 · registry 119 · routes 52 · 16 Edge** (function-body REPLACE). Endpoint: RULES **D340** · SYSTEM_MAP **v1.28** · HANDOFF **V122-M1** · code HEAD **`2d33018b`**. Cập nhật "tới đâu ghi tới đó" (KỶ LUẬT VÀNG).
+
+
+---
+
+## 🖼️ V123-M1 — RESPONSIVE PRIVATE IMAGE DELIVERY (SYSTEM_MAP v1.29 · D341 · FINAL PASS, 2026-08-08)
+
+> **Khối này thay khối V122-M1 làm authority hiện trạng cho tầng media-delivery.** Endpoint: RULES **D341** · SYSTEM_MAP **v1.29** · HANDOFF **V123-M1** · code HEAD **`069756542740fd924b492d41043ac3bb7579c842`** (`06975654`) · signer deploy-**25** (v24).
+
+**Kiến trúc media (cập nhật):** delivery-time image transformation qua **chính `get_signed_media_url`** — không upload-derivative, không Edge mới, không DB delta. Bunny **Optimizer bật trên `dma-private`** (WebP + Dynamic Image API). Signer mint 4 variant server-owned (`thumb 256/q78 · card 768/q80 · stage 1280/q82 · fullscreen 1920/q85`, width+quality only, aspect giữ, không force AVIF) cạnh `signed_url` gốc backward-compatible. Token Bunny **co-sign query params** (`hashableBase = key+path+expires+sortedParams`, ascending, loại token/expires, không url-encode) → sửa width/quality/path → 403. Client authority vẫn `{media_id}`; params là server constant.
+
+**Đường đọc ảnh Parent (mới):** `get_signed_media_url` (1 invocation/media → bundle) → `useJourneySigning` (dedupe + 8-min cache + `pickVariant()` variant→original fallback) → renderer chọn role:
+- **JourneyRail** cover → `thumb` (IntersectionObserver lazy-sign giữ nguyên).
+- **JourneyStage** still-image → `stage` (+ one-shot original fallback; `<video>` không đụng).
+- **JourneyFullscreen** → `fullscreen`, lazy-on-open, 0 request thừa (cùng bundle).
+- **Parent Home (`parent.index`)** hero → `card`.
+Fallback: variant lỗi → resign 1 lần → original 1 lần; denied KHÔNG fallback; original không phải đường thường.
+
+**Out of scope (future):** School Drive + Family renderer CHƯA wire (signer đã mint sẵn variant cho mọi `dma-private` image — chỉ thiếu wiring). Animated image không transform (whitelist jpeg/png/webp). Không `srcset`/DPR; width/height vẫn ABSENT (không backfill).
+
+**Owner Gate production evidence (ChatGPT Release Authority PASS):** rail WebP ~4–24 KB · stage WebP ~12–206 KB · fullscreen WebP ~13.6 KB (lazy-on-open) · home WebP ~11.7 KB — tất cả dưới hard budget (150/650/1000/400 KB); rail giảm >90% vs 2–7 MB; tamper→403; expired→fail-closed. **Delta:** signer v24 (deploy 25) + 5 FE file. **Inventory bất biến 89/215/204/166/33/1 · registry 119 · routes 52 · 16 Edge** · latest migration `20260807130914` (KHÔNG thêm migration/Edge/backfill/upload/video/audio/Drive/Family/tooling). **Rollback = original `signed_url` compatibility.** Lineage FE: `2d33018b`→`ab77cbf`→`cb406058`→`f534347f`→`d3d08bc2`→**`06975654`** (5 manual_update, no ai_update). Endpoint: RULES **D341** · SYSTEM_MAP **v1.29** · HANDOFF **V123-M1** · code HEAD **`06975654`**. Cập nhật "tới đâu ghi tới đó" (KỶ LUẬT VÀNG).
+
+
+---
+
+## 🖼️ V124-M1 — BOUNDED SCHOOL DRIVE & FAMILY VARIANT WIRING (SYSTEM_MAP v1.30 · D342 · FINAL PASS, 2026-08-08)
+
+> **Khối này thay khối V123-M1 làm authority hiện trạng cho tầng media-delivery consumer.** Endpoint: RULES **D342** · SYSTEM_MAP **v1.30** · HANDOFF **V124-M1** · code HEAD **`5c5491e952382d5017af5dab077d8fb9a976ecaf`** (`5c5491e9`) · signer deploy-**25** (v24, BẤT BIẾN).
+
+**Kiến trúc media (cập nhật consumer):** V123 signer bundle giờ được tiêu thụ trên School Drive + Family — pure frontend, KHÔNG đổi signing/authz architecture.
+- **School Drive** (`src/components/portal/DriveExplorer.tsx`, local inline signer owner GIỮ NGUYÊN — KHÔNG migrate hook): `load()` capture `variants.{thumb,stage}` từ cùng response; grid tile → `thumb` (256), preview/lightbox → `stage` (1280); video giữ `.url` qua `isVid`; list view = icon (0 image request). One-shot original fallback qua `origFallback` set.
+- **Family** (`src/features/family/memoryRoomShared.tsx` `MediaTile`, shared `useJourneySigning` GIỮ NGUYÊN): `pickVariant(state, role)` — implicit role dispatch `coverOnly && !contain`→`thumb` (glimpse 64px), else→`card` (stream/period cover + `CardDetail` gallery). IntersectionObserver lazy + one-shot original fallback (`imgFellBack`, mirror V123). Contribution = voice-only (không surface ảnh). `FamilyMemoryStream.tsx`/`FamilyMemoryRoom.tsx`/`FamilyMemoryPeriod.tsx` KHÔNG đụng (2-file envelope; đều reuse `MediaTile`/`MemoryItem`/`CardDetail`).
+
+**Locked role matrix:** tile `thumb` · preview `stage` · cover `card` · glimpse `thumb` · detail `card`. `fullscreen` KHÔNG dùng; KHÔNG srcset/DPR/custom w-q.
+
+**Out of scope (deferred):** School Drive eager-sign/no-lazy architecture + hook consolidation (Candidate 2 — KHÔNG làm M1; §6 chỉ cấm TĂNG signer count, không bắt giảm); Family fullscreen surface (không tồn tại); animated image; srcset. **P2 tooling-governance nay FOUR-times-proven — maintenance milestone riêng.**
+
+**Owner Gate production evidence (ChatGPT Release Authority PASS, 4 Network screenshots):** School tile `width=256` WebP 9.5–21.2 KB (orig 0.03–2.98 MB, >90% giảm); School preview `width=1280` WebP 35.5 KB (1 req/open); card `width=768` WebP 11.7 KB; thumb `width=256` WebP 3.0–11.1 KB — dưới ceiling 150/400/650; 0 original success path; Δ signer=0. **Delta:** 2 FE file + tooling revert (net 0). **Inventory bất biến 89/215/204/166/33/1 · registry 119 · routes 52 · 16 Edge · signer deploy-25 v24** · latest migration `20260807130914` (KHÔNG thêm migration/Edge/backfill/upload/video/audio/Bunny/routes/tooling). **Tooling:** re-float 2.9.1 (lần 4) caught+reverted về **2.8.5** (package.json + bun.lock L66/L242, `2.9.1` count=0). **Rollback = frontend revert.** Lineage FE: `06975654`→`a3adc133`(Family)→`44e51fa8`(School)→**`5c5491e9`**(tooling revert). Endpoint: RULES **D342** · SYSTEM_MAP **v1.30** · HANDOFF **V124-M1** · code HEAD **`5c5491e9`**. Cập nhật "tới đâu ghi tới đó" (KỶ LUẬT VÀNG).
+
+
+
+---
+
+## 🎨 V126-M1 — PARENT MEMORY JOURNEY: MEANING BRIDGE + IA ALIGNMENT (SYSTEM_MAP v1.32 · D344 · FINAL PASS, 2026-08-09)
+
+> **Khối này thay khối V124-M1 làm authority hiện trạng cho tầng parent-journey / meaning + parent navigation.** Endpoint: RULES **D344** · SYSTEM_MAP **v1.32** · HANDOFF **V126-M1** · code HEAD **`6b860338125a63e8b74815d549db5be723ad732a`** (`6b860338`) · signer deploy-**25** (v24, BẤT BIẾN). Tầng media-delivery consumer (V124-M1) + tooling guard (V125-M0) GIỮ nguyên authority.
+
+### Product thesis
+DMA chuyển **school record system → child artistic memory journey**. Câu hỏi đổi: KHÔNG "Con học bao nhiêu?" mà **"Con đã thay đổi như thế nào?"**. Cách làm = **kích hoạt tầng meaning ĐÃ TỒN TẠI**, KHÔNG xây engine mới, KHÔNG feed/dashboard/scoring/AI/social/ranking/child-evaluation.
+
+### Meaning architecture (đã tồn tại, read-only đã audit — KHÔNG đổi ở V126)
+`derive_child_evidence_internal` (semantic evidence normalizer đa nguồn: evidence_class · provenance · artistic_domain · group_key · occurred/created) → `compute_child_evidence_readiness` (policy **v2**, gate longitudinal 3m/6m/12m + dataset_maturity + collection_profile chống retrospective-concentration) → `discovery_capsules`/`discovery_capsule_items` (immutable, dated, `window_code`/`window_start`/`window_end`/`as_of`/`readiness_policy_version`/`discovery_version`/`payload_hash`; item `taxonomy_code`/`pattern_key`/`claim_strength`/`support`) → `generate_discovery_capsule` (**manual parent-triggered**, gate `is_child_parent`, eligibility recompute tại call, **idempotent theo semantic-key/ngày**, deterministic candidates qua `build_discovery_candidates_internal`, KHÔNG AI wording) → `get_discovery_capsule` (**re-validate live** — claim mất bằng chứng → `suppressed`) + `list_discovery_capsules` + `get_child_evidence_readiness` (parent read, gate). Copy layer `discoveryModel.ts` = shipped, LINH HỒN-aligned (2 section "đang dần cho thấy"/"dấu vết"; boundary chối bỏ đánh-giá-năng-lực; conversationPrompts biến insight → đối thoại cha-con; GAP_COPY + ANTI_PRESSURE).
+
+### Home Meaning Bridge (C1 — `parent.index.tsx`, frontend-only, 0 DB)
+`MeaningBridge({childId})` read-only: **list-first** `list_discovery_capsules` (rẻ) → có capsule = **State 1 `has_capsule`**; else **lazy** `get_child_evidence_readiness` → eligible = **State 2 `eligible_without_capsule`** / else = **State 3 `accumulating_insufficient`**. Loading = hold (null); error = quiet fallback link. **Rules bất biến:** no auto generation (giữ parent-initiated trên `/parent/discovery`) · no scoring · no comparison · no capsule item inline (bridge-only link-out) · Memory > Metric · Meaning > Quantity. Child-scoped sequencing (Correction-A: late response con trước KHÔNG commit). 0 RPC/migration/Edge/dependency mới.
+
+### Parent Navigation Model (C3 — `parentNav.ts` + shells)
+Nav tập trung `PARENT_PRIMARY_NAV` (+`railOnly?: boolean`) tiêu thụ bởi rail (`ParentIdentityRail`) + tablet drawer (`ParentTabletBar`) + mobile bottom nav (`ParentBottomNav`).
+- **Desktop / Tablet (rail + drawer, đủ 5):** 1 Hôm nay · 2 **Nhật ký** (`/parent/journal`, BookHeart) · 3 **Nhìn lại** (`/parent/discovery`, Telescope, **railOnly**) · 4 Gia đình · 5 Thế giới của con.
+- **Mobile bottom nav (frozen four, `grid-cols-4` bất biến, filter `!railOnly`):** 1 Hôm nay · 2 Nhật ký · 3 Gia đình · 4 Thế giới của con. **"Nhìn lại" KHÔNG có ở mobile bottom nav** → vào qua Home meaning bridge.
+- **IA boundary:** Records = **Nhật ký của con** (child journey records · chronological memories, `/parent/journal`). Meaning = **Nhìn lại** (Discovery capsule · evidence-backed reflection, `/parent/discovery`). Vocabulary: **"Hành trình"** vẫn là product concept (brand/umbrella "Hành trình của con") — KHÔNG retire; "Nhật ký" = records; "Nhìn lại" = meaning layer.
+
+### Technical governance — ⭐ Register augmentation authority (D344.5)
+- **Before:** `declare module '@tanstack/react-start'` Register nằm trong `src/routeTree.gen.ts` (generated).
+- **After:** dời sang **`src/router.tsx`** (hand-authored). `getRouter` local (in-scope) + `import type { startInstance } from "./start.ts"`. Đúng 1 khai báo Register (no duplicate); `routeTree.gen.ts` = generated thuần.
+- **Rule:** **Generated files (`*.gen.ts`) KHÔNG phải extension point.** Lovable regenerate `routeTree.gen.ts` khi save → mọi chèn tay bị quét (empty-commit `28325e5b` proof) = gốc build-fail V121-M1 tái diễn. Fix vĩnh viễn thay workaround "build regen-restore". CẤM manual modification của `*.gen.ts` — đưa mọi augmentation/extension sang file nguồn.
+
+### Inventory (BẤT BIẾN — V126 = frontend + governance, 0 DB delta)
+**89 tables · 215 functions · 204 SECURITY DEFINER · 166 policies · 1 cron · 16 Edge Functions · registry 119 · routes 52 · migration tail `20260807130914`.** Capsule DATA (hợp lệ, immutable, KHÔNG cấu trúc): An sinh 1 `discovery_capsules` `384042c1-a1a2-450c-8854-3886659cd050` (general/current_3m, 4 items: cross_perspective_convergence visual_art×creation · repeated_engagement music×engagement · repeated_engagement dance_movement×engagement · observed_activity theatre_performance×engagement) qua UI real-login (parent-gate thật) — KHÔNG qua SQL.
+
+### Owner Gate production/preview evidence (ChatGPT Release Authority PASS, real-login PH Nguyễn Văn Hùng)
+C1 3-state PASS (An State 2 → generate → State 1; Khang State 3 insufficient degrade nhẹ + ANTI_PRESSURE); capsule content **byte-identical** C0 read-only prediction + tone LINH HỒN (không đánh giá/scoring/ranking/over-claim); C3 IA — desktop rail đủ 5 · tablet drawer (480px) có Nhìn lại · **mobile bottom nav frozen-4** (390px, KHÔNG Nhìn lại) · journal "Nhật ký của An" · đổi con An↔Khang không bleed; **build PASS** (preview `preview--demenart.lovable.app` load OK → tsc xanh, Register ở `router.tsx` bền qua regen).
+
+**Delta:** frontend (`parent.index.tsx` · `parent.journal.tsx` · `parentNav.ts` · `ParentBottomNav.tsx`) + `router.tsx` (Register relocation) + `routeTree.gen.ts` (Register removed — moved). Tất cả **`manual_update`** (paste-mode, zero tooling re-float, pin **2.8.5** giữ, bun.lock byte-unchanged). **Inventory bất biến 89/215/204/166 · 16 Edge · registry 119 · routes 52** · migration tail `20260807130914` (KHÔNG thêm migration/Edge/RPC/backfill/Bunny/dependency). Lineage FE: `b3372e1c`→`742db062`(C1)→`af4b37cc`(C1.6 copy-fix)→`d498bf75`(C3 + routeTree regression)→`f8723cc4`(journal+copy-revert)→`28325e5b`(**empty — regen-strip proof**)→**`6b860338`**(Register→router.tsx, accepted tip). **Rollback = frontend revert** (backend/data 0). Endpoint: RULES **D344** · SYSTEM_MAP **v1.32** · HANDOFF **V126-M1** · code HEAD **`6b860338`**. Cập nhật "tới đâu ghi tới đó" (KỶ LUẬT VÀNG).
+
+---
+
+## 🧾 V127-M2.4 — ADMIN PROVISIONING AUDIT SPINE + ACTIVATE TEACHER (SYSTEM_MAP v1.33 · D345 · FORENSIC RECONSTRUCTION, backend-only 2026-08-09)
+
+> **Khối này nối tiếp V126-M1 làm authority hiện trạng tầng admin-provisioning / audit.** Endpoint: RULES **D345** · SYSTEM_MAP **v1.33** · HANDOFF **V127-M2.4** · code HEAD **`6b860338`** (BẤT BIẾN — backend-only) · migration tail **`20260809180815`**. Provenance: forensic từ migration body + `aclexplode` live + `list_edits` (KHÔNG có runtime QA record). Tầng media-delivery (V124-M1) + tooling guard (V125-M0) + parent-journey/meaning (V126-M1) GIỮ nguyên authority.
+
+### Audit spine (provisioning RPC nay phát audit event)
+`create_child_and_enroll` → **CHILD_CREATED** + **CLASS_ASSIGNMENT_CHANGED**(kind=initial) · `provision_parent_and_link` → **PARENT_CHILD_LINK_CREATED**(path=provision) · `assign_class_distribution` → **distribution_lead_changed**(kind=assign) · `admin_activate_teacher` → **TEACHER_ACTIVATED** · `admin_workspace_access_log` → **ADMIN_OPEN_CHILD_WORKSPACE** (reason bắt buộc) / **ADMIN_OPEN_PARENT_WORKSPACE**. Ba REPLACE Phase 1A = additive audit-only, behavior/authz/signature bất biến.
+
+### Admin domain actions (mới — 2 secdef function)
+- `admin_activate_teacher(profile_id, school_id, teacher_type, reason)`: role→lead/assistant_teacher + school_id + state=active; **KHÔNG đụng permissions[], KHÔNG gán lớp**; is_admin platform-only gate; guards cannot_downgrade_admin · has_active_parent_link · invalid_teacher_type/profile_not_found/school_not_found; idempotent noop.
+- `admin_workspace_access_log(entity_type, entity_id, reason)`: log admin mở child/parent workspace; **child = reason bắt buộc** (reason_required); is_admin gate.
+
+### Inventory (verified live)
+**89 tables · 217 functions (+2) · 206 SECURITY DEFINER (+2) · 166 policies · 33 triggers · 1 cron · 16 Edge Functions.** Registry/routes bất biến (backend-only, 0 FE). Migration tail `20260807130914` → **`20260809180815`**. Cả 2 hàm mới `search_path=""` + grants authenticated/postgres/service_role (aclexplode, anon/PUBLIC denied).
+
+**Delta:** DB +2 secdef function + 3 audit-spine REPLACE (mig `20260809180755` + `20260809180815`) · frontend 0 · Edge 0 · Bunny 0 · tooling 2.8.5 không đụng. **Rollback = revert 2 migration.** Endpoint: RULES **D345** · SYSTEM_MAP **v1.33** · HANDOFF **V127-M2.4** · code HEAD **`6b860338`** · migration tail **`20260809180815`**.
+
+---
+
+## 🧾 V127-M3.7 — TEACHER IDENTITY / CONTEXT BRIDGE (SYSTEM_MAP v1.34 · D346 · FORENSIC RECONSTRUCTION, 2026-08-10)
+
+> **Khối này nối tiếp V127-M2.4 làm authority hiện trạng tầng teacher-identity / context.** Endpoint: RULES **D346** · SYSTEM_MAP **v1.34** · HANDOFF **V127-M3.7** · code HEAD **`58e02f82`** · migration tail **`20260810052804`**. Provenance: forensic (9 migration body + `get_diff` in-code tag `V127-M3-P0B` + `list_edits`; KHÔNG runtime QA record). Media-delivery (V124) + tooling guard (V125) + parent-journey (V126) + admin-audit-spine (M2.4) GIỮ nguyên authority.
+
+### Teacher identity bridge (assignment-scoped)
+Thẩm quyền giáo viên = predicate context, KHÔNG `profile.school_id`: `is_teacher_in_school` · `is_session_teacher` · `is_session_responsible` · `is_moment_teacher`. Đa-trường qua phân công. Củng cố D324.
+
+### Context-compat gate (11 RLS policy + drive)
+Gate đồng nhất `same_school OR is_teacher_in_school` qua 11 policy DROP+CREATE (child_observations · prep_items · session_marks · session_media · learning_moments ×3 · moment_children ×4) + 7 hàm drive (b1, assertion phòng hộ). Không rẽ nhánh gate theo bảng.
+
+### Teacher write adapters (assignment-aware, no direct table write)
++4 secdef: `teacher_upsert_child_observation` · `teacher_create_learning_moment` · `teacher_update_learning_moment_caption` · `teacher_set_moment_child`. FE teacher gọi adapter, không INSERT/UPDATE thẳng.
+
+### Teacher school-context reads (Wave C)
++4 secdef: `get_teacher_{home,classes,journals,todo_counts}_in_school`.
+
+### Media / Edge
+`media_consent_check` / `check_curriculum_media_access` / `check_school_resource_media_access` REPLACE (teacher-context). Wave A: `get_my_experiences` / `get_teacher_session_workspace`. Edge 16 bất biến về số (bodies: auth-check + drive-signing updated).
+
+### Inventory (verified live)
+**89 tables · 231 functions (+14) · 220 SECURITY DEFINER (+14) · 166 policies (11 drop+recreate = net 0) · 33 triggers · 1 cron · 16 Edge Functions.** Migration tail `20260809180815` → **`20260810052804`**.
+
+### FE (2 cụm)
+P0B admin-lookup (manual, teacher operational surface: AssignClassDialog + chẩn đoán + set_lead error) `c8705e14`…`e2473c2c` → Wave A/B/C `ai_update`/agent: `77290658`(A) → `1eb602ac`(B) → `2485721a`(Edge auth) → `00757982`(Drive sign) → `070bc1ab`(school ctx) → **`58e02f82`**(teacher.media, tip). Tooling float events (`0f9cc72e`/`82430296`) handled, pin 2.8.5.
+
+**Delta:** DB +14 secdef fn + 11 RLS recompat + drive/media teacher-scope + Edge body updates (9 migration) · FE 2 cụm. **Rollback = revert 9 migration + FE revert.** Endpoint: RULES **D346** · SYSTEM_MAP **v1.34** · HANDOFF **V127-M3.7** · code HEAD **`58e02f82`** · migration tail **`20260810052804`**.

@@ -1,0 +1,184 @@
+--- 107_PRE_CPLUS_BACKUP.sql	2026-07-21 12:19:28.814689510 +0000
++++ 107_v114b_e3_wp2_s0a_legacy_assignment_lockdown.sql	2026-07-21 12:20:11.958690248 +0000
+@@ -1,15 +1,15 @@
+ -- =====================================================================================
+ -- MIGRATION 107 : v114b_e3_wp2_s0a_legacy_assignment_lockdown
+--- REVISION      : rev2 (Option C — full non-SELECT client lockdown)
++-- REVISION      : rev3 (Option C+ — full non-SELECT client lockdown, incl. MAINTAIN)
+ -- =====================================================================================
+ -- Milestone : DMA V114B-E3 · WP2 · Stage S0A
+ -- Purpose   : Revoke all approved non-SELECT client privileges on the LEGACY
+ --             assignment table public.session_teachers. Grant revocation ONLY.
+ --
+--- Authority : Readiness Pack rev2 §9 + Owner/CTO decision "OPTION C".
+---             AUTHORED ONLY — NOT YET APPLIED.
++-- Authority : Readiness Pack rev2 §9 + Owner/CTO decision "OPTION C+".
++--             S0A-FINDING-02 RESOLVED: MAINTAIN included in the revoke set.
+ --
+--- Scope     : REVOKE INSERT, UPDATE, DELETE, TRUNCATE, TRIGGER, REFERENCES
++-- Scope     : REVOKE INSERT, UPDATE, DELETE, TRUNCATE, TRIGGER, REFERENCES, MAINTAIN
+ --             ON public.session_teachers
+ --             FROM authenticated, anon, service_role;
+ --
+@@ -18,10 +18,8 @@
+ --     not cut over until S3; removing SELECT here breaks the schedule UI.
+ --   * The 4 RLS policies. Grants and policies are independent layers; removing both
+ --     at once destroys failure attribution. Policies -> S4.
+---   * MAINTAIN — see S0A-FINDING-02 in the review pack. This server is PostgreSQL 17
+---     and all three client roles additionally hold MAINTAIN, which is NOT covered by
+---     the approved six-privilege statement. Deliberately left in place pending an
+---     explicit Owner decision. Recorded, not silently absorbed.
++--   (MAINTAIN is NO LONGER retained — S0A-FINDING-02 resolved under Option C+.
++--    No MAINTAIN debt remains on public.session_teachers.)
+ --
+ -- NOT in scope: no DDL, no data mutation, no column touched, no policy dropped,
+ --               no function replaced, no trigger created.
+@@ -35,7 +33,7 @@
+ --
+ -- Ops path  : MCP execute_sql runs as `postgres`, the table OWNER (rolsuper = false,
+ --             so ownership is the operative grant). BLOCK 3 asserts postgres retains
+---             all six privileges.
++--             all seven privileges.
+ --
+ -- Pattern   : D92 three-block. apply_migration wraps everything in one transaction,
+ --             so any RAISE in BLOCK 3 rolls BLOCK 2 back atomically.
+@@ -43,9 +41,10 @@
+ -- Expected ACL transition (exact):
+ --     BEFORE  postgres=arwdDxtm/postgres, anon=arwdDxtm/postgres,
+ --             authenticated=arwdDxtm/postgres, service_role=arwdDxtm/postgres
+---     AFTER   postgres=arwdDxtm/postgres, anon=rm/postgres,
+---             authenticated=rm/postgres, service_role=rm/postgres
+---     (r = SELECT retained by design; m = MAINTAIN retained per S0A-FINDING-02)
++--     AFTER   postgres=arwdDxtm/postgres, anon=r/postgres,
++--             authenticated=r/postgres, service_role=r/postgres
++--     (r = SELECT, retained by design for the compatibility window)
++--     21 direct ACL entries removed: 7 privileges x 3 client roles.
+ -- =====================================================================================
+ 
+ 
+@@ -119,10 +118,10 @@
+   end if;
+ 
+   ---- 1.4 confirm we are genuinely in the PRE state -----------------------------------------
+-  -- All six target privileges must currently be present for all three roles. If any is
++  -- All seven target privileges must currently be present for all three roles. If any is
+   -- already absent, this is a partial/replay apply and must not be recorded as a change.
+   foreach r in array array['authenticated','anon','service_role'] loop
+-    foreach p in array array['INSERT','UPDATE','DELETE','TRUNCATE','TRIGGER','REFERENCES'] loop
++    foreach p in array array['INSERT','UPDATE','DELETE','TRUNCATE','TRIGGER','REFERENCES','MAINTAIN'] loop
+       if not has_table_privilege(r, 'public.session_teachers', p) then
+         raise exception 'S0A PRECONDITION FAIL: role % already lacks % — S0A appears partially applied', r, p;
+       end if;
+@@ -173,7 +172,7 @@
+ -- =====================================================================================
+ -- BLOCK 2 — REVOKE (the entire change)
+ -- -------------------------------------------------------------------------------------
+--- Table-level revocation of all six approved privileges. Per D310-cand, table-level
++-- Table-level revocation of all seven approved privileges. Per D310-cand, table-level
+ -- grants must be removed at the table level; a column-level REVOKE cannot negate a
+ -- surviving table-level grant.
+ --
+@@ -183,7 +182,13 @@
+ -- DEFINER RPC check_session_media_upload_access.
+ -- =====================================================================================
+ 
+-REVOKE INSERT, UPDATE, DELETE, TRUNCATE, TRIGGER, REFERENCES
++REVOKE INSERT,
++       UPDATE,
++       DELETE,
++       TRUNCATE,
++       TRIGGER,
++       REFERENCES,
++       MAINTAIN
+     ON public.session_teachers
+   FROM authenticated, anon, service_role;
+ 
+@@ -217,7 +222,7 @@
+   v_sqlstate     text;
+   v_probe_ok     boolean;
+ begin
+-  ---- 3.1 PRIMARY: direct ACL inspection — no entry for any of the six privileges ----------
++  ---- 3.1 PRIMARY: direct ACL inspection — no entry for any of the seven privileges --------
+   select string_agg(distinct pg_get_userbyid(acl.grantee) || ':' || acl.privilege_type, ' · '
+                     order by pg_get_userbyid(acl.grantee) || ':' || acl.privilege_type)
+     into v_leftover
+@@ -226,20 +231,20 @@
+    where c.oid = 'public.session_teachers'::regclass
+      and acl.grantee <> 0                                        -- exclude PUBLIC pseudo-role
+      and pg_get_userbyid(acl.grantee) in ('authenticated','anon','service_role')
+-     and acl.privilege_type in ('INSERT','UPDATE','DELETE','TRUNCATE','TRIGGER','REFERENCES');
++     and acl.privilege_type in ('INSERT','UPDATE','DELETE','TRUNCATE','TRIGGER','REFERENCES','MAINTAIN');
+ 
+   if v_leftover is not null then
+     raise exception 'S0A VERIFY FAIL (ACL): direct ACL entries still present: %', v_leftover;
+   end if;
+ 
+-  ---- 3.2 PRIMARY: PUBLIC must hold none of the six ------------------------------------------
++  ---- 3.2 PRIMARY: PUBLIC must hold none of the seven ----------------------------------------
+   select string_agg(distinct acl.privilege_type, ' · ' order by acl.privilege_type)
+     into v_leftover
+     from pg_class c,
+          aclexplode(coalesce(c.relacl, acldefault('r', c.relowner))) acl
+    where c.oid = 'public.session_teachers'::regclass
+      and acl.grantee = 0
+-     and acl.privilege_type in ('INSERT','UPDATE','DELETE','TRUNCATE','TRIGGER','REFERENCES');
++     and acl.privilege_type in ('INSERT','UPDATE','DELETE','TRUNCATE','TRIGGER','REFERENCES','MAINTAIN');
+ 
+   if v_leftover is not null then
+     raise exception 'S0A VERIFY FAIL (ACL): PUBLIC holds: %', v_leftover;
+@@ -249,9 +254,9 @@
+   select coalesce(c.relacl::text, '<null>') into v_acl_after
+     from pg_class c where c.oid = 'public.session_teachers'::regclass;
+ 
+-  ---- 3.4 corroborating: table-level checks, six privileges x three roles -----------------------
++  ---- 3.4 corroborating: table-level checks, seven privileges x three roles ---------------------
+   foreach r in array array['authenticated','anon','service_role'] loop
+-    foreach p in array array['INSERT','UPDATE','DELETE','TRUNCATE','TRIGGER','REFERENCES'] loop
++    foreach p in array array['INSERT','UPDATE','DELETE','TRUNCATE','TRIGGER','REFERENCES','MAINTAIN'] loop
+       if has_table_privilege(r, 'public.session_teachers', p) then
+         raise exception 'S0A VERIFY FAIL: role % still holds % on session_teachers', r, p;
+       end if;
+@@ -261,7 +266,8 @@
+   ---- 3.5 corroborating: column-level residue scan (D310-cand) ----------------------------------
+   -- Scans every live user column from pg_attribute. INSERT and UPDATE are required by the
+   -- decision; REFERENCES is additionally checked because it is column-capable and is one
+-  -- of the six privileges being revoked.
++  -- of the revoked privileges. MAINTAIN is deliberately EXCLUDED: it is not a column-level
++  -- privilege in PostgreSQL, so has_column_privilege would be meaningless for it.
+   select string_agg(x.role_name || '/' || x.attname || '/' || x.priv, ' · ')
+     into v_colbad
+     from (
+@@ -285,7 +291,7 @@
+   end if;
+ 
+   ---- 3.7 owner path preserved (ops escape hatch) ---------------------------------------------------
+-  foreach p in array array['INSERT','UPDATE','DELETE','TRUNCATE','TRIGGER','REFERENCES'] loop
++  foreach p in array array['INSERT','UPDATE','DELETE','TRUNCATE','TRIGGER','REFERENCES','MAINTAIN'] loop
+     if not has_table_privilege('postgres', 'public.session_teachers', p) then
+       raise exception 'S0A VERIFY FAIL: postgres lost % — operator escape hatch destroyed', p;
+     end if;
+@@ -370,6 +376,10 @@
+   --   * Structural checks 3.1-3.5 remain the PRIMARY evidence. These probes corroborate
+   --     only. No claim of the form "N/N INSERT probes prove grant removal" is made.
+   --
++  --   * NO functional MAINTAIN probe is run. Executing VACUUM/ANALYZE/REINDEX purely to
++  --     probe would create side effects and needless load. MAINTAIN removal is proven by
++  --     structural ACL evidence (3.1/3.2/3.4) ALONE, and no functional claim is made for it.
++  --
+   --   * Real-login post-apply direct-write QA remains mandatory regardless of this block.
+   --
+   -- Residue: none. Had a probe succeeded, the RAISE below unwinds the whole transaction,
+@@ -435,10 +445,10 @@
+   end if;
+ 
+   raise notice 'S0A BLOCK 3 OK — ACL after: %', v_acl_after;
+-  raise notice 'S0A BLOCK 3 OK — 6 privileges revoked for authenticated+anon+service_role (ACL-verified, PRIMARY evidence)';
++  raise notice 'S0A BLOCK 3 OK — 7 privileges revoked for authenticated+anon+service_role = 21 direct ACL entries removed (ACL-verified, PRIMARY evidence)';
+   raise notice 'S0A BLOCK 3 OK — column-level residue: none across 5 user columns x 3 roles x (INSERT,UPDATE,REFERENCES)';
+-  raise notice 'S0A BLOCK 3 OK — supplementary probes: TRUNCATE 3/3 = 42501; INSERT service_role = 42501. INSERT probe NOT run for authenticated/anon (RLS makes 42501 ambiguous)';
++  raise notice 'S0A BLOCK 3 OK — supplementary probes: TRUNCATE 3/3 = 42501; INSERT service_role = 42501. INSERT probe NOT run for authenticated/anon (RLS makes 42501 ambiguous); no MAINTAIN probe by design';
+   raise notice 'S0A BLOCK 3 OK — preserved: rows=2 policies=4 constraints=5 indexes=2 definer_rpcs=5; SELECT retained';
+-  raise notice 'S0A BLOCK 3 OK — MAINTAIN deliberately NOT revoked (S0A-FINDING-02, pending Owner decision)';
++  raise notice 'S0A BLOCK 3 OK — S0A-FINDING-02 RESOLVED: MAINTAIN revoked; no MAINTAIN debt remains on session_teachers';
+ end
+ $block3$;

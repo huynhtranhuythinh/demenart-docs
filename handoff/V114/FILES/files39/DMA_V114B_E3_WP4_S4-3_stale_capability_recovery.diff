@@ -1,0 +1,220 @@
+DMA V114B-E3 · WP4-S4 · S4-3 — STALE-CAPABILITY RECOVERY (PROPOSED, NOT APPLIED)
+Baseline: 645fad7d · one file · frontend-only · no backend/lead/role fallback.
+
+diff --git a/src/routes/_authenticated/teacher.session.$id.tsx b/src/routes/_authenticated/teacher.session.$id.tsx
+--- a/src/routes/_authenticated/teacher.session.$id.tsx
++++ b/src/routes/_authenticated/teacher.session.$id.tsx
+@@ SessionFlow: loadDetail — race guard + boolean result
+   // mọi đường về Bước 3 đi qua đây để chọn tab khởi đầu đúng (D101)
+   function goToRecord(t: RecTabKey = "att") {
+     setRecordTab(t);
+     setStep(3);
+   }
+ 
+-  async function loadDetail(setStepFromState = false) {
+-    const { data, error } = await supabase.rpc("get_session_detail" as never, { p_session_id: id } as never);
+-    if (error || !(data as any)?.ok) {
+-      setErr(((data as any)?.reason as string) || "load_error");
+-      return;
+-    }
+-    const d = data as unknown as Detail;
+-    setDetail(d);
+-    if (setStepFromState) setStep(stepForState(d.session.state));
+-  }
++  // Seq guard: chỉ kết quả get_session_detail mới nhất được áp (chống race / out-of-order — S4-3 D-race).
++  const detailSeqRef = useRef(0);
++  // Trả về true nếu detail đã cập nhật (hoặc bị thay bởi lần mới hơn); false nếu nạp lỗi (fail-closed).
++  async function loadDetail(setStepFromState = false): Promise<boolean> {
++    const seq = ++detailSeqRef.current;
++    const { data, error } = await supabase.rpc("get_session_detail" as never, { p_session_id: id } as never);
++    if (seq !== detailSeqRef.current) return true; // đã có lần nạp mới hơn → bỏ qua kết quả cũ
++    if (error || !(data as any)?.ok) {
++      setErr(((data as any)?.reason as string) || "load_error");
++      return false;
++    }
++    const d = data as unknown as Detail;
++    setDetail(d);
++    if (setStepFromState) setStep(stepForState(d.session.state));
++    return true;
++  }
+ 
+   useEffect(() => {
+     if (typeof window === "undefined") return;
+     loadDetail(true);
+     // eslint-disable-next-line react-hooks/exhaustive-deps
+   }, [id]);
+@@ SessionFlow: Bước 1 — nạp lại capability sau khi start thành công, RỒI mới sang bước
+       {step === 1 && (
+-        <StepPrep detail={detail} profileId={profile?.id ?? null} onChanged={loadDetail} onStart={() => setStep(2)} />
++        <StepPrep
++          detail={detail}
++          profileId={profile?.id ?? null}
++          onChanged={loadDetail}
++          onStart={async () => {
++            const ok = await loadDetail(); // nạp lại capability/responsible sau khi trách nhiệm vừa sinh
++            if (ok) setStep(2); // refresh lỗi → loadDetail đã set err → route hiện trạng thái lỗi (fail-closed)
++          }}
++        />
+       )}
+@@ SessionFlow: Bước 4 — cấp cho StepReview đường nạp lại detail
+       {step === 4 && (
+         <StepReview
+           session={s}
+           canSubmitJournal={detail.can_submit_journal}
+           submitBlockReason={detail.submit_block_reason ?? null}
+           responsibleTeacher={detail.responsible_teacher ?? null}
+           onBack={() => goToRecord()}
+           onEditPhotos={() => goToRecord("photo")}
+           onSent={() => loadDetail()}
++          onReloadDetail={loadDetail}
+         />
+       )}
+@@ StepPrep: chống bấm lại + đợi refresh capability trước khi sang bước
+ function StepPrep({
+   detail,
+   profileId,
+   onChanged,
+   onStart,
+ }: {
+   detail: Detail;
+   profileId: string | null;
+   onChanged: () => void;
+-  onStart: () => void;
++  onStart: () => void | Promise<void>;
+ }) {
+@@ StepPrep: start()
+-  async function start() {
+-    setStarting(true);
+-    const { data, error } = await supabase.rpc("start_session" as never, { p_session_id: sid } as never);
+-    setStarting(false);
+-    if (!error && (data as any)?.ok) {
+-      onStart();
+-    }
+-  }
++  async function start() {
++    if (starting) return; // chống double-tap → không gọi start_session hai lần
++    setStarting(true);
++    const { data, error } = await supabase.rpc("start_session" as never, { p_session_id: sid } as never);
++    if (error || !(data as any)?.ok) {
++      setStarting(false); // lỗi start → ở lại Bước 1, cho thử lại
++      return;
++    }
++    // start OK: KHÔNG gọi start_session lần hai. Chờ route nạp lại capability rồi mới chuyển bước.
++    // Giữ starting=true qua onStart để chặn bấm lại; component unmount khi sang bước (hoặc route lỗi).
++    await onStart();
++  }
+@@ StepReview: prop onReloadDetail
+ function StepReview({
+   session,
+   canSubmitJournal,
+   submitBlockReason,
+   responsibleTeacher,
+   onBack,
+   onEditPhotos,
+   onSent,
++  onReloadDetail,
+ }: {
+   session: SessionInfo;
+   canSubmitJournal: boolean | undefined;
+   submitBlockReason: string | null;
+   responsibleTeacher: ResponsibleTeacher | null;
+   onBack: () => void;
+   onEditPhotos: () => void;
+   onSent: () => void;
++  onReloadDetail: () => Promise<boolean>;
+ }) {
+@@ StepReview: state — recovering lock + unmount guard
+   const [submitting, setSubmitting] = useState(false);
+   const [result, setResult] = useState<SubmitResult | null>(null);
+   const [err, setErr] = useState<string | null>(null);
++  // recovering: sau khi LỆNH gửi bị từ chối, khoá CTA NGAY và nạp lại capability đúng một lần.
++  const [recovering, setRecovering] = useState(false);
++  const aliveRef = useRef(true);
++  useEffect(() => () => {
++    aliveRef.current = false;
++  }, []);
+   const sentBefore = SENT_STATES.includes(session.state);
+@@ StepReview: submit() — fail-closed recovery, không tự retry, chống trùng
+   async function submit() {
+-    if (canSubmitJournal !== true) return;
++    if (canSubmitJournal !== true || submitting || recovering) return; // chỉ server-capability mở; chống trùng
+     setSubmitting(true);
+     setErr(null);
+     const { data, error } = await supabase.rpc(
+       "submit_session_journal" as never,
+       {
+         p_session_id: session.id,
+         p_summary: summary.trim() || null,
+         p_follow_up: followUp.trim() || null,
+       } as never,
+     );
+-    setSubmitting(false);
+     if (error || !(data as any)?.ok) {
+       const reason = ((data as any)?.reason as string) || "submit_error";
+       setErr(
+         reason === "forbidden"
+           ? "Bạn không phải giáo viên phụ trách buổi học này nên không thể gửi nhật ký."
+           : reason === "no_responsible_assignment"
+             ? "Buổi học này chưa xác định giáo viên phụ trách nên nhật ký chưa thể gửi."
+             : reason === "bad_state"
+               ? "Nhật ký chưa thể gửi ở trạng thái hiện tại của buổi học."
+               : reason === "session_not_found"
+                 ? "Buổi học này không còn khả dụng. Cô tải lại danh sách buổi nhé."
+                 : "Không gửi được nhật ký lúc này. Cô thử lại nhé.",
+       );
++      // Lệnh bị từ chối → khoá CTA ngay (recovering), giữ copy lỗi, nạp lại capability ĐÚNG MỘT LẦN.
++      // Không tự thử lại lệnh. Nếu refresh lỗi → loadDetail set err ở route → route hiện trạng thái lỗi (fail-closed).
++      setSubmitting(false);
++      setRecovering(true);
++      await onReloadDetail();
++      if (aliveRef.current) setRecovering(false); // guard: refresh lỗi có thể đã unmount StepReview
+       return;
+     }
++    setSubmitting(false);
+     setResult({
+       moments_approved: (data as any).moments_approved ?? 0,
+       journey_created: (data as any).journey_created ?? 0,
+       already: (data as any).already,
+     });
+     onSent();
+   }
+@@ StepReview: CTA — thêm nhánh recovering (khoá NGAY, không flash enabled)
+       {/* hành động */}
+       <div className="flex items-center gap-2.5">
+         <button
+           type="button"
+           onClick={onBack}
+           className="inline-flex items-center gap-1.5 rounded-xl px-4 py-3 text-sm font-medium"
+           style={{ backgroundColor: "#fff", color: INK, border: `1.5px solid ${FOREST}` }}
+         >
+           <ChevronLeft className="h-4 w-4" /> Quay lại
+         </button>
+-        {canSubmitJournal === true ? (
++        {recovering ? (
++          <span
++            className="flex-1 inline-flex items-center justify-center gap-2 rounded-xl py-3.5 text-sm font-medium"
++            style={{ backgroundColor: "#F4F1EA", color: FAINT }}
++          >
++            <Loader2 className="h-4 w-4 animate-spin" /> Đang kiểm tra lại quyền gửi…
++          </span>
++        ) : canSubmitJournal === true ? (
+           <button
+             type="button"
+             onClick={submit}
+             disabled={submitting}
+             className="flex-1 inline-flex items-center justify-center gap-2 rounded-xl py-3.5 text-sm font-semibold disabled:opacity-70"
+             style={{ backgroundColor: FOREST, color: "#fff" }}
+           >
+             {submitting ? <Loader2 className="h-4 w-4 animate-spin" /> : <Send className="h-4 w-4" />}
+             {sentBefore ? "Gửi lại nhật ký" : "Hoàn tất & gửi nhật ký"}
+           </button>
+         ) : (
+           <span
+             className="flex-1 inline-flex items-start gap-2 rounded-xl px-4 py-3 text-xs"
+             style={{ backgroundColor: HONEY_BG, color: HONEY_TEXT }}
+           >
+             <AlertCircle className="mt-0.5 h-3.5 w-3.5 shrink-0" />
+             <span>{blockReasonCopy(submitBlockReason)}</span>
+           </span>
+         )}
+       </div>
